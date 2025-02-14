@@ -6,7 +6,7 @@
         <header class="bg-neutral-800 shadow-sm rounded-xl p-4 mb-8 flex justify-between items-center">
             <div class="flex items-center">
                 <button class="md:hidden mr-4" onclick="toggleSidebar()">
-                    <i class="fas fa-bars text-neutral-300"></i>
+                    <i class="fa-duotone fa-thin fa-bars text-neutral-300"></i>
                 </button>
                 <div>
                     <h2 class="text-2xl font-bold text-neutral-100">Welcome Back, Admin</h2>
@@ -17,16 +17,7 @@
                 <div class="relative">
                     <input type="text" placeholder="Search..." 
                            class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
-                    <i class="fas fa-search absolute right-3 top-3.5 text-neutral-400"></i>
-                </div>
-                <div class="relative">
-                    <i class="fas fa-bell text-neutral-300 text-xl cursor-pointer"></i>
-                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                        <span class="text-white text-xs">3</span>
-                    </div>
-                </div>
-                <div class="w-10 h-10 rounded-lg bg-red-500 flex items-center justify-center text-white cursor-pointer hover:bg-red-600 transition-colors">
-                    <i class="fas fa-user"></i>
+                    <i class="fa-duotone fa-thin fa-search absolute right-3 top-3.5 text-neutral-400"></i>
                 </div>
             </div>
         </header>
@@ -40,12 +31,12 @@
                         <h3 class="text-2xl font-bold text-neutral-100">1,234</h3>
                     </div>
                     <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-video text-blue-500 text-xl"></i>
+                        <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
                     </div>
                 </div>
                 <div class="mt-4 flex items-center text-sm">
                     <span class="text-green-400 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 12%
+                        <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 12%
                     </span>
                     <span class="text-neutral-500 ml-2">vs last month</span>
                 </div>
@@ -58,12 +49,12 @@
                         <h3 class="text-2xl font-bold text-neutral-100">2.5M</h3>
                     </div>
                     <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-eye text-green-500 text-xl"></i>
+                        <i class="fa-duotone fa-thin fa-eye text-green-500 text-xl"></i>
                     </div>
                 </div>
                 <div class="mt-4 flex items-center text-sm">
                     <span class="text-green-400 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 18%
+                        <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 18%
                     </span>
                     <span class="text-neutral-500 ml-2">vs last month</span>
                 </div>
@@ -76,12 +67,12 @@
                         <h3 class="text-2xl font-bold text-neutral-100">524</h3>
                     </div>
                     <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-user-tie text-yellow-500 text-xl"></i>
+                        <i class="fa-duotone fa-thin fa-user-tie text-yellow-500 text-xl"></i> 
                     </div>
                 </div>
                 <div class="mt-4 flex items-center text-sm">
                     <span class="text-green-400 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 5%
+                        <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 5%
                     </span>
                     <span class="text-neutral-500 ml-2">vs last month</span>
                 </div>
@@ -94,12 +85,12 @@
                         <h3 class="text-2xl font-bold text-neutral-100">48</h3>
                     </div>
                     <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-list text-pink-500 text-xl"></i>
+                        <i class="fa-duotone fa-thin fa-list text-pink-500 text-xl"></i>
                     </div>
                 </div>
                 <div class="mt-4 flex items-center text-sm">
                     <span class="text-green-400 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 3%
+                        <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 3%
                     </span>
                     <span class="text-neutral-500 ml-2">vs last month</span>
                 </div>
@@ -126,7 +117,7 @@
                         </div>
                         <div class="flex-shrink-0">
                             <button class="text-neutral-400 hover:text-neutral-300">
-                                <i class="fas fa-ellipsis-v"></i>
+                                <i class="fa-duotone fa-thin fa-ellipsis-v"></i>
                             </button>
                         </div>
                     </div>
@@ -150,7 +141,7 @@
                             <p class="text-xs text-neutral-400">2.5M views • Trending #1</p>
                         </div>
                         <div class="flex-shrink-0 text-sm font-medium text-green-400">
-                            <i class="fas fa-chart-line mr-1"></i>
+                            <i class="fa-duotone fa-thin fa-chart-line mr-1"></i>
                             +128%
                         </div>
                     </div>
@@ -197,10 +188,10 @@
                                     <div>
                                         <span class="text-sm font-semibold text-neutral-100 group-hover:text-red-400 transition-colors">United States</span>
                                         <div class="flex items-center text-xs text-neutral-400">
-                                            <i class="fas fa-user-group mr-1"></i>
+                                            <i class="fa-duotone fa-thin fa-user-group mr-1"></i>
                                             <span>45.2K visitors</span>
                                             <span class="mx-2">•</span>
-                                            <span class="text-green-400">+12% <i class="fas fa-trending-up ml-1"></i></span>
+                                            <span class="text-green-400">+12% <i class="fa-duotone fa-thin fa-trending-up ml-1"></i></span>
                                         </div>
                                     </div>
                                     <span class="text-sm font-medium text-neutral-100 ml-2">85%</span>
@@ -233,10 +224,10 @@
                                     <div>
                                         <span class="text-sm font-semibold text-neutral-100 group-hover:text-red-400 transition-colors">India</span>
                                         <div class="flex items-center text-xs text-neutral-400">
-                                            <i class="fas fa-user-group mr-1"></i>
+                                            <i class="fa-duotone fa-thin fa-user-group mr-1"></i>
                                             <span>32.8K visitors</span>
                                             <span class="mx-2">•</span>
-                                            <span class="text-green-400">+18% <i class="fas fa-trending-up ml-1"></i></span>
+                                            <span class="text-green-400">+18% <i class="fa-duotone fa-thin fa-trending-up ml-1"></i></span>
                                         </div>
                                     </div>
                                     <span class="text-sm font-medium text-neutral-100 ml-2">65%</span>
@@ -269,10 +260,10 @@
                                     <div>
                                         <span class="text-sm font-semibold text-neutral-100 group-hover:text-red-400 transition-colors">United Kingdom</span>
                                         <div class="flex items-center text-xs text-neutral-400">
-                                            <i class="fas fa-user-group mr-1"></i>
+                                            <i class="fa-duotone fa-thin fa-user-group mr-1"></i>
                                             <span>28.3K visitors</span>
                                             <span class="mx-2">•</span>
-                                            <span class="text-green-400">+8% <i class="fas fa-trending-up ml-1"></i></span>
+                                            <span class="text-green-400">+8% <i class="fa-duotone fa-thin fa-trending-up ml-1"></i></span>
                                         </div>
                                     </div>
                                     <span class="text-sm font-medium text-neutral-100 ml-2">55%</span>
