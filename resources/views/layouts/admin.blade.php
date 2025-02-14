@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - VideoFlex</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .nav-item {
@@ -63,7 +63,7 @@
                 <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
                     <i class="fas fa-play-circle text-white text-xl"></i>
                 </div>
-                <h1 class="text-2xl font-bold">VideoFlex</h1>
+                <h1 class="text-2xl font-bold">NxTube</h1>
             </div>
         </div>
         <div class="sidebar-content">
@@ -73,31 +73,31 @@
 
                 <a href="{{ route('dashboard') }}" 
                     class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('dashboard') ? 'bg-neutral-700/30' : '' }}">
-                     <i class="fas fa-home text-lg w-8"></i>
+                     <i class="fa-duotone fa-thin fa-house text-lg w-8"></i>
                      <span>Dashboard</span>
                  </a>
                  
                  <a href="{{ route('videos') }}" 
                     class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('videos') ? 'bg-neutral-700/30' : '' }}">
-                     <i class="fas fa-video text-lg w-8"></i>
+                     <i class="fa-duotone fa-thin fa-video text-lg w-8"></i>
                      <span>Videos</span>
                  </a>
 
                  <a href="{{ route('categories') }}" 
                     class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('categories') ? 'bg-neutral-700/30' : '' }}">
-                    <i class="fas fa-list text-lg w-8"></i>
+                    <i class="fa-duotone fa-thin fa-list text-lg w-8"></i>
                      <span>Categories</span>
                  </a>
 
                  <a href="{{ route('actors') }}" 
                     class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('actors') ? 'bg-neutral-700/30' : '' }}">
-                    <i class="fas fa-user-tie text-lg w-8"></i>
+                    <i class="fa-duotone fa-thin fa-user-tie text-lg w-8"></i>
                      <span>Actors</span>
                  </a>
 
                  <a href="{{ route('channels') }}" 
                     class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('channels') ? 'bg-neutral-700/30' : '' }}">
-                    <i class="fas fa-user-tie text-lg w-8"></i>
+                    <i class="fa-duotone fa-thin fa-hashtag text-lg w-8"></i>
                      <span>Channels</span>
                  </a>
                 </nav>
@@ -106,16 +106,16 @@
                 <nav class="space-y-2">
                     <a href="{{ route('profile') }}" 
                         class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('profile') ? 'bg-neutral-700/30' : '' }}">
-                        <i class="fas fa-user-circle text-lg w-8"></i>
+                        <i class="fa-duotone fa-thin fa-user-circle text-lg w-8"></i>  
                         <span>Profile</span>
                     </a>
                     <a href="{{ route('settings') }}" 
                         class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('settings') ? 'bg-neutral-700/30' : '' }}">
-                        <i class="fas fa-cog text-lg w-8"></i>
+                        <i class="fa-duotone fa-thin fa-cog text-lg w-8"></i>
                         <span>Settings</span>
                     </a>
                     <div class="nav-item px-4 py-3 flex items-center cursor-pointer text-red-400">
-                        <i class="fas fa-sign-out-alt text-lg w-8"></i>
+                        <i class="fa-duotone fa-thin fa-sign-out-alt text-lg w-8"></i>
                         <span>Logout</span>
                     </div>
                 </nav>
