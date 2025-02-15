@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ActorController;
+use App\Http\Controllers\ChannelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,11 +40,9 @@ Route::post('/store-category', [CategoryController::class, 'store'])->name('stor
 Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
 Route::post('/store-actor', [ActorController::class, 'store'])->name('store-actor');
 
+Route::get('/add-channel', [ChannelController::class, 'create'])->name('add-channel');
+Route::post('/store-channel', [ChannelController::class, 'store'])->name('store-channel');
 
 
-Route::get('/add-channel', function () {
-    return view('crud.channel.add');
-})->name('add-channel');
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -12,7 +12,8 @@
         </button>
     </header>
 
-    <form id="channelForm" class="w-full space-y-6">
+    <form id="channelForm" class="w-full space-y-6" action="{{ route('store-channel') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <div class="grid grid-cols-2 gap-6">
             <!-- Channel Information -->
             <div class="bg-neutral-800 rounded-xl p-6">
@@ -21,21 +22,21 @@
                     <div class="flex items-center space-x-6">
                         <div class="flex-shrink-0">
                             <div class="relative w-32 h-32">
-                                <div id="avatarPreview" class="w-full h-full bg-neutral-700 rounded-full overflow-hidden flex items-center justify-center">
-                                    <img id="avatarImage" class="w-full h-full object-cover hidden">
-                                    <i id="avatarPlaceholder" class="fas fa-user text-4xl text-neutral-500"></i>
+                                <div id="profilePreview" class="w-full h-full bg-neutral-700 rounded-full overflow-hidden flex items-center justify-center">
+                                    <img id="profileImage" class="w-full h-full object-cover hidden">
+                                    <i id="profilePlaceholder" class="fas fa-user text-4xl text-neutral-500"></i>
                                 </div>
-                                <button type="button" onclick="document.getElementById('avatarInput').click()" 
+                                <button type="button" onclick="document.getElementById('profileInput').click()" 
                                         class="absolute bottom-0 right-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
                                     <i class="fas fa-camera text-white"></i>
                                 </button>
-                                <input type="file" id="avatarInput" accept="image/*" class="hidden">
+                                <input type="file" id="profileInput" name="profile_image" accept="image/*" class="hidden">
                             </div>
                         </div>
                         <div class="flex-grow space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-neutral-300 mb-2">Channel Name</label>
-                                <input type="text" name="name" required
+                                <input type="text" name="channel_name" required
                                        class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                        placeholder="Your channel name">
                             </div>
@@ -76,7 +77,7 @@
                             <i class="fas fa-upload mr-2"></i>
                             <span>Upload Banner</span>
                         </button>
-                        <input type="file" id="bannerInput" accept="image/*" class="hidden">
+                        <input type="file" id="bannerInput" name="banner_image" accept="image/*" class="hidden">
                     </div>
                 </div>
             </div>
@@ -170,19 +171,19 @@
             sidebar.classList.toggle('-translate-x-full');
         }
 
-        // Avatar handling
-        const avatarInput = document.getElementById('avatarInput');
-        const avatarImage = document.getElementById('avatarImage');
-        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
-
-        avatarInput.addEventListener('change', (e) => {
+        // Profile Image handling
+        const profileInput = document.getElementById('profileInput');
+        const profileImage = document.getElementById('profileImage');
+        const profilePlaceholder = document.getElementById('profilePlaceholder');
+        
+        profileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    avatarImage.src = e.target.result;
-                    avatarImage.classList.remove('hidden');
-                    avatarPlaceholder.classList.add('hidden');
+                    profileImage.src = e.target.result;
+                    profileImage.classList.remove('hidden');
+                    profilePlaceholder.classList.add('hidden');
                 };
                 reader.readAsDataURL(file);
             }
@@ -204,14 +205,6 @@
                 };
                 reader.readAsDataURL(file);
             }
-        });
-
-        // Form submission
-        const channelForm = document.getElementById('channelForm');
-        channelForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Add your form submission logic here
-            alert('Channel created successfully!');
         });
     </script>
 </div>
