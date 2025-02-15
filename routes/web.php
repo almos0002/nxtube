@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ActorController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\VideoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,6 +43,9 @@ Route::post('/store-actor', [ActorController::class, 'store'])->name('store-acto
 
 Route::get('/add-channel', [ChannelController::class, 'create'])->name('add-channel');
 Route::post('/store-channel', [ChannelController::class, 'store'])->name('store-channel');
+
+Route::get('/add-video', [VideoController::class, 'create'])->name('add-video');
+Route::post('/store-video', [VideoController::class, 'store'])->name('store-video');
 
 
 Auth::routes();

@@ -12,7 +12,8 @@
         </button>
     </header>
 
-    <form id="videoForm" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <form id="videoForm" action="{{ route('store-video') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        @csrf
         <!-- Main Content Column -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Video Upload Section -->
@@ -22,7 +23,7 @@
                     <div class="flex gap-4">
                         <div class="flex-grow">
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Video URL</label>
-                            <input type="url" name="videoLink" required placeholder="Enter video URL (e.g., https://example.com/video.mp4)" 
+                            <input type="url" name="video_link" required placeholder="https://example.com/video.mp4" 
                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
                             <p class="mt-1 text-sm text-neutral-500">Enter a direct link to your video file</p>
                         </div>
@@ -54,31 +55,29 @@
                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"></textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Channels (Multiple Select via Search) -->
                         <div>
-                            <label class="block text-sm font-medium text-neutral-300 mb-2">Channel</label>
-                            <select name="channel" required
-                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <option value="">Select Channel</option>
-                                <option value="code-masters">Code Masters</option>
-                                <option value="gaming-hub">Gaming Hub</option>
-                                <option value="music-academy">Music Academy</option>
-                                <option value="tech-talks">Tech Talks</option>
-                            </select>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Channels</label>
+                            <div class="relative">
+                                <input type="text" id="channelSearch" placeholder="Search channels..."
+                                       class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                                <div id="channelResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                            </div>
+                            <div id="selectedChannels" class="mt-2 flex flex-wrap gap-2"></div>
                         </div>
+                        <!-- Categories (Multiple Select via Search) -->
                         <div>
-                            <label class="block text-sm font-medium text-neutral-300 mb-2">Category</label>
-                            <select name="category" required
-                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <option value="">Select Category</option>
-                                <option value="entertainment">Entertainment</option>
-                                <option value="education">Education</option>
-                                <option value="gaming">Gaming</option>
-                                <option value="music">Music</option>
-                                <option value="tech">Technology</option>
-                            </select>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Categories</label>
+                            <div class="relative">
+                                <input type="text" id="categorySearch" placeholder="Search categories..."
+                                       class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                                <div id="categoryResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                            </div>
+                            <div id="selectedCategories" class="mt-2 flex flex-wrap gap-2"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
+                        <!-- Language -->
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
                             <select name="language" required
@@ -91,24 +90,27 @@
                                 <option value="hi">Hindi</option>
                             </select>
                         </div>
+                        <!-- Actors (Multiple Select via Search) -->
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
                             <div class="relative">
                                 <input type="text" id="actorSearch" placeholder="Search actors..."
                                        class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                                </div>
+                                <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
                             </div>
-                            <div id="selectedActors" class="mt-2 flex flex-wrap gap-2">
-                            </div>
-                            <input type="hidden" name="actors[]" id="selectedActorsInput">
+                            <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
                         </div>
                     </div>
+                    <!-- Tags (Multiple Select via Search) -->
                     <div>
                         <label class="block text-sm font-medium text-neutral-300 mb-2">Tags</label>
-                        <input type="text" name="tags" placeholder="Add tags separated by commas"
-                               class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                        <p class="mt-1 text-sm text-neutral-500">Add up to 10 tags to help viewers find your video</p>
+                        <div class="relative">
+                            <input type="text" id="tagSearch" placeholder="Search tags..."
+                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                            <div id="tagResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                        </div>
+                        <div id="selectedTags" class="mt-2 flex flex-wrap gap-2"></div>
+                        <p class="mt-1 text-sm text-neutral-500">Select up to 10 tags to help viewers find your video</p>
                     </div>
                 </div>
             </div>
@@ -126,7 +128,7 @@
                             <i class="fas fa-image text-4xl text-neutral-500"></i>
                         </div>
                     </div>
-                    <input type="file" id="thumbnailInput" accept="image/*" class="hidden">
+                    <input type="file" id="thumbnailInput" name="thumbnail" accept="image/*" class="hidden">
                     <button type="button" onclick="document.getElementById('thumbnailInput').click()"
                             class="w-full px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-neutral-100 rounded-lg transition-colors">
                         Upload Thumbnail
@@ -158,7 +160,7 @@
                             <i class="fa-duotone fa-thin fa-link w-5 text-neutral-400"></i>
                             <div class="ml-3">
                                 <p class="text-neutral-100">Draft</p>
-                                <p class="text-sm text-neutral-400">Only Your Can Watch Your Video</p>
+                                <p class="text-sm text-neutral-400">Only You Can Watch Your Video</p>
                             </div>
                         </div>
                     </label>
@@ -181,30 +183,47 @@
                     input.addEventListener('change', updateVisibilityStyles);
                 });
                 
-                // Initialize styles
                 updateVisibilityStyles();
             </script>
         </div>
     </form>
 </div>
 
+{{-- Pass controller data as JSON --}}
 <script>
-    // Sidebar toggle
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const menuButton = document.getElementById('menuButton');
-        sidebar.classList.toggle('-translate-x-full');
-        menuButton.classList.toggle('rotate-180');
-    }
+    const actorsList = @json($actors->map(function($actor) {
+        return ['id' => $actor->id, 'name' => $actor->firstname . ' ' . $actor->lastname];
+    }));
+    const tagsList = @json($tags->map(function($tag) {
+        return ['id' => $tag->id, 'name' => $tag->name];
+    }));
+    const categoriesList = @json($categories->map(function($category) {
+        return ['id' => $category->id, 'name' => $category->name];
+    }));
+    const channelsList = @json($channels->map(function($channel) {
+        return ['id' => $channel->id, 'name' => $channel->channel_name];
+    }));
+</script>
+
+<script>
+    // Hide dropdowns when clicking outside the search fields
+    document.addEventListener('click', function(e) {
+        ['actorResults', 'tagResults', 'categoryResults', 'channelResults'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el && !el.contains(e.target) && 
+               !document.getElementById(id.replace('Results','Search')).contains(e.target)) {
+                el.classList.add('hidden');
+            }
+        });
+    });
 
     // Video link handling
-    const videoLinkInput = document.querySelector('input[name="videoLink"]');
+    const videoLinkInput = document.querySelector('input[name="video_link"]');
     const videoPreview = document.getElementById('videoPreview');
     const videoPlayer = videoPreview.querySelector('video');
-
     videoLinkInput.addEventListener('change', (e) => {
         const url = e.target.value.trim();
-        if (url) {
+        if(url) {
             videoPlayer.src = url;
             videoPreview.classList.remove('hidden');
         } else {
@@ -216,10 +235,9 @@
     const thumbnailInput = document.getElementById('thumbnailInput');
     const thumbnailImage = document.getElementById('thumbnailImage');
     const thumbnailPlaceholder = document.getElementById('thumbnailPlaceholder');
-
     thumbnailInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if(file) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 thumbnailImage.src = e.target.result;
@@ -230,37 +248,16 @@
         }
     });
 
-    // Actor search functionality
+    // ======== Actors Multiple-Select ==========
+    let selectedActorsList = [];
     const actorSearch = document.getElementById('actorSearch');
     const actorResults = document.getElementById('actorResults');
     const selectedActors = document.getElementById('selectedActors');
-    const selectedActorsInput = document.getElementById('selectedActorsInput');
-    
-    // Sample actor data - in real app, this would come from an API
-    const actorsList = [
-        { id: 1, name: "John Smith", role: "Actor" },
-        { id: 2, name: "Jane Doe", role: "Director" },
-        { id: 3, name: "Mike Johnson", role: "Producer" },
-        { id: 4, name: "Sarah Wilson", role: "Actor" },
-        { id: 5, name: "David Brown", role: "Actor" },
-        { id: 6, name: "Emma Davis", role: "Director" },
-        { id: 7, name: "Chris Evans", role: "Actor" },
-        { id: 8, name: "Anna White", role: "Producer" }
-    ];
-    
-    let selectedActorsList = [];
 
     actorSearch.addEventListener('focus', () => {
         filterActors(actorSearch.value);
         actorResults.classList.remove('hidden');
     });
-
-    document.addEventListener('click', (e) => {
-        if (!actorSearch.contains(e.target) && !actorResults.contains(e.target)) {
-            actorResults.classList.add('hidden');
-        }
-    });
-
     actorSearch.addEventListener('input', (e) => {
         filterActors(e.target.value);
         actorResults.classList.remove('hidden');
@@ -268,41 +265,22 @@
 
     function filterActors(searchTerm) {
         let filtered = actorsList.filter(actor => {
-            // Filter out already selected actors and match search term
-            return !selectedActorsList.includes(actor.name) &&
-                   (actor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    actor.role.toLowerCase().includes(searchTerm.toLowerCase()));
+            return !selectedActorsList.some(a => a.id === actor.id) &&
+                   actor.name.toLowerCase().includes(searchTerm.toLowerCase());
         });
-
-        // If not searching, only show first 5 results
-        if (!searchTerm) {
-            filtered = filtered.slice(0, 5);
-        }
-
-        // Update the results div
         actorResults.innerHTML = filtered.length ? filtered.map(actor => `
             <div class="p-2 hover:bg-neutral-600 cursor-pointer flex items-center justify-between">
                 <span>${actor.name}</span>
-                <span class="text-sm text-neutral-400">${actor.role}</span>
             </div>
         `).join('') : '<div class="p-2 text-neutral-400">No results found</div>';
 
-        // Add a message showing total results if there are more
-        if (!searchTerm && actorsList.length > 5) {
-            actorResults.innerHTML += `
-                <div class="p-2 text-sm text-neutral-400 border-t border-neutral-600">
-                    Type to search more actors...
-                </div>
-            `;
-        }
-
-        // Attach click handlers to new results
         actorResults.querySelectorAll('div').forEach(option => {
-            if (!option.classList.contains('text-neutral-400')) { // Skip the info messages
+            if(!option.classList.contains('text-neutral-400')){
                 option.addEventListener('click', () => {
                     const actorName = option.querySelector('span').textContent;
-                    if (!selectedActorsList.includes(actorName)) {
-                        selectedActorsList.push(actorName);
+                    const actor = actorsList.find(a => a.name === actorName);
+                    if(actor && !selectedActorsList.some(a => a.id === actor.id)) {
+                        selectedActorsList.push(actor);
                         updateSelectedActors();
                     }
                     actorSearch.value = '';
@@ -316,26 +294,215 @@
     function updateSelectedActors() {
         selectedActors.innerHTML = selectedActorsList.map(actor => `
             <div class="flex items-center gap-1 bg-neutral-600 px-2 py-1 rounded-lg">
-                <span class="text-sm text-neutral-100">${actor}</span>
-                <button type="button" onclick="removeActor('${actor}')" class="text-neutral-400 hover:text-red-400">
+                <span class="text-sm text-neutral-100">${actor.name}</span>
+                <button type="button" onclick="removeActor(${actor.id})" class="text-neutral-400 hover:text-red-400">
                     <i class="fas fa-times"></i>
                 </button>
+                <input type="hidden" name="actor_id[]" value="${actor.id}">
             </div>
         `).join('');
-        selectedActorsInput.value = JSON.stringify(selectedActorsList);
     }
 
-    function removeActor(actor) {
-        selectedActorsList = selectedActorsList.filter(a => a !== actor);
+    function removeActor(id) {
+        selectedActorsList = selectedActorsList.filter(actor => actor.id !== id);
         updateSelectedActors();
-        filterActors(actorSearch.value); // Refresh the results list
+        filterActors(actorSearch.value);
     }
 
-    // Form submission
+    // ======== Tags Multiple-Select ==========
+    let selectedTagsList = [];
+    const tagSearch = document.getElementById('tagSearch');
+    const tagResults = document.getElementById('tagResults');
+    const selectedTags = document.getElementById('selectedTags');
+
+    tagSearch.addEventListener('focus', () => {
+        filterTags(tagSearch.value);
+        tagResults.classList.remove('hidden');
+    });
+
+    tagSearch.addEventListener('input', (e) => {
+        filterTags(e.target.value);
+        tagResults.classList.remove('hidden');
+    });
+
+    function filterTags(searchTerm) {
+        let filtered = tagsList.filter(tag => 
+            !selectedTagsList.some(t => t.name.toLowerCase() === tag.name.toLowerCase()) &&
+            tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        // Add option to create new tag if it doesn't exist
+        if (searchTerm && !filtered.some(tag => tag.name.toLowerCase() === searchTerm.toLowerCase())) {
+            filtered.push({ id: 'new', name: searchTerm });
+        }
+
+        tagResults.innerHTML = filtered.length ? filtered.map(tag => `
+            <div class="p-2 hover:bg-neutral-600 cursor-pointer">
+                ${tag.id === 'new' ? `Create "${tag.name}"` : tag.name}
+            </div>
+        `).join('') : '<div class="p-2 text-neutral-400">No results found</div>';
+
+        tagResults.querySelectorAll('div').forEach(option => {
+            if(!option.classList.contains('text-neutral-400')){
+                option.addEventListener('click', () => {
+                    const tagName = option.textContent.trim().replace('Create "', '').replace('"', '');
+                    if (!selectedTagsList.some(t => t.name.toLowerCase() === tagName.toLowerCase())) {
+                        selectedTagsList.push({ id: 'new', name: tagName });
+                        updateSelectedTags();
+                    }
+                    tagSearch.value = '';
+                    filterTags('');
+                    tagResults.classList.add('hidden');
+                });
+            }
+        });
+    }
+
+    function updateSelectedTags() {
+        selectedTags.innerHTML = selectedTagsList.map(tag => `
+            <div class="flex items-center gap-1 bg-neutral-600 px-2 py-1 rounded-lg">
+                <span class="text-sm text-neutral-100">${tag.name}</span>
+                <button type="button" onclick="removeTag('${tag.name}')" class="text-neutral-400 hover:text-red-400">
+                    <i class="fas fa-times"></i>
+                </button>
+                <input type="hidden" name="tags[]" value="${tag.name}">
+            </div>
+        `).join('');
+    }
+
+    function removeTag(name) {
+        selectedTagsList = selectedTagsList.filter(tag => tag.name !== name);
+        updateSelectedTags();
+        filterTags(tagSearch.value);
+    }
+
+    // ======== Categories Multiple-Select ==========
+    let selectedCategoriesList = [];
+    const categorySearch = document.getElementById('categorySearch');
+    const categoryResults = document.getElementById('categoryResults');
+    const selectedCategories = document.getElementById('selectedCategories');
+
+    categorySearch.addEventListener('focus', () => {
+        filterCategories(categorySearch.value);
+        categoryResults.classList.remove('hidden');
+    });
+    categorySearch.addEventListener('input', (e) => {
+        filterCategories(e.target.value);
+        categoryResults.classList.remove('hidden');
+    });
+
+    function filterCategories(searchTerm) {
+        let filtered = categoriesList.filter(cat => {
+            return !selectedCategoriesList.some(c => c.id === cat.id) &&
+                   cat.name.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+        categoryResults.innerHTML = filtered.length ? filtered.map(cat => `
+            <div class="p-2 hover:bg-neutral-600 cursor-pointer">
+                ${cat.name}
+            </div>
+        `).join('') : '<div class="p-2 text-neutral-400">No results found</div>';
+
+        categoryResults.querySelectorAll('div').forEach(option => {
+            if(!option.classList.contains('text-neutral-400')){
+                option.addEventListener('click', () => {
+                    const catName = option.textContent.trim();
+                    const cat = categoriesList.find(c => c.name === catName);
+                    if(cat && !selectedCategoriesList.some(c => c.id === cat.id)) {
+                        selectedCategoriesList.push(cat);
+                        updateSelectedCategories();
+                    }
+                    categorySearch.value = '';
+                    filterCategories('');
+                    categoryResults.classList.add('hidden');
+                });
+            }
+        });
+    }
+
+    function updateSelectedCategories() {
+        selectedCategories.innerHTML = selectedCategoriesList.map(cat => `
+            <div class="flex items-center gap-1 bg-neutral-600 px-2 py-1 rounded-lg">
+                <span class="text-sm text-neutral-100">${cat.name}</span>
+                <button type="button" onclick="removeCategory(${cat.id})" class="text-neutral-400 hover:text-red-400">
+                    <i class="fas fa-times"></i>
+                </button>
+                <input type="hidden" name="category_id[]" value="${cat.id}">
+            </div>
+        `).join('');
+    }
+
+    function removeCategory(id) {
+        selectedCategoriesList = selectedCategoriesList.filter(cat => cat.id !== id);
+        updateSelectedCategories();
+        filterCategories(categorySearch.value);
+    }
+    
+    // ======== Channels Multiple-Select ==========
+    let selectedChannelsList = [];
+    const channelSearch = document.getElementById('channelSearch');
+    const channelResults = document.getElementById('channelResults');
+    const selectedChannels = document.getElementById('selectedChannels');
+
+    channelSearch.addEventListener('focus', () => {
+        filterChannels(channelSearch.value);
+        channelResults.classList.remove('hidden');
+    });
+
+    channelSearch.addEventListener('input', (e) => {
+        filterChannels(e.target.value);
+        channelResults.classList.remove('hidden');
+    });
+
+    function filterChannels(searchTerm) {
+        let filtered = channelsList.filter(channel => {
+            return !selectedChannelsList.some(c => c.id === channel.id) &&
+                   channel.name.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+        channelResults.innerHTML = filtered.length ? filtered.map(channel => `
+            <div class="p-2 hover:bg-neutral-600 cursor-pointer">
+                ${channel.name}
+            </div>
+        `).join('') : '<div class="p-2 text-neutral-400">No results found</div>';
+
+        channelResults.querySelectorAll('div').forEach(option => {
+            if(!option.classList.contains('text-neutral-400')){
+                option.addEventListener('click', () => {
+                    const channelName = option.textContent.trim();
+                    const channel = channelsList.find(c => c.name === channelName);
+                    if(channel && !selectedChannelsList.some(c => c.id === channel.id)) {
+                        selectedChannelsList.push(channel);
+                        updateSelectedChannels();
+                    }
+                    channelSearch.value = '';
+                    filterChannels('');
+                    channelResults.classList.add('hidden');
+                });
+            }
+        });
+    }
+
+    function updateSelectedChannels() {
+        selectedChannels.innerHTML = selectedChannelsList.map(channel => `
+            <div class="flex items-center gap-1 bg-neutral-600 px-2 py-1 rounded-lg">
+                <span class="text-sm text-neutral-100">${channel.name}</span>
+                <button type="button" onclick="removeChannel(${channel.id})" class="text-neutral-400 hover:text-red-400">
+                    <i class="fas fa-times"></i>
+                </button>
+                <input type="hidden" name="channel_id[]" value="${channel.id}">
+            </div>
+        `).join('');
+    }
+
+    function removeChannel(id) {
+        selectedChannelsList = selectedChannelsList.filter(channel => channel.id !== id);
+        updateSelectedChannels();
+        filterChannels(channelSearch.value);
+    }
+
+    // Form submission (for demo purposes)
     const videoForm = document.getElementById('videoForm');
     videoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
+        // e.preventDefault(); // Remove this line in production
         console.log('Form submitted');
     });
 </script>

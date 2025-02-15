@@ -11,27 +11,26 @@ class Video extends Model
 
     protected $fillable = [
         'title', 'video_link', 'duration', 'description',
-        'thumbnail', 'channel_id', 'category_id', 'language',
-        'actor_id', 'visibility'
+        'thumbnail', 'language', 'visibility'
     ];
 
     protected $casts = [
         'visibility' => VisibilityStatus::class
     ];
 
-    public function channel()
+    public function channels()
     {
-        return $this->belongsTo(Channel::class);
+        return $this->belongsToMany(Channel::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
-    public function actor()
+    public function actors()
     {
-        return $this->belongsTo(Actor::class);
+        return $this->belongsToMany(Actor::class);
     }
 
     public function tags()
