@@ -6,7 +6,7 @@
     <header class="bg-neutral-800 shadow-sm rounded-xl p-4 mb-8 flex justify-between items-center">
         <div class="flex items-center">
             <button class="md:hidden mr-4" onclick="toggleSidebar()">
-                <i class="fas fa-bars text-neutral-300"></i>
+                <i class="fa-duotone fa-thin fa-bars text-neutral-300"></i>
             </button>
             <div>
                 <h2 class="text-2xl font-bold text-neutral-100">Category Management</h2>
@@ -15,13 +15,13 @@
         </div>
         <div class="flex items-center space-x-4">
             <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
-                <i class="fas fa-plus mr-2"></i>
+                <i class="fa-duotone fa-thin fa-plus mr-2"></i>
                 Add Category
             </button>
             <div class="relative">
                 <input type="text" placeholder="Search categories..." 
                        class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
-                <i class="fas fa-search absolute right-3 top-3.5 text-neutral-400"></i>
+                <i class="fa-duotone fa-thin fa-search absolute right-3 top-3.5 text-neutral-400"></i>
             </div>
         </div>
     </header>
@@ -35,12 +35,12 @@
                     <h3 class="text-2xl font-bold text-neutral-100">24</h3>
                 </div>
                 <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-folder text-purple-500 text-xl"></i>
+                    <i class="fa-duotone fa-thin fa-folder text-purple-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-400 flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 4%
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 4%
                 </span>
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
@@ -53,12 +53,12 @@
                     <h3 class="text-2xl font-bold text-neutral-100">20</h3>
                 </div>
                 <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                    <i class="fa-duotone fa-thin fa-check-circle text-green-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-400 flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 2%
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 2%
                 </span>
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
@@ -71,12 +71,12 @@
                     <h3 class="text-2xl font-bold text-neutral-100">1,234</h3>
                 </div>
                 <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-video text-blue-500 text-xl"></i>
+                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-400 flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 15%
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 15%
                 </span>
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
@@ -89,12 +89,12 @@
                     <h3 class="text-2xl font-bold text-neutral-100">51</h3>
                 </div>
                 <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-chart-line text-yellow-500 text-xl"></i>
+                    <i class="fa-duotone fa-thin fa-chart-line text-yellow-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-400 flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i> 8%
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 8%
                 </span>
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
@@ -220,13 +220,13 @@
             <p class="text-neutral-400 text-sm">Showing 1-9 of 24 categories</p>
             <div class="flex space-x-2">
                 <button class="px-3 py-1 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600">
-                    <i class="fas fa-chevron-left"></i>
+                    <i class="fa-duotone fa-thin fa-chevron-left"></i>
                 </button>
                 <button class="px-3 py-1 bg-red-500 text-white rounded-lg">1</button>
                 <button class="px-3 py-1 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600">2</button>
                 <button class="px-3 py-1 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600">3</button>
                 <button class="px-3 py-1 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600">
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="fa-duotone fa-thin fa-chevron-right"></i>
                 </button>
             </div>
         </div>

@@ -21,11 +21,11 @@
                         <div class="relative w-32 h-32">
                             <div id="avatarPreview" class="w-full h-full bg-neutral-700 rounded-full overflow-hidden flex items-center justify-center">
                                 <img id="avatarImage" class="w-full h-full object-cover hidden">
-                                <i id="avatarPlaceholder" class="fas fa-user text-4xl text-neutral-500"></i>
+                                <i id="avatarPlaceholder" class="fa-duotone fa-thin fa-user text-4xl text-neutral-500"></i>
                             </div>
                             <button type="button" onclick="document.getElementById('avatarInput').click()" 
                                     class="absolute bottom-0 right-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
-                                <i class="fas fa-camera text-white"></i>
+                                <i class="fa-duotone fa-thin fa-camera text-white"></i>
                             </button>
                             <input type="file" id="avatarInput" accept="image/*" class="hidden">
                         </div>
