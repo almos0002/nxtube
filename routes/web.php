@@ -30,3 +30,6 @@ Route::get('/profile', function () {
 Route::get('/add-video', function () {
     return view('crud.video.add');
 })->name('add-video');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
