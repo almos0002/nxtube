@@ -42,6 +42,16 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-neutral-300 mb-2">Handle</label>
+                                @error('handle')
+                                    <div id="errorMessage" class="mt-2 text-sm text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                    <script>
+                                        setTimeout(() => {
+                                            document.getElementById('errorMessage').style.display = 'none';
+                                        }, 5000);
+                                    </script>
+                                @enderror
                                 <div class="relative">
                                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">@</span>
                                     <input type="text" name="handle" required
