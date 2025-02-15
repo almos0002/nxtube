@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,9 +31,10 @@ Route::get('/profile', function () {
 Route::get('/add-video', function () {
     return view('crud.video.add');
 })->name('add-video');
-Route::get('/add-category', function () {
-    return view('crud.category.add');
-})->name('add-category');
+
+Route::get('/add-category', [CategoryController::class, 'create'])->name('add-category');
+Route::post('/store-category', [CategoryController::class, 'store'])->name('store-category');
+
 Route::get('/add-actor', function () {
     return view('crud.actor.add');
 })->name('add-actor');

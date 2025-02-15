@@ -12,7 +12,8 @@
         </button>
     </header>
 
-    <form id="categoryForm" class="w-full">
+    <form id="categoryForm" class="w-full" action="{{ route('store-category') }}" method="POST">
+        @csrf
         <!-- Basic Information -->
         <div class="bg-neutral-800 rounded-xl p-6 mb-6">
             <h3 class="text-lg font-semibold text-neutral-100 mb-4">Basic Information</h3>
@@ -40,13 +41,5 @@
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('-translate-x-full');
     }
-
-    // Form submission
-    const categoryForm = document.getElementById('categoryForm');
-    categoryForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        alert('Category created successfully!');
-    });
 </script>
 @endsection
