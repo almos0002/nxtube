@@ -110,6 +110,7 @@
                             <div id="tagResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
                         </div>
                         <div id="selectedTags" class="mt-2 flex flex-wrap gap-2"></div>
+                        <div id="tagInputsContainer"></div>
                         <p class="mt-1 text-sm text-neutral-500">Select up to 10 tags to help viewers find your video</p>
                     </div>
                 </div>
@@ -349,6 +350,7 @@
                     if (!selectedTagsList.some(t => t.name.toLowerCase() === tagName.toLowerCase())) {
                         selectedTagsList.push({ id: 'new', name: tagName });
                         updateSelectedTags();
+                        updateTagInputs();
                     }
                     tagSearch.value = '';
                     filterTags('');
@@ -365,7 +367,6 @@
                 <button type="button" onclick="removeTag('${tag.name}')" class="text-neutral-400 hover:text-red-400">
                     <i class="fas fa-times"></i>
                 </button>
-                <input type="hidden" name="tags[]" value="${tag.name}">
             </div>
         `).join('');
     }
@@ -373,7 +374,19 @@
     function removeTag(name) {
         selectedTagsList = selectedTagsList.filter(tag => tag.name !== name);
         updateSelectedTags();
-        filterTags(tagSearch.value);
+        updateTagInputs();
+    }
+
+    function updateTagInputs() {
+        const container = document.getElementById('tagInputsContainer');
+        container.innerHTML = '';
+        selectedTagsList.forEach(tag => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'tags[]';
+            input.value = tag.name;
+            container.appendChild(input);
+        });
     }
 
     // ======== Categories Multiple-Select ==========

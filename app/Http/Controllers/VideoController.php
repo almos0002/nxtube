@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Video;
+use Illuminate\Validation\Rules\Enum;
 use App\VisibilityStatus;
 use App\Models\Tag;
 use App\Models\Category;
@@ -29,6 +30,7 @@ class VideoController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'video_link' => 'required|url',
@@ -42,7 +44,7 @@ class VideoController extends Controller
             'language' => 'required|string|max:50',
             'actor_id' => 'required|array',
             'actor_id.*' => 'exists:actors,id',
-            'visibility' => 'required|in:' . implode(',', VisibilityStatus::values()),
+            'visibility' => ['required', new Enum(VisibilityStatus::class)],
             'tags' => 'required|array',
         ]);
 
