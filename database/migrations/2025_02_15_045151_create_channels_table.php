@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('channel_name');
             $table->string('handle')->unique();
             $table->text('description')->nullable();
-            $table->string('banner')->nullable();
+            $table->string('banner_image')->nullable();
             $table->string('youtube')->nullable();
             $table->string('twitter')->nullable();
             $table->string('instagram')->nullable();

@@ -11,7 +11,7 @@ class Channel extends Model
 
     protected $fillable = [
         'profile_image', 'channel_name', 'handle', 'description',
-        'banner', 'youtube', 'twitter', 'instagram', 'visibility'
+        'banner_image', 'youtube', 'twitter', 'instagram', 'visibility'
     ];
 
     protected $casts = [
