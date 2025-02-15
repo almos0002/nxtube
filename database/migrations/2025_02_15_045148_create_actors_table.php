@@ -22,6 +22,8 @@ return new class extends Migration
             $table->enum('type', ['actor', 'actress']);
             $table->date('dob');
             $table->string('language');
+            $table->string('country');
+            $table->string('specialist');
             $table->string('instagram')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();

@@ -11,8 +11,8 @@ class Actor extends Model
 
     protected $fillable = [
         'profile_image', 'firstname', 'lastname', 'stagename',
-        'biography', 'banner_image', 'type', 'dob', 'language',
-        'instagram', 'facebook', 'twitter', 'website', 'visibility'
+        'biography', 'banner_image', 'type', 'dob', 'language', 'country',
+        'specialist', 'instagram', 'facebook', 'twitter', 'website', 'visibility'
     ];
 
     protected $casts = [
