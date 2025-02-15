@@ -114,10 +114,11 @@
                         <i class="fa-duotone fa-thin fa-cog text-lg w-8"></i>
                         <span>Settings</span>
                     </a>
-                    <div class="nav-item px-4 py-3 flex items-center cursor-pointer text-red-400">
+                    <a href="{{ route('logout') }}" 
+                        class="nav-item px-4 py-3 flex items-center cursor-pointer text-red-400">
                         <i class="fa-duotone fa-thin fa-sign-out-alt text-lg w-8"></i>
                         <span>Logout</span>
-                    </div>
+                    </a>
                 </nav>
             </div>
         </div>
