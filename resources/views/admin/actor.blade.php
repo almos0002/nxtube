@@ -14,10 +14,10 @@
             </div>
         </div>
         <div class="flex items-center space-x-4">
-            <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
+            <a href="{{ route('add-actor') }}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
                 <i class="fa-duotone fa-thin fa-plus mr-2"></i>
                 Add Actor
-            </button>
+            </a>
             <div class="relative">
                 <input type="text" placeholder="Search actors..." 
                        class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">

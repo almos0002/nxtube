@@ -30,6 +30,15 @@ Route::get('/profile', function () {
 Route::get('/add-video', function () {
     return view('crud.video.add');
 })->name('add-video');
+Route::get('/add-category', function () {
+    return view('crud.category.add');
+})->name('add-category');
+Route::get('/add-actor', function () {
+    return view('crud.actor.add');
+})->name('add-actor');
+Route::get('/add-channel', function () {
+    return view('crud.channel.add');
+})->name('add-channel');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
