@@ -20,7 +20,7 @@ class ActorController extends Controller
             'profile_image' => 'required|image|max:2048',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'stagename' => 'required|string|max:255',
+            'stagename' => 'required|unique:actors|max:255',
             'biography' => 'required|string|max:1000',
             'banner_image' => 'nullable|image|max:2048',
             'type' => ['required', new Enum(ActorType::class)],
@@ -35,6 +35,11 @@ class ActorController extends Controller
             'visibility' => ['required', new Enum(VisibilityStatus::class)],
         ]);
     
+        // If Stagename is Duplicate
+        if (Actor::where('stagename', $validatedData['stagename'])->exists()) {
+            return redirect()->back()->withErrors(['stagename' => 'This stagename is already taken.'])->withInput();
+        }
+        
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $profilePath = $request->file('profile_image')->store('profiles', 'public');

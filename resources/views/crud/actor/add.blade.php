@@ -51,6 +51,16 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-neutral-300 mb-2">Stage Name</label>
+                                @error('stagename')
+                                    <div id="errorMessage" class="mt-2 text-sm text-red-500">
+                                        {{ $message }}
+                                    </div>
+                                    <script>
+                                        setTimeout(() => {
+                                            document.getElementById('errorMessage').style.display = 'none';
+                                        }, 5000);
+                                    </script>
+                                @enderror
                                 <input type="text" name="stagename"
                                        class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                        placeholder="Stage name (if different)">

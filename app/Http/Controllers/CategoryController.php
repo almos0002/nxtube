@@ -19,6 +19,11 @@ class CategoryController extends Controller
             'description' => 'required',
         ]);
 
+        // If Name is Duplicate
+        if (Category::where('name', $validatedData['name'])->exists()) {
+            return redirect()->back()->withErrors(['name' => 'This name is already taken.'])->withInput();
+        }
+
         $category = Category::create($validatedData);
 
         return redirect()->route('categories')->with('success', 'Category created successfully.');
