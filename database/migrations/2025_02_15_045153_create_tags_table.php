@@ -18,7 +18,7 @@ return new class extends Migration
         });
 
         // Pivot table for video-tags relationship
-        Schema::create('video_tag', function (Blueprint $table) {
+        Schema::create('tag_video', function (Blueprint $table) {
             $table->foreignId('video_id')->constrained();
             $table->foreignId('tag_id')->constrained();
             $table->primary(['video_id', 'tag_id']);
@@ -30,6 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('tag_video');
         Schema::dropIfExists('tags');
     }
 };
