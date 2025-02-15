@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('banner_image')->nullable();
             $table->enum('type', ['actor', 'actress']);
             $table->date('dob');
-            $table->string('language');
-            $table->string('country');
-            $table->string('specialist');
+            $table->string('language')->nullable();
+            $table->string('country')->nullable();
+            $table->string('specialties')->nullable();
             $table->string('instagram')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();

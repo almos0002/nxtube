@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ActorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,9 +36,11 @@ Route::get('/add-video', function () {
 Route::get('/add-category', [CategoryController::class, 'create'])->name('add-category');
 Route::post('/store-category', [CategoryController::class, 'store'])->name('store-category');
 
-Route::get('/add-actor', function () {
-    return view('crud.actor.add');
-})->name('add-actor');
+Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
+Route::post('/store-actor', [ActorController::class, 'store'])->name('store-actor');
+
+
+
 Route::get('/add-channel', function () {
     return view('crud.channel.add');
 })->name('add-channel');

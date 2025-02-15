@@ -104,7 +104,20 @@
     <!-- Actor List -->
     <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-semibold text-neutral-100">Actor List</h3>
+            <div class="flex gap-3 items-center">
+                <h3 class="text-lg font-semibold text-neutral-100">Actor List</h3>
+                @if (session('success'))
+                <div id="successMessage" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2 text-sm">
+                    <i class="fa-duotone fa-check-circle"></i>
+                    <p>{{ session('success') }}</p>
+                </div>
+                <script>
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                </script>
+                @endif
+            </div>
             <div class="flex space-x-4">
                 <select class="px-3 py-2 bg-neutral-700 border-neutral-600 rounded-lg text-sm text-neutral-100">
                     <option>All Actors</option>

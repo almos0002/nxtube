@@ -12,7 +12,8 @@
         </button>
     </header>
 
-    <form id="actorForm" class="w-full space-y-6">
+    <form id="actorForm" class="w-full space-y-6" action="{{ route('store-actor') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <!-- Actor Information and Banner Upload -->
         <div class="grid grid-cols-2 gap-6">
             <!-- Actor Information -->
@@ -30,27 +31,27 @@
                                         class="absolute bottom-0 right-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
                                     <i class="fas fa-camera text-white"></i>
                                 </button>
-                                <input type="file" id="profileInput" accept="image/*" class="hidden">
+                                <input type="file" id="profileInput" name="profile_image" accept="image/*" class="hidden">
                             </div>
                         </div>
                         <div class="flex-grow space-y-4">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-neutral-300 mb-2">First Name</label>
-                                    <input type="text" name="firstName" required
+                                    <input type="text" name="firstname" required
                                            class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                            placeholder="First name">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-neutral-300 mb-2">Last Name</label>
-                                    <input type="text" name="lastName" required
+                                    <input type="text" name="lastname" required
                                            class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                            placeholder="Last name">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-neutral-300 mb-2">Stage Name</label>
-                                <input type="text" name="stageName"
+                                <input type="text" name="stagename"
                                        class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                        placeholder="Stage name (if different)">
                             </div>
@@ -82,7 +83,7 @@
                             <i class="fas fa-upload mr-2"></i>
                             <span>Upload Banner</span>
                         </button>
-                        <input type="file" id="bannerInput" accept="image/*" class="hidden">
+                        <input type="file" id="bannerInput" name="banner_image" accept="image/*" class="hidden">
                     </div>
                 </div>
             </div>
@@ -97,7 +98,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Type</label>
-                            <select name="actorType" required
+                            <select name="type" required
                                     class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500">
                                 <option value="">Select Type</option>
                                 <option value="actor">Actor</option>
@@ -106,14 +107,14 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Date of Birth</label>
-                            <input type="date" name="dateOfBirth"
+                            <input type="date" name="dob"
                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Languages</label>
-                            <input type="text" name="languages"
+                            <input type="text" name="language"
                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                    placeholder="e.g., English, Spanish (comma separated)">
                         </div>
@@ -266,13 +267,5 @@
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('-translate-x-full');
     }
-
-    // Form submission
-    const actorForm = document.getElementById('actorForm');
-    actorForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        alert('Actor profile created successfully!');
-    });
 </script>
 @endsection
