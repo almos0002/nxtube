@@ -114,8 +114,12 @@
                         <i class="fa-duotone fa-thin fa-cog text-lg w-8"></i>
                         <span>Settings</span>
                     </a>
-                    <a href="{{ route('logout') }}" 
-                        class="nav-item px-4 py-3 flex items-center cursor-pointer text-red-400">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
+                    
+                    <a href="#" class="nav-item px-4 py-3 flex items-center cursor-pointer text-red-400"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fa-duotone fa-thin fa-sign-out-alt text-lg w-8"></i>
                         <span>Logout</span>
                     </a>
