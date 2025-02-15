@@ -110,17 +110,25 @@
                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500">
                         </div>
                     </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Languages</label>
+                            <input type="text" name="languages"
+                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
+                                   placeholder="e.g., English, Spanish (comma separated)">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Country</label>
+                            <input type="text" name="country"
+                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
+                                   placeholder="Enter country">
+                        </div>
+                    </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-300 mb-2">Specialties</label>
                         <input type="text" name="specialties"
                                class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
                                placeholder="e.g., Action, Comedy, Drama (comma separated)">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-2">Languages</label>
-                        <input type="text" name="languages"
-                               class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500"
-                               placeholder="e.g., English, Spanish (comma separated)">
                     </div>
                 </div>
             </div>
