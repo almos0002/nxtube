@@ -27,3 +27,6 @@ Route::get('/settings', function () {
 Route::get('/profile', function () {
     return view('admin.profile');
 })->name('profile');
+Route::get('/add-video', function () {
+    return view('crud.video.add');
+})->name('add-video');

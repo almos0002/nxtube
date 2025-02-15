@@ -14,10 +14,10 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
+                <a href="{{ route('add-video') }}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
                     <i class="fa-duotone fa-thin fa-plus mr-2"></i>
-                    Upload Video
-                </button>
+                    Add Video
+                </a>
                 <div class="relative">
                     <input type="text" placeholder="Search videos..." 
                            class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
