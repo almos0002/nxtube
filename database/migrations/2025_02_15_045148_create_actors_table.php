@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('actors', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_image')->nullable();
+            $table->string('firstname');
+            $table->string('lastname');
+            $table->string('stagename')->nullable();
+            $table->text('biography')->nullable();
+            $table->string('banner_image')->nullable();
+            $table->enum('type', ['actor', 'actress']);
+            $table->date('dob');
+            $table->string('language');
+            $table->string('instagram')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('website')->nullable();
+            $table->enum('visibility', ['public', 'draft']);
             $table->timestamps();
         });
     }

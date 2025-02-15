@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('video_link');
+            $table->string('duration');
+            $table->text('description')->nullable();
+            $table->string('thumbnail');
+            $table->foreignId('channel_id')->constrained();
+            $table->foreignId('category_id')->constrained();
+            $table->string('language');
+            $table->foreignId('actor_id')->constrained();
+            $table->enum('visibility', ['public', 'draft']);
             $table->timestamps();
         });
     }

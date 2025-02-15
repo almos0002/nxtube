@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_image')->nullable();
+            $table->string('channel_name');
+            $table->string('handle')->unique();
+            $table->text('description')->nullable();
+            $table->string('banner')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
+            $table->enum('visibility', ['public', 'draft']);
             $table->timestamps();
         });
     }

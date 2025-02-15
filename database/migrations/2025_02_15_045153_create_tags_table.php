@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
+        });
+
+        // Pivot table for video-tags relationship
+        Schema::create('video_tag', function (Blueprint $table) {
+            $table->foreignId('video_id')->constrained();
+            $table->foreignId('tag_id')->constrained();
+            $table->primary(['video_id', 'tag_id']);
         });
     }
 
