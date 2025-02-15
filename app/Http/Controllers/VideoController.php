@@ -55,15 +55,7 @@ class VideoController extends Controller
         }
 
         // Create video with basic data
-        $video = Video::create([
-            'title' => $validatedData['title'],
-            'video_link' => $validatedData['video_link'],
-            'duration' => $validatedData['duration'],
-            'description' => $validatedData['description'],
-            'thumbnail' => $validatedData['thumbnail'],
-            'language' => $validatedData['language'],
-            'visibility' => $validatedData['visibility'],
-        ]);
+        $video = Video::create($validatedData);
 
         // Handle tags - create if they don't exist
         $tagIds = [];
