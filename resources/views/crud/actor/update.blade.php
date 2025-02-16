@@ -161,8 +161,8 @@
             <div class="bg-neutral-800 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility Settings</h3>
                 <div class="space-y-3">
-                    <input type="radio" name="visibility" value="public" {{ $actor->visibility === 'public' ? 'checked' : '' }} class="hidden" id="visibilityPublic">
-                    <input type="radio" name="visibility" value="private" {{ $actor->visibility === 'private' ? 'checked' : '' }} class="hidden" id="visibilityPrivate">
+                    <input type="radio" name="visibility" value="public" {{ $actor->visibility->value === 'public' ? 'checked' : '' }} class="hidden" id="visibilityPublic">
+                    <input type="radio" name="visibility" value="draft" {{ $actor->visibility->value === 'draft' ? 'checked' : '' }} class="hidden" id="visibilityDraft">
                     
                     <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
@@ -174,11 +174,11 @@
                         </div>
                     </label>
                     
-                    <label for="visibilityPrivate" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                    <label for="visibilityDraft" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
                             <i class="fas fa-lock w-5 text-neutral-400"></i>
                             <div class="ml-3">
-                                <p class="text-neutral-100">Private</p>
+                                <p class="text-neutral-100">Draft</p>
                                 <p class="text-sm text-neutral-400">Only visible to admins</p>
                             </div>
                         </div>
@@ -190,61 +190,59 @@
 </div>
 
 <script>
-    // Handle profile image preview
+    // Handle visibility selection highlighting
+    const visibilityInputs = document.querySelectorAll('input[name="visibility"]');
+    const visibilityLabels = document.querySelectorAll('label[for^="visibility"]');
+    
+    function updateVisibilityStyles() {
+        visibilityLabels.forEach(label => {
+            const input = document.getElementById(label.getAttribute('for'));
+            label.setAttribute('data-checked', input.checked);
+        });
+    }
+    
+    visibilityInputs.forEach(input => {
+        input.addEventListener('change', updateVisibilityStyles);
+    });
+    
+    // Profile image handling
     const profileInput = document.getElementById('profileInput');
     const profileImage = document.getElementById('profileImage');
     const profilePlaceholder = document.getElementById('profilePlaceholder');
-
-    profileInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
+    
+    profileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e) => {
                 profileImage.src = e.target.result;
                 profileImage.classList.remove('hidden');
                 profilePlaceholder.classList.add('hidden');
-            }
-            reader.readAsDataURL(e.target.files[0]);
+            };
+            reader.readAsDataURL(file);
         }
     });
 
-    // Handle banner image preview
+    // Banner image handling
     const bannerInput = document.getElementById('bannerInput');
     const bannerImage = document.getElementById('bannerImage');
     const bannerPlaceholder = document.getElementById('bannerPlaceholder');
-
-    bannerInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
+    
+    bannerInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e) => {
                 bannerImage.src = e.target.result;
                 bannerImage.classList.remove('hidden');
                 bannerPlaceholder.classList.add('hidden');
-            }
-            reader.readAsDataURL(e.target.files[0]);
+            };
+            reader.readAsDataURL(file);
         }
     });
 
-    // Handle visibility selection highlighting
-    document.addEventListener('DOMContentLoaded', function() {
-        const visibilityInputs = document.querySelectorAll('input[name="visibility"]');
-        const updateLabels = () => {
-            visibilityInputs.forEach(input => {
-                const label = input.nextElementSibling;
-                if (input.checked) {
-                    label.dataset.checked = 'true';
-                } else {
-                    delete label.dataset.checked;
-                }
-            });
-        };
-
-        visibilityInputs.forEach(input => {
-            input.addEventListener('change', updateLabels);
-        });
-
-        // Initial state
-        updateLabels();
-    });
+    // Initialize visibility styles
+    updateVisibilityStyles();
 </script>
 
 <script>
