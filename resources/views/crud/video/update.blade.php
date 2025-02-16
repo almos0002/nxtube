@@ -149,23 +149,49 @@
             <div class="bg-neutral-800 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility</h3>
                 <div class="space-y-4">
-                    <label class="flex items-center space-x-3">
-                        <input type="radio" name="visibility" value="public" {{ old('visibility', $video->visibility) == 'public' ? 'checked' : '' }}
-                               class="text-red-500 focus:ring-red-500">
-                        <span class="text-neutral-100">Public</span>
+                    <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                        <input type="radio" id="visibilityPublic" name="visibility" value="public" {{ old('visibility', $video->visibility) == 'public' ? 'checked' : '' }} class="hidden">
+                        <div class="flex items-center">
+                            <i class="fa-duotone fa-thin fa-globe w-5 text-neutral-400"></i>
+                            <div class="ml-3">
+                                <p class="text-neutral-100">Public</p>
+                                <p class="text-sm text-neutral-400">Everyone can watch your video</p>
+                            </div>
+                        </div>
                     </label>
-                    <label class="flex items-center space-x-3">
-                        <input type="radio" name="visibility" value="unlisted" {{ old('visibility', $video->visibility) == 'unlisted' ? 'checked' : '' }}
-                               class="text-red-500 focus:ring-red-500">
-                        <span class="text-neutral-100">Unlisted</span>
-                    </label>
-                    <label class="flex items-center space-x-3">
-                        <input type="radio" name="visibility" value="private" {{ old('visibility', $video->visibility) == 'private' ? 'checked' : '' }}
-                               class="text-red-500 focus:ring-red-500">
-                        <span class="text-neutral-100">Private</span>
+                    
+                    <label for="visibilityUnlisted" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                        <input type="radio" id="visibilityUnlisted" name="visibility" value="unlisted" {{ old('visibility', $video->visibility) == 'unlisted' ? 'checked' : '' }} class="hidden">
+                        <div class="flex items-center">
+                            <i class="fa-duotone fa-thin fa-link w-5 text-neutral-400"></i>
+                            <div class="ml-3">
+                                <p class="text-neutral-100">Draft</p>
+                                <p class="text-sm text-neutral-400">Only You Can Watch Your Video</p>
+                            </div>
+                        </div>
                     </label>
                 </div>
             </div>
+
+            <script>
+                // Handle visibility selection highlighting
+                const visibilityInputs = document.querySelectorAll('input[name="visibility"]');
+                const visibilityLabels = document.querySelectorAll('label[for^="visibility"]');
+                
+                function updateVisibilityStyles() {
+                    visibilityLabels.forEach(label => {
+                        const input = document.getElementById(label.getAttribute('for'));
+                        label.setAttribute('data-checked', input.checked);
+                    });
+                }
+                
+                visibilityInputs.forEach(input => {
+                    input.addEventListener('change', updateVisibilityStyles);
+                });
+                
+                // Initialize visibility styles
+                updateVisibilityStyles();
+            </script>
         </div>
     </form>
 </div>
