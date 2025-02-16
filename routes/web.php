@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     // Category Routes
     Route::get('/add-category', [CategoryController::class, 'create'])->name('add-category');
     Route::post('/store-category', [CategoryController::class, 'store'])->name('store-category');
+    Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('edit-category');
+    Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('update-category');
 
     // Actor Routes
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');

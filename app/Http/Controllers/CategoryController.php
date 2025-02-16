@@ -28,5 +28,24 @@ class CategoryController extends Controller
 
         return redirect()->route('categories')->with('success', 'Category created successfully.');
     }
-}
 
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('crud.category.update', compact('category'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+        
+        $validatedData = $request->validate([
+            'name' => 'required|max:255|unique:categories,name,'.$id,
+            'description' => 'required',
+        ]);
+
+        $category->update($validatedData);
+
+        return redirect()->route('categories')->with('success', 'Category updated successfully.');
+    }
+}
