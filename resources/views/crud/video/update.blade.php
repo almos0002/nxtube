@@ -37,8 +37,8 @@
                         </div>
                     </div>
                     <!-- Video Preview -->
-                    <div id="videoPreview" class="hidden">
-                        <video controls class="w-full rounded-lg bg-neutral-900"></video>
+                    <div id="videoPreview" class="{{ $video->video_link ? '' : 'hidden' }}">
+                        <video controls class="w-full rounded-lg bg-neutral-900" src="{{ $video->video_link }}"></video>
                     </div>
                 </div>
             </div>
