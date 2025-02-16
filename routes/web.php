@@ -6,6 +6,7 @@ use App\Http\Controllers\ActorController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/channels', 'admin.channel')->name('channels');
     Route::view('/settings', 'admin.setting')->name('settings');
     Route::view('/profile', 'admin.profile')->name('profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('update-profile');
 
     // Category Routes
     Route::get('/add-category', [CategoryController::class, 'create'])->name('add-category');
