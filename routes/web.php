@@ -7,6 +7,7 @@ use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,7 +24,12 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/actors', 'admin.actor')->name('actors');
     Route::view('/categories', 'admin.category')->name('categories');
     Route::view('/channels', 'admin.channel')->name('channels');
-    Route::view('/settings', 'admin.setting')->name('settings');
+    
+    // Settings Routes
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/settings/clear-cache', [SettingController::class, 'clearCache'])->name('settings.clear-cache');
+
     Route::view('/profile', 'admin.profile')->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('update-profile');
 
