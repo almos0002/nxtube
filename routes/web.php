@@ -42,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
     // Actor Routes
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
     Route::post('/store-actor', [ActorController::class, 'store'])->name('store-actor');
+    Route::get('/edit-actor/{id}', [ActorController::class, 'edit'])->name('edit-actor');
+    Route::put('/update-actor/{id}', [ActorController::class, 'update'])->name('update-actor');
 
     // Channel Routes
     Route::get('/add-channel', [ChannelController::class, 'create'])->name('add-channel');
