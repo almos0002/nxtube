@@ -72,4 +72,65 @@ class VideoController extends Controller
 
         return redirect()->route('videos')->with('success', 'Video added successfully.');
     }
+
+    public function edit($id)
+    {
+        $video = Video::findOrFail($id);
+        $tags = Tag::all();
+        $categories = Category::all();
+        $actors = Actor::all();
+        $channels = Channel::all();
+
+        return view('crud.video.update', [
+            'video' => $video,
+            'tags' => $tags,
+            'categories' => $categories,
+            'actors' => $actors,
+            'channels' => $channels
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'video_link' => 'required|url',
+            'duration' => ['required', 'regex:/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/'],
+            'language' => 'required|string|max:50',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'channel_id' => 'required|array',
+            'channel_id.*' => 'exists:channels,id',
+            'category_id' => 'required|array',
+            'category_id.*' => 'exists:categories,id',
+            'actor_id' => 'required|array',
+            'actor_id.*' => 'exists:actors,id',
+            'visibility' => ['required', new Enum(VisibilityStatus::class)],
+            'tags' => 'required|array',
+        ]);
+
+        $video = Video::findOrFail($id);
+        
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+            $validated['thumbnail'] = $thumbnailPath;
+        }
+
+        $video->update($validated);
+
+        // Handle tags - create if they don't exist
+        $tagIds = [];
+        foreach ($request->tags as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        
+        // Sync relationships
+        $video->tags()->sync($tagIds);
+        $video->channels()->sync($request->channel_id);
+        $video->categories()->sync($request->category_id);
+        $video->actors()->sync($request->actor_id);
+
+        return redirect()->route('videos')->with('success', 'Video updated successfully.');
+    }
 }

@@ -54,4 +54,6 @@ Route::middleware(['auth'])->group(function () {
     // Video Routes
     Route::get('/add-video', [VideoController::class, 'create'])->name('add-video');
     Route::post('/store-video', [VideoController::class, 'store'])->name('store-video');
+    Route::get('/edit-video/{id}', [VideoController::class, 'edit'])->name('edit-video');
+    Route::put('/update-video/{id}', [VideoController::class, 'update'])->name('update-video');
 });
