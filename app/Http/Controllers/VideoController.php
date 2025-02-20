@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\Category;
 use App\Models\Actor;
 use App\Models\Channel;
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
@@ -132,5 +133,41 @@ class VideoController extends Controller
         $video->actors()->sync($request->actor_id);
 
         return redirect()->route('videos')->with('success', 'Video updated successfully.');
+    }
+
+    public function adminIndex()
+    {
+        // Get video statistics
+        $stats = [
+            'total' => Video::count(),
+            'active' => Video::where('visibility', VisibilityStatus::PUBLIC->value)->count(),
+            'processing' => Video::where('visibility', VisibilityStatus::DRAFT->value)->count(),
+            'failed' => 0  // Since we don't have an UNLISTED status
+        ];
+
+        // Get latest videos with relationships
+        $videos = Video::with(['channels', 'actors', 'categories'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.video', [
+            'stats' => $stats,
+            'videos' => $videos
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $video = Video::findOrFail($id);
+        
+        // Delete the thumbnail file if it exists
+        if ($video->thumbnail) {
+            Storage::disk('public')->delete($video->thumbnail);
+        }
+        
+        // Delete the video and its relationships
+        $video->delete();
+        
+        return redirect()->route('videos')->with('success', 'Video deleted successfully.');
     }
 }
