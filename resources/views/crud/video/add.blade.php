@@ -76,30 +76,25 @@
                             <div id="selectedCategories" class="mt-2 flex flex-wrap gap-2"></div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Language -->
-                        <div>
-                            <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
-                            <select name="language" required
-                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                                <option value="de">German</option>
-                                <option value="it">Italian</option>
-                                <option value="hi">Hindi</option>
-                            </select>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
+                        <select name="language" required
+                                class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                            <option value="en" {{ old('language') === 'en' ? 'selected' : '' }}>English</option>
+                            <option value="es" {{ old('language') === 'es' ? 'selected' : '' }}>Spanish</option>
+                            <option value="fr" {{ old('language') === 'fr' ? 'selected' : '' }}>French</option>
+                            <option value="de" {{ old('language') === 'de' ? 'selected' : '' }}>German</option>
+                            <option value="it" {{ old('language') === 'it' ? 'selected' : '' }}>Italian</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
+                        <div class="relative">
+                            <input type="text" id="actorSearch" placeholder="Search actors..."
+                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                            <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
                         </div>
-                        <!-- Actors (Multiple Select via Search) -->
-                        <div>
-                            <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
-                            <div class="relative">
-                                <input type="text" id="actorSearch" placeholder="Search actors..."
-                                       class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
-                            </div>
-                            <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
-                        </div>
+                        <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
                     </div>
                     <!-- Tags (Multiple Select via Search) -->
                     <div>
@@ -142,11 +137,8 @@
             <div class="bg-neutral-800 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility</h3>
                 <div class="space-y-3">
-                    <input type="radio" name="visibility" value="public" checked class="hidden" id="visibilityPublic">
-                    <input type="radio" name="visibility" value="unlisted" class="hidden" id="visibilityUnlisted">
-                    <input type="radio" name="visibility" value="private" class="hidden" id="visibilityPrivate">
-                    
                     <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                        <input type="radio" id="visibilityPublic" name="visibility" value="public" {{ old('visibility', 'public') === 'public' ? 'checked' : '' }} class="hidden">
                         <div class="flex items-center">
                             <i class="fa-duotone fa-thin fa-globe w-5 text-neutral-400"></i>
                             <div class="ml-3">
@@ -156,7 +148,8 @@
                         </div>
                     </label>
                     
-                    <label for="visibilityUnlisted" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                    <label for="visibilityDraft" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                        <input type="radio" id="visibilityDraft" name="visibility" value="draft" {{ old('visibility') === 'draft' ? 'checked' : '' }} class="hidden">
                         <div class="flex items-center">
                             <i class="fa-duotone fa-thin fa-link w-5 text-neutral-400"></i>
                             <div class="ml-3">
