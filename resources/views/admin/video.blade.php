@@ -86,10 +86,6 @@
                                     <span class="text-neutral-400">{{ $video->views ?? 0 }} views</span>
                                     <span class="text-neutral-500">•</span>
                                     <span class="text-neutral-400">{{ $video->created_at->diffForHumans() }}</span>
-                                    <span class="text-neutral-500">•</span>
-                                    <span class="px-2 py-1 text-xs rounded-lg {{ $video->visibility === 'public' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400' }}">
-                                        {{ ucfirst($video->visibility) }}
-                                    </span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -117,8 +113,8 @@
                                 <span class="text-xs text-neutral-500 uppercase">Channel :</span>
                                 <div class="flex items-center space-x-2">
                                     @foreach($video->channels as $channel)
-                                        <img src="{{ asset('storage/' . $channel->avatar) }}" class="w-6 h-6 rounded-full" alt="{{ $channel->name }} Avatar">
-                                        <span class="text-neutral-300">{{ $channel->name }}</span>
+                                        <img src="{{ asset('storage/' . $channel->profile_image) }}" class="w-6 h-6 rounded-full" alt="{{ $channel->channel_name }} Avatar">
+                                        <span class="text-neutral-300">{{ $channel->channel_name }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -129,20 +125,36 @@
                                 <div class="flex items-center">
                                     <div class="flex -space-x-2 mr-3">
                                         @foreach($video->actors as $actor)
-                                            <img src="{{ asset('storage/' . $actor->avatar) }}" class="w-6 h-6 rounded-full ring-2 ring-neutral-800" alt="{{ $actor->name }}">
+                                            <img src="{{ asset('storage/' . $actor->profile_image) }}" class="w-6 h-6 rounded-full ring-2 ring-neutral-800" alt="{{ $actor->stagename }}">
                                         @endforeach
                                     </div>
+                                    <span class="text-neutral-300">{{ $video->actors->pluck('stagename')->join(', ') }}</span>
                                 </div>
                             </div>
 
-                            <!-- Categories -->
+                            <!-- Status -->
                             <div class="flex items-center space-x-2">
-                                <span class="text-xs text-neutral-500 uppercase">Categories :</span>
-                                <div class="flex flex-wrap gap-2">
-                                    @foreach($video->categories as $category)
-                                        <span class="px-2 py-1 text-xs bg-neutral-700 text-neutral-300 rounded-lg">{{ $category->name }}</span>
-                                    @endforeach
+                                <span class="text-xs text-neutral-500 uppercase">Status :</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 {{ $video->visibility->value === 'public' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400' }} rounded-lg text-xs">
+                                        {{ ucfirst($video->visibility->value) }}
+                                    </span>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categories -->
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <span class="text-xs text-neutral-500 uppercase mr-2">Categories:</span>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach($video->categories as $category)
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-6 h-6 rounded-xl bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-all duration-200">
+                                        <span class="text-red-500 text-sm font-semibold">#</span>
+                                    </div>
+                                    <span class="text-neutral-300 text-sm">{{ $category->name }}</span>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
