@@ -24,4 +24,11 @@ class Channel extends Model
     {
         return $this->belongsToMany(Video::class);
     }
+
+    public function getViewsCountAttribute()
+    {
+        return $this->videos()
+            ->join('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->sum('video_stats.views_count');
+    }
 }

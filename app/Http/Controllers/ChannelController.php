@@ -55,10 +55,15 @@ class ChannelController extends Controller
 
     public function index()
     {
-        // Get all channels with their video counts
+        // Get all channels with their video counts and calculate views
         $channels = Channel::withCount('videos')
             ->orderBy('created_at', 'desc')
             ->paginate(9);
+
+        // Load views count for each channel
+        $channels->each(function ($channel) {
+            $channel->views_count = $channel->views_count;
+        });
 
         // Calculate total channels
         $totalChannels = Channel::count();
@@ -79,9 +84,12 @@ class ChannelController extends Controller
         // Get total videos count
         $totalVideos = Video::count();
 
-        // Get most popular channel (by video count)
+        // Get most popular channel (by views)
         $popularChannel = Channel::withCount('videos')
-            ->orderBy('videos_count', 'desc')
+            ->get()
+            ->sortByDesc(function ($channel) {
+                return $channel->views_count;
+            })
             ->first();
 
         return view('admin.channel', compact(

@@ -94,7 +94,7 @@
                 <div>
                     <p class="text-neutral-400 text-sm">Most Popular</p>
                     <h3 class="text-2xl font-bold text-neutral-100">
-                        {{ $popularChannel ? $popularChannel->videos_count : 0 }}
+                        {{ $popularChannel ? number_format($popularChannel->views_count) : 0 }}
                     </h3>
                 </div>
                 <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
@@ -112,9 +112,8 @@
     <!-- Channel List -->
     <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
         <div class="flex justify-between items-center mb-6">
-            <div class="flex gap-3 items-center">
-                <h3 class="text-lg font-semibold text-neutral-100">Channel List</h3>
-                @if (session('success'))
+            <h3 class="text-lg font-semibold text-neutral-100">Channel List</h3>
+            @if (session('success'))
                 <div id="successMessage" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2 text-sm">
                     <i class="fa-duotone fa-check-circle"></i>
                     <p>{{ session('success') }}</p>
@@ -125,7 +124,12 @@
                     }, 5000);
                 </script>
                 @endif
-            </div>
+            <a href="{{ route('add-channel') }}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Add Channel
+            </a>
         </div>
 
         <!-- Channel Grid -->
@@ -177,10 +181,10 @@
                                 <i class="fa-duotone fa-thin fa-video mr-1"></i> {{ $channel->videos_count }}
                             </span>
                             <span class="text-neutral-400">
-                                <i class="fa-duotone fa-thin fa-eye mr-1"></i> {{ $channel->views_count ?? 0 }}
+                                <i class="fa-duotone fa-thin fa-eye mr-1"></i> {{ number_format($channel->views_count) }}
                             </span>
                         </div>
-                        <span class="px-2 py-1 {{ $channel->visibility->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400' }} rounded text-xs">
+                        <span class="px-2 py-1 {{ $channel->visibility->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400' }} rounded text-xs">
                             {{ ucfirst($channel->visibility->value) }}
                         </span>
                     </div>
@@ -198,10 +202,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-between items-center mt-8">
-            <p class="text-neutral-400 text-sm">
-                Showing {{ $channels->firstItem() ?? 0 }}-{{ $channels->lastItem() ?? 0 }} of {{ $channels->total() }} channels
-            </p>
+        <div class="mt-8">
             {{ $channels->links() }}
         </div>
     </div>
