@@ -54,7 +54,7 @@ class CategoryController extends Controller
                 $lastMonthCount = $category->last_month_videos_count ?: 0;
                 $currentCount = $category->videos_count;
                 
-                return [
+                return (object)[
                     'id' => $category->id,
                     'name' => $category->name,
                     'videos_count' => $currentCount,
@@ -63,7 +63,8 @@ class CategoryController extends Controller
                         ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
                         : 0
                 ];
-            });
+            })
+            ->values();
 
         return view('admin.category', compact(
             'categories',
