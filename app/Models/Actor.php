@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\VisibilityStatus;
+use App\Enums\ActiveStatus;
 use App\Enums\ActorType;
 
 class Actor extends Model
@@ -31,9 +31,9 @@ class Actor extends Model
     ];
 
     protected $casts = [
-        'visibility' => VisibilityStatus::class,
+        'dob' => 'date',
+        'visibility' => ActiveStatus::class,
         'type' => ActorType::class,
-        'dob' => 'date'
     ];
 
     public function videos()

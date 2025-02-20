@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Actor;
 use Illuminate\Validation\Rules\Enum;
-use App\Enums\VisibilityStatus;
+use App\Enums\ActiveStatus;
 use App\Enums\ActorType;
 use App\Models\Video;
 use Carbon\Carbon;
@@ -23,7 +23,7 @@ class ActorController extends Controller
         $totalActors = Actor::count();
 
         // Get active actors count
-        $activeActors = Actor::where('visibility', VisibilityStatus::PUBLIC)->count();
+        $activeActors = Actor::where('visibility', ActiveStatus::ACTIVE)->count();
 
         // Get last month's actor count for comparison
         $lastMonthActors = Actor::where('created_at', '<', Carbon::now()->startOfMonth())
@@ -104,7 +104,7 @@ class ActorController extends Controller
             'facebook' => 'nullable|url',
             'twitter' => 'nullable|url',
             'website' => 'nullable|url',
-            'visibility' => ['required', new Enum(VisibilityStatus::class)],
+            'visibility' => ['required', 'string', 'in:' . implode(',', array_column(ActiveStatus::cases(), 'value'))],
         ]);
     
         // If Stagename is Duplicate
@@ -125,6 +125,7 @@ class ActorController extends Controller
         }
 
         $actor = Actor::create($validatedData);
+        $actor->visibility = ActiveStatus::from($validatedData['visibility']);
 
         return redirect()->route('actors')->with('success', 'Actor created successfully');
     }
@@ -137,8 +138,6 @@ class ActorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $actor = Actor::findOrFail($id);
-        
         $validatedData = $request->validate([
             'profile_image' => 'nullable|image|max:2048',
             'firstname' => 'required|string|max:255',
@@ -155,7 +154,7 @@ class ActorController extends Controller
             'facebook' => 'nullable|url',
             'twitter' => 'nullable|url',
             'website' => 'nullable|url',
-            'visibility' => ['required', new Enum(VisibilityStatus::class)],
+            'visibility' => ['required', 'string', 'in:' . implode(',', array_column(ActiveStatus::cases(), 'value'))],
         ]);
         
         // Handle profile image upload
@@ -170,7 +169,9 @@ class ActorController extends Controller
             $validatedData['banner_image'] = $bannerPath;
         }
 
+        $actor = Actor::findOrFail($id);
         $actor->update($validatedData);
+        $actor->visibility = ActiveStatus::from($validatedData['visibility']);
 
         return redirect()->route('actors')->with('success', 'Actor updated successfully');
     }
@@ -178,9 +179,9 @@ class ActorController extends Controller
     public function toggleVisibility(Actor $actor)
     {
         try {
-            $actor->visibility = $actor->visibility === VisibilityStatus::PUBLIC 
-                ? VisibilityStatus::PRIVATE 
-                : VisibilityStatus::PUBLIC;
+            $actor->visibility = $actor->visibility === ActiveStatus::ACTIVE 
+                ? ActiveStatus::INACTIVE 
+                : ActiveStatus::ACTIVE;
             $actor->save();
 
             return response()->json([
