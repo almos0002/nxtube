@@ -32,7 +32,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <p class="text-neutral-400 text-sm">Total Videos</p>
-                        <h3 class="text-2xl font-bold text-neutral-100">{{ $stats['total'] }}</h3>
+                        <h3 class="text-2xl font-bold text-neutral-100">{{ $total }}</h3>
                     </div>
                     <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
                         <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
@@ -40,7 +40,7 @@
                 </div>
                 <p class="text-neutral-500 text-sm flex items-center gap-1">
                     <i class="fa-duotone fa-thin fa-chart-line text-blue-400"></i>
-                    <span class="text-blue-400 font-medium">{{ number_format($stats['views_per_video']) }}</span>
+                    <span class="text-blue-400 font-medium">{{ number_format($views_per_video) }}</span>
                     average views
                 </p>
             </div>
@@ -49,7 +49,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <p class="text-neutral-400 text-sm">Published Videos</p>
-                        <h3 class="text-2xl font-bold text-neutral-100">{{ $stats['active'] }}</h3>
+                        <h3 class="text-2xl font-bold text-neutral-100">{{ $active }}</h3>
                     </div>
                     <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
                         <i class="fa-duotone fa-thin fa-check-circle text-green-500 text-xl"></i>
@@ -57,7 +57,7 @@
                 </div>
                 <p class="text-neutral-500 text-sm flex items-center gap-1">
                     <i class="fa-duotone fa-thin fa-arrow-trend-up text-green-400"></i>
-                    <span class="text-green-400 font-medium">{{ $stats['active_percentage'] }}%</span>
+                    <span class="text-green-400 font-medium">{{ $active_percentage }}%</span>
                     of total videos
                 </p>
             </div>
@@ -66,7 +66,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <p class="text-neutral-400 text-sm">Draft Videos</p>
-                        <h3 class="text-2xl font-bold text-neutral-100">{{ $stats['processing'] }}</h3>
+                        <h3 class="text-2xl font-bold text-neutral-100">{{ $processing }}</h3>
                     </div>
                     <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
                         <i class="fa-duotone fa-thin fa-clock text-yellow-500 text-xl"></i>
@@ -74,7 +74,7 @@
                 </div>
                 <p class="text-neutral-500 text-sm flex items-center gap-1">
                     <i class="fa-duotone fa-thin fa-arrow-trend-up text-yellow-400"></i>
-                    <span class="text-yellow-400 font-medium">{{ $stats['processing_percentage'] }}%</span>
+                    <span class="text-yellow-400 font-medium">{{ $processing_percentage }}%</span>
                     of total videos
                 </p>
             </div>
@@ -83,7 +83,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <p class="text-neutral-400 text-sm">Total Views</p>
-                        <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($stats['total_views']) }}</h3>
+                        <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($total_views) }}</h3>
                     </div>
                     <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
                         <i class="fa-duotone fa-thin fa-eye text-purple-500 text-xl"></i>

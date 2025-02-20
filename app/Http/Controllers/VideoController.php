@@ -139,34 +139,31 @@ class VideoController extends Controller
     public function index()
     {
         // Get video statistics
-        $total_videos = Video::count();
-        $active_videos = Video::where('visibility', VisibilityStatus::PUBLIC->value)->count();
-        $draft_videos = Video::where('visibility', VisibilityStatus::DRAFT->value)->count();
+        $total = Video::count();
+        $active = Video::where('visibility', VisibilityStatus::PUBLIC->value)->count();
+        $processing = Video::where('visibility', VisibilityStatus::DRAFT->value)->count();
         $total_views = VideoStats::sum('views_count');
 
         // Calculate percentages
-        $active_percentage = $total_videos > 0 ? round(($active_videos / $total_videos) * 100) : 0;
-        $draft_percentage = $total_videos > 0 ? round(($draft_videos / $total_videos) * 100) : 0;
-        
-        $stats = [
-            'total' => $total_videos,
-            'active' => $active_videos,
-            'active_percentage' => $active_percentage,
-            'processing' => $draft_videos,
-            'processing_percentage' => $draft_percentage,
-            'total_views' => $total_views,
-            'views_per_video' => $total_videos > 0 ? round($total_views / $total_videos) : 0,
-        ];
+        $active_percentage = $total > 0 ? round(($active / $total) * 100) : 0;
+        $processing_percentage = $total > 0 ? round(($processing / $total) * 100) : 0;
+        $views_per_video = $total > 0 ? round($total_views / $total) : 0;
 
         // Get latest videos with relationships
         $videos = Video::with(['channels', 'actors', 'categories', 'videoStats'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('admin.video', [
-            'stats' => $stats,
-            'videos' => $videos
-        ]);
+        return view('admin.video', compact(
+            'videos',
+            'total',
+            'active',
+            'active_percentage',
+            'processing',
+            'processing_percentage',
+            'total_views',
+            'views_per_video'
+        ));
     }
 
     public function destroy($id)
