@@ -79,26 +79,28 @@
                             <div id="selectedCategories" class="mt-2 flex flex-wrap gap-2"></div>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
-                        <select name="language" required
-                                class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                            <option value="en" {{ old('language', $video->language) === 'en' ? 'selected' : '' }}>English</option>
-                            <option value="es" {{ old('language', $video->language) === 'es' ? 'selected' : '' }}>Spanish</option>
-                            <option value="fr" {{ old('language', $video->language) === 'fr' ? 'selected' : '' }}>French</option>
-                            <option value="de" {{ old('language', $video->language) === 'de' ? 'selected' : '' }}>German</option>
-                            <option value="it" {{ old('language', $video->language) === 'it' ? 'selected' : '' }}>Italian</option>
-                        </select>
-                    </div>
-                    <!-- Actors (Multiple Select via Search) -->
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
-                        <div class="relative">
-                            <input type="text" id="actorSearch" placeholder="Search actors..."
-                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                            <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
+                            <select name="language" required
+                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                                <option value="en" {{ old('language', $video->language) === 'en' ? 'selected' : '' }}>English</option>
+                                <option value="es" {{ old('language', $video->language) === 'es' ? 'selected' : '' }}>Spanish</option>
+                                <option value="fr" {{ old('language', $video->language) === 'fr' ? 'selected' : '' }}>French</option>
+                                <option value="de" {{ old('language', $video->language) === 'de' ? 'selected' : '' }}>German</option>
+                                <option value="it" {{ old('language', $video->language) === 'it' ? 'selected' : '' }}>Italian</option>
+                            </select>
                         </div>
-                        <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
+                        <!-- Actors (Multiple Select via Search) -->
+                        <div>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
+                            <div class="relative">
+                                <input type="text" id="actorSearch" placeholder="Search actors..."
+                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                                <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                            </div>
+                            <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
+                        </div>
                     </div>
                     <!-- Tags (Multiple Select via Search) -->
                     <div>
