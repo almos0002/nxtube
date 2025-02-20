@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Enums;
 
 // VisibilityStatus.php
 enum VisibilityStatus: string

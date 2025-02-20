@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\VisibilityStatus;
-use App\ActorType;
+use App\Enums\VisibilityStatus;
+use App\Enums\ActorType;
 
 class Actor extends Model
 {

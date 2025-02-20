@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Actor;
 use Illuminate\Validation\Rules\Enum;
-use App\VisibilityStatus;
-use App\ActorType;
+use App\Enums\VisibilityStatus;
+use App\Enums\ActorType;
 
 class ActorController extends Controller
 {

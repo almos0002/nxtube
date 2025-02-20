@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
-use App\VisibilityStatus;
+use App\Enums\VisibilityStatus;
 use App\Models\Channel;
 
 class ChannelController extends Controller

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\VisibilityStatus;
+use App\Enums\VisibilityStatus;
 use App\Models\Video;
 
 class Channel extends Model

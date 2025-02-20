@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use Illuminate\Validation\Rules\Enum;
-use App\VisibilityStatus;
+use App\Enums\VisibilityStatus;
 use App\Models\Tag;
 use App\Models\Category;
 use App\Models\Actor;
