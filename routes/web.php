@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
     Route::view('/videos', 'admin.video')->name('videos');
     Route::view('/actors', 'admin.actor')->name('actors');
-    Route::view('/categories', 'admin.category')->name('categories');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::view('/channels', 'admin.channel')->name('channels');
     
     // Settings Routes
@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store-category', [CategoryController::class, 'store'])->name('store-category');
     Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('edit-category');
     Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('update-category');
+    Route::delete('/delete-category/{id}', [CategoryController::class, 'destroy'])->name('delete-category');
 
     // Actor Routes
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
