@@ -136,7 +136,7 @@ class VideoController extends Controller
         return redirect()->route('videos')->with('success', 'Video updated successfully.');
     }
 
-    public function adminIndex()
+    public function index()
     {
         // Get video statistics
         $total_videos = Video::count();
@@ -156,7 +156,6 @@ class VideoController extends Controller
             'processing_percentage' => $draft_percentage,
             'total_views' => $total_views,
             'views_per_video' => $total_videos > 0 ? round($total_views / $total_videos) : 0,
-            'failed' => 0
         ];
 
         // Get latest videos with relationships

@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Dashboard & Pages
     Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
-    Route::get('/videos', [VideoController::class, 'adminIndex'])->name('videos');
+    Route::get('/videos', [VideoController::class, 'index'])->name('videos');
     Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/channels', [ChannelController::class, 'index'])->name('channels');
@@ -63,5 +63,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit-video/{id}', [VideoController::class, 'edit'])->name('edit-video');
     Route::put('/update-video/{id}', [VideoController::class, 'update'])->name('update-video');
     Route::delete('/delete-video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
-    Route::get('/admin/videos', [VideoController::class, 'adminIndex'])->name('admin.videos');
 });
