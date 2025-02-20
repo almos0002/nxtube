@@ -41,6 +41,16 @@ class Actor extends Model
         return $this->belongsToMany(Video::class);
     }
 
+    public function stats()
+    {
+        return $this->hasOne(ActorStats::class);
+    }
+
+    public function getViewsCountAttribute()
+    {
+        return $this->stats ? $this->stats->views_count : 0;
+    }
+
     // Get full name attribute
     public function getNameAttribute()
     {

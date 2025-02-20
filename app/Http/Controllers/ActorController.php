@@ -14,8 +14,9 @@ class ActorController extends Controller
 {
     public function index()
     {
-        // Get all actors with their video counts
+        // Get all actors with their video counts and stats
         $actors = Actor::withCount('videos')
+            ->with('stats')
             ->orderBy('created_at', 'desc')
             ->paginate(9);
 

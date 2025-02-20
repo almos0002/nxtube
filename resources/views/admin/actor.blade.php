@@ -198,6 +198,9 @@
                                 <i class="fa-duotone fa-thin fa-video mr-1"></i> {{ $actor->videos_count }}
                             </span>
                             <span class="text-neutral-400">
+                                <i class="fa-duotone fa-thin fa-eye mr-1"></i> {{ $actor->views_count }}
+                            </span>
+                            <span class="text-neutral-400">
                                 <i class="fa-duotone fa-thin fa-flag mr-1"></i> {{ $actor->country }}
                             </span>
                         </div>
