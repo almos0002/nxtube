@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
     // Admin Dashboard & Pages
     Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
     Route::view('/videos', 'admin.video')->name('videos');
-    Route::view('/actors', 'admin.actor')->name('actors');
+    Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::view('/channels', 'admin.channel')->name('channels');
     
@@ -42,10 +42,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/toggle-category-status/{category}', [CategoryController::class, 'toggleStatus'])->name('toggle-category-status');
 
     // Actor Routes
+    Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
     Route::post('/store-actor', [ActorController::class, 'store'])->name('store-actor');
     Route::get('/edit-actor/{id}', [ActorController::class, 'edit'])->name('edit-actor');
     Route::put('/update-actor/{id}', [ActorController::class, 'update'])->name('update-actor');
+    Route::delete('/delete-actor/{id}', [ActorController::class, 'destroy'])->name('delete-actor');
+    Route::post('/toggle-actor-visibility/{actor}', [ActorController::class, 'toggleVisibility'])->name('toggle-actor-visibility');
 
     // Channel Routes
     Route::get('/add-channel', [ChannelController::class, 'create'])->name('add-channel');

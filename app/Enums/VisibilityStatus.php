@@ -6,6 +6,5 @@ namespace App\Enums;
 enum VisibilityStatus: string
 {
     case PUBLIC = 'public';
-    case DRAFT = 'draft';
+    case PRIVATE = 'private';
 }
-

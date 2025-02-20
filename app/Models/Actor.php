@@ -12,19 +12,38 @@ class Actor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'profile_image', 'firstname', 'lastname', 'stagename', 'biography',
-        'banner_image', 'type', 'dob', 'language', 'country', 'specialties',
-        'instagram', 'facebook', 'twitter', 'website', 'visibility'
+        'firstname',
+        'lastname',
+        'stagename',
+        'biography',
+        'profile_image',
+        'banner_image',
+        'type',
+        'dob',
+        'language',
+        'country',
+        'specialties',
+        'instagram',
+        'facebook',
+        'twitter',
+        'website',
+        'visibility'
     ];
 
     protected $casts = [
-        'dob' => 'date',
+        'visibility' => VisibilityStatus::class,
         'type' => ActorType::class,
-        'visibility' => VisibilityStatus::class
+        'dob' => 'date'
     ];
 
     public function videos()
     {
         return $this->belongsToMany(Video::class);
+    }
+
+    // Get full name attribute
+    public function getNameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

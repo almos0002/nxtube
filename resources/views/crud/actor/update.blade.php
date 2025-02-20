@@ -124,13 +124,16 @@
                             <select name="type" required
                                     class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500">
                                 <option value="">Select Type</option>
-                                <option value="actor" {{ $actor->type->value === 'actor' ? 'selected' : '' }}>Actor</option>
-                                <option value="actress" {{ $actor->type->value === 'actress' ? 'selected' : '' }}>Actress</option>
+                                @foreach(App\Enums\ActorType::cases() as $type)
+                                    <option value="{{ $type->value }}" {{ $actor->type->value === $type->value ? 'selected' : '' }}>
+                                        {{ ucfirst($type->value) }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Date of Birth</label>
-                            <input type="date" name="dob" value="{{ $actor->dob ? date('Y-m-d', strtotime($actor->dob)) : '' }}"
+                            <input type="date" name="dob" value="{{ $actor->dob ? $actor->dob->format('Y-m-d') : '' }}"
                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500">
                         </div>
                     </div>
@@ -162,7 +165,7 @@
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility Settings</h3>
                 <div class="space-y-3">
                     <input type="radio" name="visibility" value="public" {{ $actor->visibility->value === 'public' ? 'checked' : '' }} class="hidden" id="visibilityPublic">
-                    <input type="radio" name="visibility" value="draft" {{ $actor->visibility->value === 'draft' ? 'checked' : '' }} class="hidden" id="visibilityDraft">
+                    <input type="radio" name="visibility" value="private" {{ $actor->visibility->value === 'private' ? 'checked' : '' }} class="hidden" id="visibilityPrivate">
                     
                     <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
@@ -174,11 +177,11 @@
                         </div>
                     </label>
                     
-                    <label for="visibilityDraft" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                    <label for="visibilityPrivate" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
                             <i class="fas fa-lock w-5 text-neutral-400"></i>
                             <div class="ml-3">
-                                <p class="text-neutral-100">Draft</p>
+                                <p class="text-neutral-100">Private</p>
                                 <p class="text-sm text-neutral-400">Only visible to admins</p>
                             </div>
                         </div>

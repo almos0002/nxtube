@@ -7,9 +7,81 @@ use App\Models\Actor;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\VisibilityStatus;
 use App\Enums\ActorType;
+use App\Models\Video;
+use Carbon\Carbon;
 
 class ActorController extends Controller
 {
+    public function index()
+    {
+        // Get all actors with their video counts
+        $actors = Actor::withCount('videos')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
+        // Calculate total actors
+        $totalActors = Actor::count();
+
+        // Get active actors count
+        $activeActors = Actor::where('visibility', VisibilityStatus::PUBLIC)->count();
+
+        // Get last month's actor count for comparison
+        $lastMonthActors = Actor::where('created_at', '<', Carbon::now()->startOfMonth())
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
+            ->count();
+
+        // Calculate growth percentage
+        $growth = $lastMonthActors > 0 
+            ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
+            : 0;
+
+        // Get total videos featuring actors
+        $totalVideos = Video::whereHas('actors')->count();
+
+        // Get actors by type count
+        $actorsByType = Actor::selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->get()
+            ->mapWithKeys(function($item) {
+                return [$item->type->value => $item->count];
+            });
+
+        // Get top 3 popular actors
+        $popularActors = Actor::withCount('videos')
+            ->withCount(['videos as last_month_videos_count' => function($query) {
+                $query->where('actor_video.created_at', '<', Carbon::now()->startOfMonth())
+                      ->where('actor_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
+            }])
+            ->having('videos_count', '>', 0)
+            ->orderBy('videos_count', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function($actor) use ($totalVideos) {
+                $lastMonthCount = $actor->last_month_videos_count ?: 0;
+                $currentCount = $actor->videos_count;
+                
+                return [
+                    'id' => $actor->id,
+                    'name' => $actor->name,
+                    'videos_count' => $currentCount,
+                    'percentage_of_total' => round(($currentCount / ($totalVideos ?: 1)) * 100, 1),
+                    'growth' => $lastMonthCount > 0 
+                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
+                        : 0
+                ];
+            });
+
+        return view('admin.actor', compact(
+            'actors',
+            'totalActors',
+            'activeActors',
+            'totalVideos',
+            'growth',
+            'actorsByType',
+            'popularActors'
+        ));
+    }
+
     public function create(){
         return view('crud.actor.add');
     }
@@ -101,5 +173,26 @@ class ActorController extends Controller
         $actor->update($validatedData);
 
         return redirect()->route('actors')->with('success', 'Actor updated successfully');
+    }
+
+    public function toggleVisibility(Actor $actor)
+    {
+        try {
+            $actor->visibility = $actor->visibility === VisibilityStatus::PUBLIC 
+                ? VisibilityStatus::PRIVATE 
+                : VisibilityStatus::PUBLIC;
+            $actor->save();
+
+            return response()->json([
+                'success' => true,
+                'visibility' => $actor->visibility->value,
+                'message' => 'Actor visibility updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update actor visibility'
+            ], 500);
+        }
     }
 }
