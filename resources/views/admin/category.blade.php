@@ -48,19 +48,6 @@
             </div>
         </div>
 
-        <!-- Total Videos -->
-        <div class="category-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-neutral-400 text-sm">Total Videos</p>
-                    <h3 class="text-2xl font-bold text-neutral-100">{{ $totalVideos }}</h3>
-                </div>
-                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
-                </div>
-            </div>
-        </div>
-
         <!-- Active Categories -->
         <div class="category-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
@@ -73,25 +60,51 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-neutral-400">Categories with videos</span>
+                <span class="text-green-400 flex items-center">
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 
+                    {{ round(($activeCategories / $totalCategories) * 100) }}%
+                </span>
+                <span class="text-neutral-500 ml-2">active rate</span>
             </div>
         </div>
 
-        <!-- Popular Categories -->
+        <!-- Total Videos -->
         <div class="category-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-neutral-400 text-sm">Most Videos</p>
+                    <p class="text-neutral-400 text-sm">Total Videos</p>
+                    <h3 class="text-2xl font-bold text-neutral-100">{{ $totalVideos }}</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-green-400 flex items-center">
+                    <i class="fa-duotone fa-thin fa-chart-line mr-1"></i> 
+                    {{ round($totalVideos / ($totalCategories ?: 1)) }}
+                </span>
+                <span class="text-neutral-500 ml-2">videos per category</span>
+            </div>
+        </div>
+
+        <!-- Avg. Videos/Category -->
+        <div class="category-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-neutral-400 text-sm">Most Popular</p>
                     <h3 class="text-2xl font-bold text-neutral-100">
                         {{ $popularCategories->first() ? $popularCategories->first()->videos_count : 0 }}
                     </h3>
                 </div>
                 <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-star text-yellow-500 text-xl"></i>
+                    <i class="fa-duotone fa-thin fa-chart-line text-yellow-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-neutral-400">{{ $popularCategories->first() ? $popularCategories->first()->name : 'No categories' }}</span>
+                <span class="text-neutral-400">
+                    {{ $popularCategories->first() ? Str::limit($popularCategories->first()->name, 20) : 'No categories' }}
+                </span>
             </div>
         </div>
     </div>
