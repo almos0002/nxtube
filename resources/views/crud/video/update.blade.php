@@ -85,24 +85,32 @@
                             <label class="block text-sm font-medium text-neutral-300 mb-2">Language</label>
                             <select name="language" required
                                     class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <option value="en" {{ old('language', $video->language) == 'en' ? 'selected' : '' }}>English</option>
-                                <option value="es" {{ old('language', $video->language) == 'es' ? 'selected' : '' }}>Spanish</option>
-                                <option value="fr" {{ old('language', $video->language) == 'fr' ? 'selected' : '' }}>French</option>
-                                <option value="de" {{ old('language', $video->language) == 'de' ? 'selected' : '' }}>German</option>
-                                <option value="it" {{ old('language', $video->language) == 'it' ? 'selected' : '' }}>Italian</option>
-                                <option value="hi" {{ old('language', $video->language) == 'hi' ? 'selected' : '' }}>Hindi</option>
+                                <option value="en" {{ old('language', $video->language) === 'en' ? 'selected' : '' }}>English</option>
+                                <option value="es" {{ old('language', $video->language) === 'es' ? 'selected' : '' }}>Spanish</option>
+                                <option value="fr" {{ old('language', $video->language) === 'fr' ? 'selected' : '' }}>French</option>
+                                <option value="de" {{ old('language', $video->language) === 'de' ? 'selected' : '' }}>German</option>
+                                <option value="it" {{ old('language', $video->language) === 'it' ? 'selected' : '' }}>Italian</option>
                             </select>
                         </div>
-                        <!-- Actors (Multiple Select via Search) -->
+                        <!-- Visibility -->
                         <div>
-                            <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
-                            <div class="relative">
-                                <input type="text" id="actorSearch" placeholder="Search actors..."
-                                       class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
-                                <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
-                            </div>
-                            <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
+                            <label class="block text-sm font-medium text-neutral-300 mb-2">Visibility</label>
+                            <select name="visibility" required
+                                    class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                                <option value="public" {{ old('visibility', $video->visibility?->value) === 'public' ? 'selected' : '' }}>Public</option>
+                                <option value="draft" {{ old('visibility', $video->visibility?->value) === 'draft' ? 'selected' : '' }}>Draft</option>
+                            </select>
                         </div>
+                    </div>
+                    <!-- Actors (Multiple Select via Search) -->
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-2">Actors</label>
+                        <div class="relative">
+                            <input type="text" id="actorSearch" placeholder="Search actors..."
+                                   class="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-4 py-2 text-neutral-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+                            <div id="actorResults" class="hidden absolute z-10 w-full mt-1 bg-neutral-700 border border-neutral-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                        </div>
+                        <div id="selectedActors" class="mt-2 flex flex-wrap gap-2"></div>
                     </div>
                     <!-- Tags (Multiple Select via Search) -->
                     <div>
@@ -150,7 +158,7 @@
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility</h3>
                 <div class="space-y-4">
                     <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
-                        <input type="radio" id="visibilityPublic" name="visibility" value="public" {{ old('visibility', $video->visibility) == 'public' ? 'checked' : '' }} class="hidden">
+                        <input type="radio" id="visibilityPublic" name="visibility" value="public" {{ old('visibility', $video->visibility?->value) === 'public' ? 'checked' : '' }} class="hidden">
                         <div class="flex items-center">
                             <i class="fa-duotone fa-thin fa-globe w-5 text-neutral-400"></i>
                             <div class="ml-3">
@@ -161,7 +169,7 @@
                     </label>
                     
                     <label for="visibilityUnlisted" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
-                        <input type="radio" id="visibilityUnlisted" name="visibility" value="unlisted" {{ old('visibility', $video->visibility) == 'unlisted' ? 'checked' : '' }} class="hidden">
+                        <input type="radio" id="visibilityUnlisted" name="visibility" value="draft" {{ old('visibility', $video->visibility?->value) === 'draft' ? 'checked' : '' }} class="hidden">
                         <div class="flex items-center">
                             <i class="fa-duotone fa-thin fa-link w-5 text-neutral-400"></i>
                             <div class="ml-3">

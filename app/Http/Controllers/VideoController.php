@@ -32,7 +32,6 @@ class VideoController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'video_link' => 'required|url',
@@ -57,7 +56,15 @@ class VideoController extends Controller
         }
 
         // Create video with basic data
-        $video = Video::create($validatedData);
+        $video = Video::create([
+            'title' => $validatedData['title'],
+            'video_link' => $validatedData['video_link'],
+            'duration' => $validatedData['duration'],
+            'description' => $validatedData['description'],
+            'thumbnail' => $validatedData['thumbnail'],
+            'language' => $validatedData['language'],
+            'visibility' => $validatedData['visibility']
+        ]);
 
         // Handle tags - create if they don't exist
         $tagIds = [];
@@ -94,44 +101,58 @@ class VideoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $video = Video::findOrFail($id);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'video_link' => 'required|url',
             'duration' => ['required', 'regex:/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/'],
             'language' => 'required|string|max:50',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'visibility' => ['required', new Enum(VisibilityStatus::class)],
             'channel_id' => 'required|array',
             'channel_id.*' => 'exists:channels,id',
             'category_id' => 'required|array',
             'category_id.*' => 'exists:categories,id',
             'actor_id' => 'required|array',
             'actor_id.*' => 'exists:actors,id',
-            'visibility' => ['required', new Enum(VisibilityStatus::class)],
             'tags' => 'required|array',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $video = Video::findOrFail($id);
-        
+        // Update basic video data
+        $video->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'video_link' => $validated['video_link'],
+            'duration' => $validated['duration'],
+            'language' => $validated['language'],
+            'visibility' => $validated['visibility']
+        ]);
+
+        // Handle thumbnail update if provided
         if ($request->hasFile('thumbnail')) {
+            // Delete old thumbnail
+            if ($video->thumbnail) {
+                Storage::disk('public')->delete($video->thumbnail);
+            }
+            
             $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
-            $validated['thumbnail'] = $thumbnailPath;
+            $video->update(['thumbnail' => $thumbnailPath]);
         }
 
-        $video->update($validated);
-
-        // Handle tags - create if they don't exist
+        // Handle tags
         $tagIds = [];
-        foreach ($request->tags as $tagName) {
+        foreach ($validated['tags'] as $tagName) {
             $tag = Tag::firstOrCreate(['name' => $tagName]);
             $tagIds[] = $tag->id;
         }
-        
-        // Sync relationships
+
+        // Sync all relationships
         $video->tags()->sync($tagIds);
-        $video->channels()->sync($request->channel_id);
-        $video->categories()->sync($request->category_id);
-        $video->actors()->sync($request->actor_id);
+        $video->channels()->sync($validated['channel_id']);
+        $video->categories()->sync($validated['category_id']);
+        $video->actors()->sync($validated['actor_id']);
 
         return redirect()->route('videos')->with('success', 'Video updated successfully.');
     }
