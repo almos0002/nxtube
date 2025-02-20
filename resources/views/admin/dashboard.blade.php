@@ -1,4 +1,4 @@
-    @extends('layouts.admin')
+@extends('layouts.admin')
 @section('content')
     <!-- Main Content -->
     <div class="ml-64 p-8">
