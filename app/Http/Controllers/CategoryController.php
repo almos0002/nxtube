@@ -112,4 +112,23 @@ class CategoryController extends Controller
 
         return redirect()->route('categories')->with('success', 'Category updated successfully.');
     }
+
+    public function destroy($id)
+    {
+        try {
+            $category = Category::findOrFail($id);
+            
+            // Detach all videos from this category (removes pivot table entries)
+            $category->videos()->detach();
+            
+            // Delete the category
+            $category->delete();
+
+            return redirect()->route('categories')
+                ->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('categories')
+                ->with('error', 'Failed to delete category. Please try again.');
+        }
+    }
 }
