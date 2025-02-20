@@ -193,7 +193,7 @@
                                 <i class="fa-duotone fa-thin fa-flag mr-1"></i> {{ $actor->country }}
                             </span>
                         </div>
-                        <span class="px-2 py-1 {{ $actor->visibility->value === 'public' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400' }} rounded text-xs">
+                        <span class="px-2 py-1 {{ $actor->visibility->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400' }} rounded text-xs">
                             {{ ucfirst($actor->visibility->value) }}
                         </span>
                     </div>
