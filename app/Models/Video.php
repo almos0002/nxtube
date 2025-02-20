@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\VisibilityStatus;
 
 class Video extends Model
 {
@@ -17,6 +18,10 @@ class Video extends Model
         'thumbnail',
         'language',
         'visibility'
+    ];
+
+    protected $casts = [
+        'visibility' => VisibilityStatus::class
     ];
 
     public function channels()
