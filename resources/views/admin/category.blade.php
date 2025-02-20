@@ -115,7 +115,15 @@
             <div class="flex gap-3 items-center">
                 <h3 class="text-lg font-semibold text-neutral-100">Category List</h3>
                 @if (session('success'))
-                    <div class="text-green-500">{{ session('success') }}</div>
+                <div id="successMessage" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2 text-sm">
+                    <i class="fa-duotone fa-check-circle"></i>
+                    <p>{{ session('success') }}</p>
+                </div>
+                <script>
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                </script>
                 @endif
             </div>
         </div>
