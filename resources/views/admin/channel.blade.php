@@ -112,8 +112,9 @@
     <!-- Channel List -->
     <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-semibold text-neutral-100">Channel List</h3>
-            @if (session('success'))
+            <div class="flex gap-3 items-center">
+                <h3 class="text-lg font-semibold text-neutral-100">Channels List</h3>
+                @if (session('success'))
                 <div id="successMessage" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-sm flex items-center space-x-2 text-sm">
                     <i class="fa-duotone fa-check-circle"></i>
                     <p>{{ session('success') }}</p>
@@ -124,6 +125,7 @@
                     }, 5000);
                 </script>
                 @endif
+            </div>
             <a href="{{ route('add-channel') }}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
