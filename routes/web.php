@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store-channel', [ChannelController::class, 'store'])->name('store-channel');
     Route::get('/edit-channel/{id}', [ChannelController::class, 'edit'])->name('edit-channel');
     Route::put('/update-channel/{id}', [ChannelController::class, 'update'])->name('update-channel');
+    Route::delete('/delete-channel/{id}', [ChannelController::class, 'destroy'])->name('delete-channel');
 
     // Video Routes
     Route::get('/add-video', [VideoController::class, 'create'])->name('add-video');

@@ -142,25 +142,25 @@
             <div class="bg-neutral-800 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-neutral-100 mb-4">Visibility Settings</h3>
                 <div class="space-y-3">
-                    <input type="radio" name="visibility" value="public" {{ $channel->visibility->value === 'public' ? 'checked' : '' }} class="hidden" id="visibilityPublic">
-                    <input type="radio" name="visibility" value="draft" {{ $channel->visibility->value === 'draft' ? 'checked' : '' }} class="hidden" id="visibilityDraft">
+                    <input type="radio" name="visibility" value="active" {{ $channel->visibility->value === 'active' ? 'checked' : '' }} class="hidden" id="visibilityActive">
+                    <input type="radio" name="visibility" value="inactive" {{ $channel->visibility->value === 'inactive' ? 'checked' : '' }} class="hidden" id="visibilityInactive">
                     
-                    <label for="visibilityPublic" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                    <label for="visibilityActive" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
-                            <i class="fas fa-globe w-5 text-neutral-400"></i>
+                            <i class="fas fa-check-circle w-5 text-neutral-400"></i>
                             <div class="ml-3">
-                                <p class="text-neutral-100">Public</p>
-                                <p class="text-sm text-neutral-400">Visible to everyone</p>
+                                <p class="text-neutral-100">Active</p>
+                                <p class="text-sm text-neutral-400">Channel is active and visible to all users</p>
                             </div>
                         </div>
                     </label>
                     
-                    <label for="visibilityDraft" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
+                    <label for="visibilityInactive" class="block p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral-700/70 data-[checked=true]:bg-red-500/10 data-[checked=true]:border-red-500/50 border border-transparent">
                         <div class="flex items-center">
-                            <i class="fas fa-lock w-5 text-neutral-400"></i>
+                            <i class="fas fa-times-circle w-5 text-neutral-400"></i>
                             <div class="ml-3">
-                                <p class="text-neutral-100">Draft</p>
-                                <p class="text-sm text-neutral-400">Only visible to admins</p>
+                                <p class="text-neutral-100">Inactive</p>
+                                <p class="text-sm text-neutral-400">Channel is hidden from users</p>
                             </div>
                         </div>
                     </label>

@@ -27,7 +27,7 @@
     </header>
 
     <!-- Channel Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
@@ -77,24 +77,6 @@
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-{{ ($pendingChannels / ($totalChannels ?: 1)) * 100 > 20 ? 'red' : 'green' }}-400 flex items-center">
                     {{ round(($pendingChannels / ($totalChannels ?: 1)) * 100) }}%
-                </span>
-                <span class="text-neutral-500 ml-2">of total channels</span>
-            </div>
-        </div>
-
-        <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-neutral-400 text-sm">Suspended</p>
-                    <h3 class="text-2xl font-bold text-neutral-100">{{ $suspendedChannels }}</h3>
-                </div>
-                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-ban text-red-500 text-xl"></i> 
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ ($suspendedChannels / ($totalChannels ?: 1)) * 100 > 5 ? 'red' : 'green' }}-400 flex items-center">
-                    {{ round(($suspendedChannels / ($totalChannels ?: 1)) * 100) }}%
                 </span>
                 <span class="text-neutral-500 ml-2">of total channels</span>
             </div>
@@ -168,7 +150,7 @@
                                 <i class="fa-duotone fa-thin fa-eye mr-1"></i> {{ $channel->views_count ?? 0 }}
                             </span>
                         </div>
-                        <span class="px-2 py-1 {{ $channel->visibility->value === 'active' ? 'bg-green-500/20 text-green-400' : ($channel->visibility->value === 'inactive' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400') }} rounded text-xs">
+                        <span class="px-2 py-1 {{ $channel->visibility->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400' }} rounded text-xs">
                             {{ ucfirst($channel->visibility->value) }}
                         </span>
                     </div>

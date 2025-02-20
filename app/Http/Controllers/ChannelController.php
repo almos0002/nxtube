@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\ActiveStatus;
-use App\Enums\VisibilityStatus;
 use App\Models\Channel;
 use Carbon\Carbon;
 
@@ -28,7 +27,7 @@ class ChannelController extends Controller
             'youtube' => 'nullable|url',
             'twitter' => 'nullable|url',
             'instagram' => 'nullable|url',
-            'visibility' => ['required', new Enum(VisibilityStatus::class)],
+            'visibility' => ['required', new Enum(ActiveStatus::class)],
         ]);
 
         // If Handle is Duplicate
@@ -64,7 +63,7 @@ class ChannelController extends Controller
         $totalChannels = Channel::count();
         
         // Get active channels count
-        $activeChannels = Channel::where('visibility', VisibilityStatus::ACTIVE)->count();
+        $activeChannels = Channel::where('visibility', ActiveStatus::ACTIVE)->count();
 
         // Get last month's channel count for comparison
         $lastMonthChannels = Channel::where('created_at', '<', Carbon::now()->startOfMonth())
@@ -77,44 +76,14 @@ class ChannelController extends Controller
             : 0;
 
         // Get pending review channels
-        $pendingChannels = Channel::where('visibility', VisibilityStatus::INACTIVE)->count();
-
-        // Get suspended channels
-        $suspendedChannels = Channel::where('visibility', VisibilityStatus::SUSPENDED)->count();
-
-        // Get popular channels
-        $popularChannels = Channel::withCount('videos')
-            ->withCount(['videos as last_month_videos_count' => function($query) {
-                $query->where('channel_video.created_at', '<', Carbon::now()->startOfMonth())
-                      ->where('channel_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
-            }])
-            ->having('videos_count', '>', 0)
-            ->orderBy('videos_count', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(function($channel) {
-                $lastMonthCount = $channel->last_month_videos_count ?: 0;
-                $currentCount = $channel->videos_count;
-                
-                return (object)[
-                    'id' => $channel->id,
-                    'name' => $channel->channel_name,
-                    'videos_count' => $currentCount,
-                    'growth' => $lastMonthCount > 0 
-                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
-                        : 0
-                ];
-            })
-            ->values();
+        $pendingChannels = Channel::where('visibility', ActiveStatus::INACTIVE)->count();
 
         return view('admin.channel', compact(
             'channels',
             'totalChannels',
             'activeChannels',
             'pendingChannels',
-            'suspendedChannels',
-            'growth',
-            'popularChannels'
+            'growth'
         ));
     }
 
@@ -137,7 +106,7 @@ class ChannelController extends Controller
             'youtube' => 'nullable|url',
             'twitter' => 'nullable|url',
             'instagram' => 'nullable|url',
-            'visibility' => ['required', new Enum(VisibilityStatus::class)],
+            'visibility' => ['required', new Enum(ActiveStatus::class)],
         ]);
 
         // Handle profile image upload
@@ -155,5 +124,13 @@ class ChannelController extends Controller
         $channel->update($validatedData);
 
         return redirect()->route('channels')->with('success', 'Channel updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $channel = Channel::findOrFail($id);
+        $channel->delete();
+
+        return redirect()->route('channels')->with('success', 'Channel deleted successfully.');
     }
 }
