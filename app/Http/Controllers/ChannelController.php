@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\ActiveStatus;
 use App\Models\Channel;
+use App\Models\Video;
 use Carbon\Carbon;
 
 class ChannelController extends Controller
@@ -75,14 +76,20 @@ class ChannelController extends Controller
             ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
             : 0;
 
-        // Get pending review channels
-        $pendingChannels = Channel::where('visibility', ActiveStatus::INACTIVE)->count();
+        // Get total videos count
+        $totalVideos = Video::count();
+
+        // Get most popular channel (by video count)
+        $popularChannel = Channel::withCount('videos')
+            ->orderBy('videos_count', 'desc')
+            ->first();
 
         return view('admin.channel', compact(
             'channels',
             'totalChannels',
             'activeChannels',
-            'pendingChannels',
+            'totalVideos',
+            'popularChannel',
             'growth'
         ));
     }

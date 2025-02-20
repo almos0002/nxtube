@@ -27,7 +27,8 @@
     </header>
 
     <!-- Channel Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Channels -->
         <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
@@ -35,17 +36,19 @@
                     <h3 class="text-2xl font-bold text-neutral-100">{{ $totalChannels }}</h3>
                 </div>
                 <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-tv text-purple-500 text-xl"></i>   
+                    <i class="fa-duotone fa-thin fa-tv text-purple-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-{{ $growth >= 0 ? 'green' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $growth >= 0 ? 'up' : 'down' }} mr-1"></i> {{ abs(round($growth)) }}%
+                    <i class="fa-duotone fa-thin fa-arrow-{{ $growth >= 0 ? 'up' : 'down' }} mr-1"></i> 
+                    {{ abs(round($growth)) }}%
                 </span>
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
 
+        <!-- Active Channels -->
         <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
@@ -57,28 +60,51 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ ($activeChannels / ($totalChannels ?: 1)) * 100 >= 75 ? 'green' : 'yellow' }}-400 flex items-center">
-                    {{ round(($activeChannels / ($totalChannels ?: 1)) * 100) }}%
+                <span class="text-green-400 flex items-center">
+                    <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 
+                    {{ $totalChannels > 0 ? round(($activeChannels / $totalChannels) * 100) : 0 }}%
                 </span>
-                <span class="text-neutral-500 ml-2">of total channels</span>
+                <span class="text-neutral-500 ml-2">visibility rate</span>
             </div>
         </div>
 
+        <!-- Total Videos -->
         <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-neutral-400 text-sm">Pending Review</p>
-                    <h3 class="text-2xl font-bold text-neutral-100">{{ $pendingChannels }}</h3>
+                    <p class="text-neutral-400 text-sm">Total Videos</p>
+                    <h3 class="text-2xl font-bold text-neutral-100">{{ $totalVideos }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-clock text-yellow-500 text-xl"></i>
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ ($pendingChannels / ($totalChannels ?: 1)) * 100 > 20 ? 'red' : 'green' }}-400 flex items-center">
-                    {{ round(($pendingChannels / ($totalChannels ?: 1)) * 100) }}%
+                <span class="text-green-400 flex items-center">
+                    <i class="fa-duotone fa-thin fa-chart-line mr-1"></i> 
+                    {{ round($totalVideos / ($totalChannels ?: 1)) }}
                 </span>
-                <span class="text-neutral-500 ml-2">of total channels</span>
+                <span class="text-neutral-500 ml-2">videos per channel</span>
+            </div>
+        </div>
+
+        <!-- Most Popular Channel -->
+        <div class="channel-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-neutral-400 text-sm">Most Popular</p>
+                    <h3 class="text-2xl font-bold text-neutral-100">
+                        {{ $popularChannel ? $popularChannel->videos_count : 0 }}
+                    </h3>
+                </div>
+                <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-star text-yellow-500 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-neutral-100">
+                    {{ $popularChannel ? $popularChannel->channel_name : 'No channels yet' }}
+                </span>
             </div>
         </div>
     </div>
