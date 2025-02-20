@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('edit-category');
     Route::put('/update-category/{id}', [CategoryController::class, 'update'])->name('update-category');
     Route::delete('/delete-category/{id}', [CategoryController::class, 'destroy'])->name('delete-category');
+    Route::post('/toggle-category-status/{category}', [CategoryController::class, 'toggleStatus'])->name('toggle-category-status');
 
     // Actor Routes
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');

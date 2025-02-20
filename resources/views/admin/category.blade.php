@@ -115,13 +115,11 @@
             <div class="flex gap-3 items-center">
                 <h3 class="text-lg font-semibold text-neutral-100">Category List</h3>
                 @if (session('success'))
-                    <div class="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-sm">
-                        {{ session('success') }}
-                    </div>
+                    <div class="text-green-500">{{ session('success') }}</div>
                 @endif
             </div>
         </div>
-
+        
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($categories as $category)
             <div class="bg-neutral-700/30 rounded-xl p-6 hover:bg-neutral-700/50 transition-all duration-200 group">
@@ -136,6 +134,13 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" 
+                                   class="sr-only peer" 
+                                   {{ $category->status && $category->status->value === 'active' ? 'checked' : '' }}
+                                   onchange="toggleCategoryStatus({{ $category->id }}, this)">
+                            <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-500/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+                        </label>
                         <a href="{{ route('edit-category', $category->id) }}" class="p-2 rounded-lg bg-neutral-600/30 hover:bg-blue-500/20 text-neutral-400 hover:text-blue-400 transition-all duration-200">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -154,8 +159,8 @@
                 </div>
                 <div class="flex items-center justify-between text-sm">
                     <span class="text-neutral-400 group-hover:text-neutral-300 transition-all duration-200">{{ $category->videos_count }} videos</span>
-                    <span class="px-3 py-1.5 {{ $category->videos_count > 0 ? 'bg-green-500/20 text-green-400' : 'bg-neutral-500/20 text-neutral-400' }} rounded-lg font-medium">
-                        {{ $category->videos_count > 0 ? 'Active' : 'Inactive' }}
+                    <span class="status-badge px-3 py-1.5 {{ $category->status && $category->status->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-neutral-500/20 text-neutral-400' }} rounded-lg font-medium">
+                        {{ $category->status && $category->status->value === 'active' ? 'Active' : 'Inactive' }}
                     </span>
                 </div>
             </div>
@@ -185,5 +190,41 @@
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('-translate-x-full');
     }
+
+    function toggleCategoryStatus(categoryId, element) {
+        fetch(`/toggle-category-status/${categoryId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.status === 'active') {
+                    element.checked = true;
+                    element.closest('.bg-neutral-700\\/30').querySelector('.status-badge').className = 'status-badge px-3 py-1.5 bg-green-500/20 text-green-400 rounded-lg font-medium';
+                    element.closest('.bg-neutral-700\\/30').querySelector('.status-badge').textContent = 'Active';
+                } else {
+                    element.checked = false;
+                    element.closest('.bg-neutral-700\\/30').querySelector('.status-badge').className = 'status-badge px-3 py-1.5 bg-neutral-500/20 text-neutral-400 rounded-lg font-medium';
+                    element.closest('.bg-neutral-700\\/30').querySelector('.status-badge').textContent = 'Inactive';
+                }
+            } else {
+                element.checked = !element.checked;
+                alert('Failed to update status');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            element.checked = !element.checked;
+            alert('Failed to update status');
+        });
+    }
 </script>
+
+@push('scripts')
+@endpush
+
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Video;
+use App\Enums\ActiveStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,9 @@ class CategoryController extends Controller
 
         // Calculate total categories
         $totalCategories = Category::count();
+        
+        // Get active categories count
+        $activeCategories = Category::where('status', ActiveStatus::ACTIVE)->count();
 
         // Get last month's category count for comparison
         $lastMonthCategories = Category::where('created_at', '<', Carbon::now()->startOfMonth())
@@ -33,8 +37,8 @@ class CategoryController extends Controller
         // Get total videos across all categories
         $totalVideos = Video::count();
 
-        // Get active categories (categories with videos)
-        $activeCategories = Category::whereHas('videos')->count();
+        // Get categories with videos
+        $categoriesWithVideos = Category::whereHas('videos')->count();
 
         // Get top 3 categories with video counts and calculate their growth
         $popularCategories = Category::withCount('videos')
@@ -64,11 +68,33 @@ class CategoryController extends Controller
         return view('admin.category', compact(
             'categories',
             'totalCategories',
-            'growth',
-            'popularCategories',
+            'activeCategories',
+            'categoriesWithVideos',
             'totalVideos',
-            'activeCategories'
+            'growth',
+            'popularCategories'
         ));
+    }
+
+    public function toggleStatus(Category $category)
+    {
+        try {
+            $category->status = $category->status === ActiveStatus::ACTIVE 
+                ? ActiveStatus::INACTIVE 
+                : ActiveStatus::ACTIVE;
+            $category->save();
+
+            return response()->json([
+                'success' => true,
+                'status' => $category->status->value,
+                'message' => 'Category status updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update category status'
+            ], 500);
+        }
     }
 
     public function create()
