@@ -62,7 +62,7 @@
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-up mr-1"></i> 
-                    {{ round(($activeCategories / $totalCategories) * 100) }}%
+                    {{ $totalCategories > 0 ? round(($activeCategories / $totalCategories) * 100) : 0 }}%
                 </span>
                 <span class="text-neutral-500 ml-2">active rate</span>
             </div>
