@@ -24,14 +24,56 @@ class ActorController extends Controller
                   ->orWhere('email', 'like', "%{$searchTerm}%");
         }
 
+        // Get all stats
         $totalActors = Actor::count();
-        $growth = 0; // You can calculate this based on your requirements
+        $activeActors = Actor::where('visibility', ActiveStatus::ACTIVE)->count();
+        $totalVideos = Video::whereHas('actors')->count();
 
+        // Calculate growth
+        $lastMonthActors = Actor::where('created_at', '<', Carbon::now()->startOfMonth())
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
+            ->count();
+
+        $growth = $lastMonthActors > 0 
+            ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
+            : 0;
+
+        // Get actor type distribution
+        $actorsByType = Actor::selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->get()
+            ->mapWithKeys(function($item) {
+                return [$item->type->value => $item->count];
+            });
+
+        // Get popular actors
+        $popularActors = Actor::withCount('videos')
+            ->orderBy('videos_count', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function($actor) use ($totalVideos) {
+                return [
+                    'id' => $actor->id,
+                    'name' => $actor->firstname . ' ' . $actor->lastname,
+                    'videos_count' => $actor->videos_count,
+                    'percentage_of_total' => $totalVideos > 0 ? round(($actor->videos_count / $totalVideos) * 100, 1) : 0
+                ];
+            });
+
+        // Get actors with video counts
         $actors = $query->withCount('videos')
                        ->latest()
                        ->paginate(12);
 
-        return view('admin.actor', compact('actors', 'totalActors', 'growth'));
+        return view('admin.actor', compact(
+            'actors',
+            'totalActors',
+            'activeActors',
+            'totalVideos',
+            'growth',
+            'popularActors',
+            'actorsByType'
+        ));
     }
 
     public function create(){

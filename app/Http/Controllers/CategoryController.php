@@ -22,66 +22,40 @@ class CategoryController extends Controller
                   ->orWhere('description', 'like', "%{$searchTerm}%");
         }
 
+        // Get all stats
         $totalCategories = Category::count();
-        $growth = 0; // You can calculate this based on your requirements
-
-        $categories = $query->withCount('videos')
-                          ->latest()
-                          ->paginate(12);
-
-        // Calculate total videos across all categories
+        $activeCategories = Category::where('status', ActiveStatus::ACTIVE)->count();
         $totalVideos = Video::count();
-
-        // Get categories with videos
         $categoriesWithVideos = Category::whereHas('videos')->count();
 
-        // Get active categories count
-        $activeCategories = Category::where('status', ActiveStatus::ACTIVE)->count();
-
-        // Get last month's category count for comparison
+        // Calculate growth
         $lastMonthCategories = Category::where('created_at', '<', Carbon::now()->startOfMonth())
             ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
             ->count();
 
-        // Calculate growth percentage
         $growth = $lastMonthCategories > 0 
             ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
             : 0;
 
-        // Get top 3 categories with video counts and calculate their growth
+        // Get popular categories
         $popularCategories = Category::withCount('videos')
-            ->withCount(['videos as last_month_videos_count' => function($query) {
-                $query->where('category_video.created_at', '<', Carbon::now()->startOfMonth())
-                      ->where('category_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
-            }])
-            ->having('videos_count', '>', 0)
             ->orderBy('videos_count', 'desc')
             ->limit(3)
-            ->get()
-            ->map(function($category) use ($totalVideos) {
-                $lastMonthCount = $category->last_month_videos_count ?: 0;
-                $currentCount = $category->videos_count;
-                
-                return (object)[
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'videos_count' => $currentCount,
-                    'percentage_of_total' => round(($currentCount / ($totalVideos ?: 1)) * 100, 1),
-                    'growth' => $lastMonthCount > 0 
-                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
-                        : 0
-                ];
-            })
-            ->values();
+            ->get();
+
+        // Get categories with video counts
+        $categories = $query->withCount('videos')
+                          ->latest()
+                          ->paginate(12);
 
         return view('admin.category', compact(
             'categories',
             'totalCategories',
             'activeCategories',
-            'categoriesWithVideos',
             'totalVideos',
-            'growth',
-            'popularCategories'
+            'categoriesWithVideos',
+            'popularCategories',
+            'growth'
         ));
     }
 

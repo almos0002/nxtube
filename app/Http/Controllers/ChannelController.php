@@ -64,14 +64,38 @@ class ChannelController extends Controller
                   ->orWhere('description', 'like', "%{$searchTerm}%");
         }
 
+        // Get all stats
         $totalChannels = Channel::count();
-        $growth = 0; // You can calculate this based on your requirements
+        $activeChannels = Channel::where('visibility', ActiveStatus::ACTIVE)->count();
+        $totalVideos = Video::whereHas('channels')->count();
 
+        // Calculate growth
+        $lastMonthChannels = Channel::where('created_at', '<', Carbon::now()->startOfMonth())
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
+            ->count();
+
+        $growth = $lastMonthChannels > 0 
+            ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
+            : 0;
+
+        // Get popular channel
+        $popularChannel = Channel::withCount('videos')
+            ->orderBy('videos_count', 'desc')
+            ->first();
+
+        // Get channels with video counts
         $channels = $query->withCount('videos')
                         ->latest()
                         ->paginate(12);
 
-        return view('admin.channel', compact('channels', 'totalChannels', 'growth'));
+        return view('admin.channel', compact(
+            'channels',
+            'totalChannels',
+            'activeChannels',
+            'totalVideos',
+            'popularChannel',
+            'growth'
+        ));
     }
 
     public function edit($id)
