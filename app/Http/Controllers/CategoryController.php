@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        // Get all categories with their video counts using pivot table
+        // Get all categories with their video counts
         $categories = Category::withCount('videos')
             ->orderBy('created_at', 'desc')
             ->paginate(9);
@@ -30,17 +30,36 @@ class CategoryController extends Controller
             ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
             : 0;
 
-        // Get categories with most videos using pivot table
-        $popularCategories = Category::withCount('videos')
-            ->orderBy('videos_count', 'desc')
-            ->limit(3)
-            ->get();
-
         // Get total videos across all categories
         $totalVideos = Video::count();
 
-        // Get active categories (categories with videos) using pivot table
+        // Get active categories (categories with videos)
         $activeCategories = Category::whereHas('videos')->count();
+
+        // Get top 3 categories with video counts and calculate their growth
+        $popularCategories = Category::withCount('videos')
+            ->withCount(['videos as last_month_videos_count' => function($query) {
+                $query->where('category_video.created_at', '<', Carbon::now()->startOfMonth())
+                      ->where('category_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
+            }])
+            ->having('videos_count', '>', 0)
+            ->orderBy('videos_count', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function($category) use ($totalVideos) {
+                $lastMonthCount = $category->last_month_videos_count ?: 0;
+                $currentCount = $category->videos_count;
+                
+                return [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'videos_count' => $currentCount,
+                    'percentage_of_total' => round(($currentCount / ($totalVideos ?: 1)) * 100, 1),
+                    'growth' => $lastMonthCount > 0 
+                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
+                        : 0
+                ];
+            });
 
         return view('admin.category', compact(
             'categories',
