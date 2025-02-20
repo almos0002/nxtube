@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
+use App\Enums\ActiveStatus;
 use App\Enums\VisibilityStatus;
 use App\Models\Channel;
+use Carbon\Carbon;
 
 class ChannelController extends Controller
 {
@@ -49,6 +51,71 @@ class ChannelController extends Controller
         $channel = Channel::create($validatedData);
 
         return redirect()->route('channels')->with('success', 'Channel created successfully.');
+    }
+
+    public function index()
+    {
+        // Get all channels with their video counts
+        $channels = Channel::withCount('videos')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
+        // Calculate total channels
+        $totalChannels = Channel::count();
+        
+        // Get active channels count
+        $activeChannels = Channel::where('visibility', VisibilityStatus::ACTIVE)->count();
+
+        // Get last month's channel count for comparison
+        $lastMonthChannels = Channel::where('created_at', '<', Carbon::now()->startOfMonth())
+            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
+            ->count();
+
+        // Calculate growth percentage
+        $growth = $lastMonthChannels > 0 
+            ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
+            : 0;
+
+        // Get pending review channels
+        $pendingChannels = Channel::where('visibility', VisibilityStatus::INACTIVE)->count();
+
+        // Get suspended channels
+        $suspendedChannels = Channel::where('visibility', VisibilityStatus::SUSPENDED)->count();
+
+        // Get popular channels
+        $popularChannels = Channel::withCount('videos')
+            ->withCount(['videos as last_month_videos_count' => function($query) {
+                $query->where('channel_video.created_at', '<', Carbon::now()->startOfMonth())
+                      ->where('channel_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
+            }])
+            ->having('videos_count', '>', 0)
+            ->orderBy('videos_count', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function($channel) {
+                $lastMonthCount = $channel->last_month_videos_count ?: 0;
+                $currentCount = $channel->videos_count;
+                
+                return (object)[
+                    'id' => $channel->id,
+                    'name' => $channel->channel_name,
+                    'videos_count' => $currentCount,
+                    'growth' => $lastMonthCount > 0 
+                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
+                        : 0
+                ];
+            })
+            ->values();
+
+        return view('admin.channel', compact(
+            'channels',
+            'totalChannels',
+            'activeChannels',
+            'pendingChannels',
+            'suspendedChannels',
+            'growth',
+            'popularChannels'
+        ));
     }
 
     public function edit($id)

@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/videos', 'admin.video')->name('videos');
     Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-    Route::view('/channels', 'admin.channel')->name('channels');
+    Route::get('/channels', [ChannelController::class, 'index'])->name('channels');
     
     // Settings Routes
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');

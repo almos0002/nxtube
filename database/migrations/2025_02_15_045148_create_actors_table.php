@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
             $table->string('website')->nullable();
-            $table->enum('visibility', ['public', 'draft']);
+            $table->enum('visibility', ['active', 'inactive']);
             $table->timestamps();
         });
     }
