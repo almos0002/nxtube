@@ -43,4 +43,9 @@ class Video extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function videoStats()
+    {
+        return $this->hasOne(VideoStats::class);
+    }
 }

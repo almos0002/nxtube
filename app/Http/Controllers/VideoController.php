@@ -146,7 +146,7 @@ class VideoController extends Controller
         ];
 
         // Get latest videos with relationships
-        $videos = Video::with(['channels', 'actors', 'categories'])
+        $videos = Video::with(['channels', 'actors', 'categories', 'videoStats'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
