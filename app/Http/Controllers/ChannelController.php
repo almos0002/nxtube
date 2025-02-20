@@ -53,53 +53,25 @@ class ChannelController extends Controller
         return redirect()->route('channels')->with('success', 'Channel created successfully.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        // Get all channels with their video counts and calculate views
-        $channels = Channel::withCount('videos')
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
+        $query = Channel::query();
 
-        // Load views count for each channel
-        $channels->each(function ($channel) {
-            $channel->views_count = $channel->views_count;
-        });
+        // Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where('channel_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+        }
 
-        // Calculate total channels
         $totalChannels = Channel::count();
-        
-        // Get active channels count
-        $activeChannels = Channel::where('visibility', ActiveStatus::ACTIVE)->count();
+        $growth = 0; // You can calculate this based on your requirements
 
-        // Get last month's channel count for comparison
-        $lastMonthChannels = Channel::where('created_at', '<', Carbon::now()->startOfMonth())
-            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
-            ->count();
+        $channels = $query->withCount('videos')
+                        ->latest()
+                        ->paginate(12);
 
-        // Calculate growth percentage
-        $growth = $lastMonthChannels > 0 
-            ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
-            : 0;
-
-        // Get total videos count
-        $totalVideos = Video::count();
-
-        // Get most popular channel (by views)
-        $popularChannel = Channel::withCount('videos')
-            ->get()
-            ->sortByDesc(function ($channel) {
-                return $channel->views_count;
-            })
-            ->first();
-
-        return view('admin.channel', compact(
-            'channels',
-            'totalChannels',
-            'activeChannels',
-            'totalVideos',
-            'popularChannel',
-            'growth'
-        ));
+        return view('admin.channel', compact('channels', 'totalChannels', 'growth'));
     }
 
     public function edit($id)

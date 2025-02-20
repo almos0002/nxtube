@@ -16,13 +16,15 @@
         <div class="flex items-center space-x-4">
             <a href="{{ route('add-channel') }}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
                 <i class="fa-duotone fa-thin fa-plus mr-2"></i>
-                Add New Channel
+                Add Channel
             </a>
-            <div class="relative">
-                <input type="text" placeholder="Search channels..." 
+            <form action="{{ route('channels') }}" method="GET" class="relative">
+                <input type="text" name="search" placeholder="Search channels..." value="{{ request('search') }}"
                        class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
-                <i class="fa-duotone fa-thin fa-search absolute right-3 top-3.5 text-neutral-400"></i>
-            </div>
+                <button type="submit" class="absolute right-3 top-3.5 text-neutral-400">
+                    <i class="fa-duotone fa-thin fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
     </header>
 

@@ -157,32 +157,39 @@ class VideoController extends Controller
         return redirect()->route('videos')->with('success', 'Video updated successfully.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $query = Video::query();
+
+        // Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+        }
+
         // Get video statistics
         $total = Video::count();
         $active = Video::where('visibility', VisibilityStatus::PUBLIC->value)->count();
-        $processing = Video::where('visibility', VisibilityStatus::DRAFT->value)->count();
-        $total_views = VideoStats::sum('views_count');
-
-        // Calculate percentages
         $active_percentage = $total > 0 ? round(($active / $total) * 100) : 0;
+        $processing = Video::where('visibility', VisibilityStatus::DRAFT->value)->count();
         $processing_percentage = $total > 0 ? round(($processing / $total) * 100) : 0;
+        $total_views = VideoStats::sum('views_count');
         $views_per_video = $total > 0 ? round($total_views / $total) : 0;
 
-        // Get latest videos with relationships
-        $videos = Video::with(['channels', 'actors', 'categories', 'videoStats'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        // Get paginated videos with relationships
+        $videos = $query->with(['channels', 'categories', 'actors', 'tags'])
+                       ->latest()
+                       ->paginate(10);
 
         return view('admin.video', compact(
-            'videos',
-            'total',
-            'active',
-            'active_percentage',
-            'processing',
-            'processing_percentage',
-            'total_views',
+            'videos', 
+            'total', 
+            'active', 
+            'active_percentage', 
+            'processing', 
+            'processing_percentage', 
+            'total_views', 
             'views_per_video'
         ));
     }

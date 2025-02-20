@@ -12,75 +12,26 @@ use Carbon\Carbon;
 
 class ActorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all actors with their video counts and stats
-        $actors = Actor::withCount('videos')
-            ->with('stats')
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
+        $query = Actor::query();
 
-        // Calculate total actors
+        // Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where('firstname', 'like', "%{$searchTerm}%")
+                  ->orWhere('lastname', 'like', "%{$searchTerm}%")
+                  ->orWhere('email', 'like', "%{$searchTerm}%");
+        }
+
         $totalActors = Actor::count();
+        $growth = 0; // You can calculate this based on your requirements
 
-        // Get active actors count
-        $activeActors = Actor::where('visibility', ActiveStatus::ACTIVE)->count();
+        $actors = $query->withCount('videos')
+                       ->latest()
+                       ->paginate(12);
 
-        // Get last month's actor count for comparison
-        $lastMonthActors = Actor::where('created_at', '<', Carbon::now()->startOfMonth())
-            ->where('created_at', '>=', Carbon::now()->subMonth()->startOfMonth())
-            ->count();
-
-        // Calculate growth percentage
-        $growth = $lastMonthActors > 0 
-            ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
-            : 0;
-
-        // Get total videos featuring actors
-        $totalVideos = Video::whereHas('actors')->count();
-
-        // Get actors by type count
-        $actorsByType = Actor::selectRaw('type, COUNT(*) as count')
-            ->groupBy('type')
-            ->get()
-            ->mapWithKeys(function($item) {
-                return [$item->type->value => $item->count];
-            });
-
-        // Get top 3 popular actors
-        $popularActors = Actor::withCount('videos')
-            ->withCount(['videos as last_month_videos_count' => function($query) {
-                $query->where('actor_video.created_at', '<', Carbon::now()->startOfMonth())
-                      ->where('actor_video.created_at', '>=', Carbon::now()->subMonth()->startOfMonth());
-            }])
-            ->having('videos_count', '>', 0)
-            ->orderBy('videos_count', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(function($actor) use ($totalVideos) {
-                $lastMonthCount = $actor->last_month_videos_count ?: 0;
-                $currentCount = $actor->videos_count;
-                
-                return [
-                    'id' => $actor->id,
-                    'name' => $actor->name,
-                    'videos_count' => $currentCount,
-                    'percentage_of_total' => round(($currentCount / ($totalVideos ?: 1)) * 100, 1),
-                    'growth' => $lastMonthCount > 0 
-                        ? round((($currentCount - $lastMonthCount) / $lastMonthCount) * 100, 1)
-                        : 0
-                ];
-            });
-
-        return view('admin.actor', compact(
-            'actors',
-            'totalActors',
-            'activeActors',
-            'totalVideos',
-            'growth',
-            'actorsByType',
-            'popularActors'
-        ));
+        return view('admin.actor', compact('actors', 'totalActors', 'growth'));
     }
 
     public function create(){

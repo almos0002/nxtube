@@ -11,16 +11,30 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all categories with their video counts
-        $categories = Category::withCount('videos')
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
+        $query = Category::query();
 
-        // Calculate total categories
+        // Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+        }
+
         $totalCategories = Category::count();
-        
+        $growth = 0; // You can calculate this based on your requirements
+
+        $categories = $query->withCount('videos')
+                          ->latest()
+                          ->paginate(12);
+
+        // Calculate total videos across all categories
+        $totalVideos = Video::count();
+
+        // Get categories with videos
+        $categoriesWithVideos = Category::whereHas('videos')->count();
+
         // Get active categories count
         $activeCategories = Category::where('status', ActiveStatus::ACTIVE)->count();
 
@@ -33,12 +47,6 @@ class CategoryController extends Controller
         $growth = $lastMonthCategories > 0 
             ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
             : 0;
-
-        // Get total videos across all categories
-        $totalVideos = Video::count();
-
-        // Get categories with videos
-        $categoriesWithVideos = Category::whereHas('videos')->count();
 
         // Get top 3 categories with video counts and calculate their growth
         $popularCategories = Category::withCount('videos')
