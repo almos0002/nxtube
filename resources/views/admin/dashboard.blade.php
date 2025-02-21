@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="p-8">
+    <!-- Header -->
+    <header class="bg-neutral-800 shadow-sm rounded-xl p-4 mb-8 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-neutral-100">Dashboard, Welcome Admin!</h2>
+            <p class="text-neutral-400">Overview of your account</p>
+        </div>
+    </header>
     <!-- Quick Actions -->
     <div class="mb-8">
         <div class="flex items-center justify-between mb-6">
