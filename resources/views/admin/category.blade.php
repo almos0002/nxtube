@@ -20,8 +20,8 @@
             </a>
             <form action="{{ route('categories') }}" method="GET" class="relative">
                 <input type="text" name="search" placeholder="Search categories..." value="{{ request('search') }}"
-                       class="px-4 py-2 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
-                <button type="submit" class="absolute right-3 top-3.5 text-neutral-400">
+                       class="px-4 py-2.5 pl-10 rounded-lg bg-neutral-700 border-neutral-600 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-64">
+                <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-300 transition-colors">
                     <i class="fa-duotone fa-thin fa-magnifying-glass"></i>
                 </button>
             </form>
