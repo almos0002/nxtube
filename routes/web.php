@@ -9,38 +9,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IndexController;
 
-Route::get('/', function () {
-    return view('index.home');
-});
-
-Route::get('/about', function () {
-    return view('index.about');
-});
-
-Route::get('/contact', function () {
-    return view('index.contact');
-});
-
-Route::get('/privacy', function () {
-    return view('index.privacy');
-});
-
-Route::get('/video/{id}', function ($id) {
-    return view('index.video')->with('id', $id);
-});
-
-Route::get('channel/{id}', function ($id) {
-    return view('index.channel')->with('id', $id);
-});
-
-// Route::get('category/{id}', function ($id) {
-//     return view('index.category')->with('id', $id);
-// });
-
-Route::get('actor/{id}', function ($id) {
-    return view('index.actor')->with('id', $id);
-});
+Route::get('/', [IndexController::class, 'home'])->name('home');
+Route::get('/about', [IndexController::class, 'about'])->name('about');
+Route::get('/contact', [IndexController::class, 'contact'])->name('contact');
+Route::get('/privacy', [IndexController::class, 'privacy'])->name('privacy');
+Route::get('/video/{id}', [IndexController::class, 'video'])->name('video');
+Route::get('/channel/{id}', [IndexController::class, 'channel'])->name('channel');
+Route::get('/actor/{id}', [IndexController::class, 'actor'])->name('actor');
+Route::get('/category/{id}', [IndexController::class, 'category'])->name('category');
 
 Auth::routes();
 

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VideoFlex - Stream Your Favorite Videos</title>
+    <title>{{ $settings->site_name ?? 'VideoFlex' }} - Stream Your Favorite Videos</title>
+    <link rel="shortcut icon" href="{{ asset('storage/' . ($settings->favicon ?? 'favicon.ico')) }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -92,14 +93,14 @@
                         <i class="fas fa-bars text-xl"></i>
                     </button>
 
-                    <a href="index.html" class="inline-flex items-center space-x-3">
-                        <i class="fas fa-play-circle text-red-500 text-3xl"></i>
-                        <span class="text-xl font-bold">VideoFlex</span>
+                    <a href="{{ url('/') }}" class="flex items-center space-x-3">
+                        <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}" alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
+                        <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
                     </a>
 
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-8">
-                        <a href="index.html" class="text-neutral-100 hover:text-red-500 transition-colors">Home</a>
+                        <a href="{{ url('/') }}" class="text-neutral-100 hover:text-red-500 transition-colors">Home</a>
                         <div class="relative categories-group">
                             <button class="text-neutral-100 hover:text-red-500 transition-colors flex items-center">
                                 Categories
@@ -111,89 +112,18 @@
                                       transition-all duration-200">
                                 <div class="col-span-3 mb-2">
                                     <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-2">Browse Categories</h3>
-                                    <div class="w-12 h-1 bg-red-500 rounded-full"></div>
                                 </div>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
+                                @foreach($categories as $category)
+                                <a href="{{ url('/category/' . $category->id) }}" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
                                     <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
                                         <span class="text-red-500 text-sm">#</span>
                                     </div>
                                     <div>
-                                        <span class="text-sm font-medium block">Action</span>
-                                        <span class="text-xs text-neutral-400">1.2K videos</span>
+                                        <h4 class="font-medium group-hover/item:text-red-500 transition-colors">{{ $category->name }}</h4>
+                                        <p class="text-sm text-neutral-400">{{ $category->videos_count ?? '0' }} videos</p>
                                     </div>
                                 </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Comedy</span>
-                                        <span class="text-xs text-neutral-400">856 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Drama</span>
-                                        <span class="text-xs text-neutral-400">643 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Horror</span>
-                                        <span class="text-xs text-neutral-400">427 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Romance</span>
-                                        <span class="text-xs text-neutral-400">523 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Sci-Fi</span>
-                                        <span class="text-xs text-neutral-400">721 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Western</span>
-                                        <span class="text-xs text-neutral-400">235 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Animation</span>
-                                        <span class="text-xs text-neutral-400">892 videos</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-sm font-medium block">Documentary</span>
-                                        <span class="text-xs text-neutral-400">412 videos</span>
-                                    </div>
-                                </a>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -218,16 +148,16 @@
         <div class="flex flex-col h-full">
             <!-- Mobile Menu Header -->
             <div class="p-4 border-b border-neutral-700">
-                <a href="index.html" class="inline-flex items-center space-x-3">
-                    <i class="fas fa-play-circle text-red-500 text-3xl"></i>
-                    <span class="text-xl font-bold">VideoFlex</span>
+                <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
+                    <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}" alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
+                    <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
                 </a>
             </div>
             
             <!-- Mobile Menu Items -->
             <div class="flex-1 overflow-y-auto py-4">
                 <div class="px-4 space-y-6">
-                    <a href="index.html" class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
+                    <a href="{{ url('/') }}" class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-home mr-3"></i>Home
                     </a>
                     <div class="space-y-4">
@@ -240,54 +170,14 @@
                         </button>
                         <div id="mobile-categories-content" class="hidden">
                             <div class="grid grid-cols-2 gap-2 px-4">
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
+                                @foreach($categories as $category)
+                                <a href="{{ url('/category/' . $category->id) }}" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
                                     <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
                                         <span class="text-red-500 text-sm">#</span>
                                     </div>
-                                    <span class="text-sm">Action</span>
+                                    <span class="text-sm">{{ $category->name }}</span>
                                 </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Comedy</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Drama</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Horror</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Romance</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Sci-Fi</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Western</span>
-                                </a>
-                                <a href="#" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                        <span class="text-red-500 text-sm">#</span>
-                                    </div>
-                                    <span class="text-sm">Animation</span>
-                                </a>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -335,9 +225,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                 <!-- Brand Section -->
                 <div class="space-y-4">
-                    <a href="index.html" class="inline-flex items-center space-x-3">
-                        <i class="fas fa-play-circle text-red-500 text-3xl"></i>
-                        <span class="text-xl font-bold">VideoFlex</span>
+                    <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
+                        <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}" alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
+                        <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
                     </a>
                     <p class="text-neutral-400 text-sm">Your ultimate destination for high-quality video content. Stream, share, and enjoy!</p>
                     <div class="flex items-center space-x-4">
@@ -372,11 +262,9 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Top Categories</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-neutral-400 hover:text-red-500 transition-colors">Action</a></li>
-                        <li><a href="#" class="text-neutral-400 hover:text-red-500 transition-colors">Comedy</a></li>
-                        <li><a href="#" class="text-neutral-400 hover:text-red-500 transition-colors">Drama</a></li>
-                        <li><a href="#" class="text-neutral-400 hover:text-red-500 transition-colors">Horror</a></li>
-                        <li><a href="#" class="text-neutral-400 hover:text-red-500 transition-colors">Sci-Fi</a></li>
+                        @foreach($categories as $category)
+                        <li><a href="{{ url('/category/' . $category->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">{{ $category->name }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
 
