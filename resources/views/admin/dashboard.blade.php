@@ -232,39 +232,36 @@
             <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-neutral-100">Recent Videos</h3>
-                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400">View All</a>
+                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400 transition-colors duration-300">View All</a>
                 </div>
-                <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($recentVideos as $video)
-                    <div class="group flex items-center space-x-4 p-4 bg-neutral-700/30 rounded-lg hover:bg-neutral-700/50 transition-all duration-300">
-                        <div class="relative flex-shrink-0">
+                    <div class="group bg-neutral-700/20 rounded-lg overflow-hidden hover:bg-neutral-700/40 transition-all duration-300">
+                        <div class="relative">
                             <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
-                                 class="w-32 h-20 object-cover rounded-lg transform group-hover:scale-105 transition-all duration-300">
-                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">
+                                 class="w-full aspect-video object-cover transform group-hover:scale-110 transition-all duration-500">
+                            <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/80 text-white text-xs rounded backdrop-blur-sm">
                                 @php
                                     $duration = explode(':', $video->duration);
-                                    if (count($duration) === 3) {
-                                        if ($duration[0] !== '00') {
-                                            echo $video->duration;
-                                        } else {
-                                            echo $duration[1] . ':' . $duration[2];
-                                        }
-                                    } else {
-                                        echo $video->duration;
-                                    }
+                                    echo (count($duration) === 3 && $duration[0] !== '00') 
+                                        ? $video->duration 
+                                        : (count($duration) === 3 ? $duration[1] . ':' . $duration[2] : $video->duration);
                                 @endphp
                             </span>
                         </div>
-                        <div class="flex-grow min-w-0">
-                            <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors">{{ $video->title }}</h4>
-                            <div class="flex items-center space-x-3 mt-1">
+                        <div class="p-4">
+                            <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors duration-300">{{ $video->title }}</h4>
+                            <div class="flex items-center space-x-3 mt-2">
                                 <p class="text-neutral-400 text-sm truncate">{{ $video->channels->pluck('channel_name')->implode(', ') }}</p>
-                                <span class="text-neutral-500">•</span>
-                                <span class="text-neutral-400 text-sm">{{ $video->created_at->diffForHumans() }}</span>
+                                <span class="text-neutral-500 text-xs">•</span>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-duotone fa-thin fa-clock text-neutral-400 text-sm"></i>
+                                    <span class="text-neutral-400 text-sm">{{ $video->created_at->diffForHumans() }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors duration-300">
                                 <i class="fa-duotone fa-thin fa-edit text-lg"></i>
                             </a>
                         </div>
@@ -274,18 +271,18 @@
             </div>
 
             <!-- Popular Videos -->
-            <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
+            <div class="bg-neutral-800 rounded-xl shadow-sm p-6 mt-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-neutral-100">Popular Videos</h3>
                     <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400">View All</a>
                 </div>
-                <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($popularVideos as $video)
-                    <div class="group flex items-center space-x-4 p-4 bg-neutral-700/30 rounded-lg hover:bg-neutral-700/50 transition-all duration-300">
-                        <div class="relative flex-shrink-0">
+                    <div class="group bg-neutral-700/30 rounded-lg overflow-hidden hover:bg-neutral-700/50 transition-all duration-300">
+                        <div class="relative">
                             <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
-                                 class="w-32 h-20 object-cover rounded-lg transform group-hover:scale-105 transition-all duration-300">
-                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">
+                                 class="w-full aspect-video object-cover transform group-hover:scale-105 transition-all duration-300">
+                            <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded">
                                 @php
                                     $duration = explode(':', $video->duration);
                                     if (count($duration) === 3) {
@@ -300,9 +297,9 @@
                                 @endphp
                             </span>
                         </div>
-                        <div class="flex-grow min-w-0">
+                        <div class="p-4">
                             <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors">{{ $video->title }}</h4>
-                            <div class="flex items-center space-x-3 mt-1">
+                            <div class="flex items-center space-x-3 mt-2">
                                 <p class="text-neutral-400 text-sm truncate">{{ $video->channels->pluck('channel_name')->implode(', ') }}</p>
                                 <span class="text-neutral-500">•</span>
                                 <div class="flex items-center text-neutral-400 text-sm">
@@ -311,7 +308,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">
                                 <i class="fa-duotone fa-thin fa-edit text-lg"></i>
                             </a>
