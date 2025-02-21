@@ -130,9 +130,9 @@
                             <div>
                                 <h4 class="text-neutral-100 font-semibold text-lg group-hover:text-red-500 transition-colors duration-200">{{ $video->title }}</h4>
                                 <div class="flex items-center space-x-3 mt-2 text-sm">
-                                    <span class="text-neutral-400">{{ $video->videoStats->views_count ?? 0 }} views</span>
+                                    <span class="text-neutral-400"><i class="fa-duotone fa-thin fa-eye text-neutral-500 mr-2"></i>{{ $video->videoStats->views_count ?? 0 }} views</span>
                                     <span class="text-neutral-500">•</span>
-                                    <span class="text-neutral-400">{{ $video->created_at->diffForHumans() }}</span>
+                                    <span class="text-neutral-400"><i class="fa-duotone fa-thin fa-clock text-neutral-500 mr-2"></i>{{ $video->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
