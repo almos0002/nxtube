@@ -64,12 +64,12 @@
                     <p class="text-neutral-400 text-sm">Total Views</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($totalViews) }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-eye text-green-500 text-xl"></i>
+                <div class="w-12 h-12 bg-lime-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-eye text-lime-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $viewsGrowth >= 0 ? 'lime' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                     {{ abs(round($viewsGrowth)) }}%
                 </span>

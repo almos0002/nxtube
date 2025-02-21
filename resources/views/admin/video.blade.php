@@ -36,13 +36,13 @@
                         <p class="text-neutral-400 text-sm">Total Videos</p>
                         <h3 class="text-2xl font-bold text-neutral-100">{{ $total }}</h3>
                     </div>
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
+                    <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fa-duotone fa-thin fa-video text-orange-500 text-xl"></i>
                     </div>
                 </div>
                 <p class="text-neutral-500 text-sm flex items-center gap-1">
-                    <i class="fa-duotone fa-thin fa-chart-line text-blue-400"></i>
-                    <span class="text-blue-400 font-medium">{{ number_format($views_per_video) }}</span>
+                    <i class="fa-duotone fa-thin fa-chart-line text-orange-400"></i>
+                    <span class="text-orange-400 font-medium">{{ number_format($views_per_video) }}</span>
                     average views
                 </p>
             </div>
@@ -87,13 +87,13 @@
                         <p class="text-neutral-400 text-sm">Total Views</p>
                         <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($total_views) }}</h3>
                     </div>
-                    <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                        <i class="fa-duotone fa-thin fa-eye text-purple-500 text-xl"></i>
+                    <div class="w-12 h-12 bg-lime-500/20 rounded-xl flex items-center justify-center">
+                        <i class="fa-duotone fa-thin fa-eye text-lime-500 text-xl"></i>
                     </div>
                 </div>
                 <p class="text-neutral-500 text-sm flex items-center gap-1">
-                    <i class="fa-duotone fa-thin fa-chart-mixed text-purple-400"></i>
-                    <span class="text-purple-400 font-medium">All time</span>
+                    <i class="fa-duotone fa-thin fa-chart-mixed text-lime-400"></i>
+                    <span class="text-lime-400 font-medium">All time</span>
                     views count
                 </p>
             </div>
