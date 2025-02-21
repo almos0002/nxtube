@@ -168,7 +168,7 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-between text-sm">
-                    <span class="text-neutral-400 group-hover:text-neutral-300 transition-all duration-200">{{ $category->videos_count }} videos</span>
+                    <span class="text-neutral-400 group-hover:text-neutral-300 transition-all duration-200"><i class="fa-duotone fa-thin fa-video text-neutral-400 text-sm mr-2"></i> {{ $category->videos_count }} videos</span>
                     <span class="status-badge px-3 py-1.5 {{ $category->status && $category->status->value === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400' }} rounded-lg font-medium">
                         {{ $category->status && $category->status->value === 'active' ? 'Active' : 'Inactive' }}
                     </span>
