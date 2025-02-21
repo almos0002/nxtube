@@ -79,8 +79,15 @@ class DashboardController extends Controller
             : 0;
 
         // Top actors by video count
-        $topActors = Actor::withCount('videos')
-            ->orderByDesc('videos_count')
+        $topActors = Actor::select([
+                'actors.id',
+                'actors.firstname',
+                'actors.lastname',
+                'actors.stagename',
+                'actor_stats.views_count'
+            ])
+            ->leftJoin('actor_stats', 'actors.id', '=', 'actor_stats.actor_id')
+            ->orderByDesc('actor_stats.views_count')
             ->take(5)
             ->get();
 

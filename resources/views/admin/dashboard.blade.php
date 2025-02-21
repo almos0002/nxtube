@@ -195,7 +195,7 @@
                         @foreach($topCategories as $category)
                         <div class="flex items-center justify-between">
                             <span class="text-neutral-300">{{ $category->name }}</span>
-                            <span class="text-neutral-400 text-sm">{{ $category->videos_count }} videos</span>
+                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-video mr-2"></i>{{ $category->videos_count }} videos</span>
                         </div>
                         @endforeach
                     </div>
@@ -207,8 +207,8 @@
                     <div class="space-y-4">
                         @foreach($topActors as $actor)
                         <div class="flex items-center justify-between">
-                            <span class="text-neutral-300">{{ $actor->name }}</span>
-                            <span class="text-neutral-400 text-sm">{{ $actor->videos_count }} videos</span>
+                            <span class="text-neutral-300">{{ $actor->stagename ?: $actor->firstname . ' ' . $actor->lastname }}</span>
+                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-eye mr-2"></i>{{ number_format($actor->views_count) }} views</span>
                         </div>
                         @endforeach
                     </div>
@@ -221,7 +221,7 @@
                         @foreach($topChannels as $channel)
                         <div class="flex items-center justify-between">
                             <span class="text-neutral-300">{{ $channel->channel_name }}</span>
-                            <span class="text-neutral-400 text-sm">{{ number_format($channel->total_views) }} views</span>
+                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-eye mr-2"></i>{{ number_format($channel->total_views) }} views</span>
                         </div>
                         @endforeach
                     </div>
