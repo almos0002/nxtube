@@ -26,7 +26,19 @@ class IndexController extends Controller
 
     public function home()
     {
-        return view('index.home');
+        // Get trending videos by views from video_stats
+        $trendingVideos = Video::select('videos.*')
+            ->join('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->orderBy('video_stats.views_count', 'desc')
+            ->take(8)
+            ->get();
+
+        // Get recent videos
+        $recentVideos = Video::latest()
+            ->take(8)
+            ->get();
+
+        return view('index.home', compact('trendingVideos', 'recentVideos'));
     }
 
     public function about()
