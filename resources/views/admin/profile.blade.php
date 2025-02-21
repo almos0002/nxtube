@@ -11,9 +11,14 @@
     </header>
 
     @if(session('success'))
-        <div class="bg-green-500 text-white p-4 rounded-xl mb-8">
+        <div id="successMessage" class="bg-green-500 text-white p-4 rounded-xl mb-8">
             {{ session('success') }}
         </div>
+        <script>
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        </script>
     @endif
 
     <!-- Profile Form -->
