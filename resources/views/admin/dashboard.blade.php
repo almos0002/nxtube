@@ -9,26 +9,26 @@
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <a href="{{ route('add-video') }}" class="bg-neutral-800 p-4 rounded-xl flex items-center space-x-3 hover:bg-neutral-700/50 transition-colors">
-                <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-plus text-red-500"></i>
+                <div class="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-plus text-orange-500"></i>
                 </div>
                 <span class="text-neutral-100">Add Video</span>
             </a>
             <a href="{{ route('add-category') }}" class="bg-neutral-800 p-4 rounded-xl flex items-center space-x-3 hover:bg-neutral-700/50 transition-colors">
                 <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-folder-plus text-purple-500"></i>
+                    <i class="fa-duotone fa-thin fa-plus text-purple-500"></i>
                 </div>
                 <span class="text-neutral-100">Add Category</span>
             </a>
             <a href="{{ route('add-actor') }}" class="bg-neutral-800 p-4 rounded-xl flex items-center space-x-3 hover:bg-neutral-700/50 transition-colors">
                 <div class="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-user-plus text-yellow-500"></i>
+                    <i class="fa-duotone fa-thin fa-plus text-yellow-500"></i>
                 </div>
                 <span class="text-neutral-100">Add Actor</span>
             </a>
             <a href="{{ route('add-channel') }}" class="bg-neutral-800 p-4 rounded-xl flex items-center space-x-3 hover:bg-neutral-700/50 transition-colors">
                 <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-tv-plus text-blue-500"></i>
+                    <i class="fa-duotone fa-thin fa-plus text-blue-500"></i>
                 </div>
                 <span class="text-neutral-100">Add Channel</span>
             </a>
@@ -44,12 +44,12 @@
                     <p class="text-neutral-400 text-sm">Total Videos</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($totalVideos) }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
+                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-video text-orange-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $videosGrowth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $videosGrowth >= 0 ? 'orange' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $videosGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                     {{ abs(round($videosGrowth)) }}%
                 </span>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $categoriesGrowth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $categoriesGrowth >= 0 ? 'purple' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $categoriesGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                     {{ abs(round($categoriesGrowth)) }}%
                 </span>
@@ -109,7 +109,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $actorsGrowth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $actorsGrowth >= 0 ? 'yellow' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $actorsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                     {{ abs(round($actorsGrowth)) }}%
                 </span>
@@ -124,12 +124,12 @@
                     <p class="text-neutral-400 text-sm">Total Channels</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ number_format($totalChannels) }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-tv text-red-500 text-xl"></i>
+                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-tv text-blue-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $channelsGrowth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $channelsGrowth >= 0 ? 'blue' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $channelsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                     {{ abs(round($channelsGrowth)) }}%
                 </span>
