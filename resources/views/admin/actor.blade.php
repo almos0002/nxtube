@@ -37,12 +37,12 @@
                     <p class="text-neutral-400 text-sm">Total Actors</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ $totalActors }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-users text-purple-500 text-xl"></i>
+                <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-users text-yellow-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $growth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $growth >= 0 ? 'yellow' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $growth >= 0 ? 'up' : 'down' }} mr-1"></i> 
                     {{ abs(round($growth)) }}%
                 </span>
@@ -54,7 +54,7 @@
         <div class="actor-card bg-neutral-800 p-6 rounded-xl shadow-sm hover:shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-neutral-400 text-sm">Public Actors</p>
+                    <p class="text-neutral-400 text-sm">Active Actors</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ $activeActors }}</h3>
                 </div>
                 <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
@@ -77,12 +77,12 @@
                     <p class="text-neutral-400 text-sm">Total Videos</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ $totalVideos }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
+                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-video text-orange-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-green-400 flex items-center">
+                <span class="text-orange-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-chart-line mr-1"></i> 
                     {{ round($totalVideos / ($totalActors ?: 1)) }}
                 </span>
@@ -99,8 +99,8 @@
                         {{ $popularActors->first() ? $popularActors->first()['videos_count'] : 0 }}
                     </h3>
                 </div>
-                <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-star text-yellow-500 text-xl"></i>
+                <div class="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-chart-line text-sky-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">

@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $growth >= 0 ? 'green' : 'red' }}-400 flex items-center">
+                <span class="text-{{ $growth >= 0 ? 'purple' : 'red' }}-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $growth >= 0 ? 'up' : 'down' }} mr-1"></i> 
                     {{ abs(round($growth)) }}%
                 </span>
@@ -77,12 +77,12 @@
                     <p class="text-neutral-400 text-sm">Total Videos</p>
                     <h3 class="text-2xl font-bold text-neutral-100">{{ $totalVideos }}</h3>
                 </div>
-                <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-video text-blue-500 text-xl"></i>
+                <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-video text-orange-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-green-400 flex items-center">
+                <span class="text-orange-400 flex items-center">
                     <i class="fa-duotone fa-thin fa-chart-line mr-1"></i> 
                     {{ round($totalVideos / ($totalCategories ?: 1)) }}
                 </span>
@@ -99,8 +99,8 @@
                         {{ $popularCategories->first() ? $popularCategories->first()->videos_count : 0 }}
                     </h3>
                 </div>
-                <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <i class="fa-duotone fa-thin fa-chart-line text-yellow-500 text-xl"></i>
+                <div class="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center">
+                    <i class="fa-duotone fa-thin fa-chart-line text-sky-500 text-xl"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
