@@ -232,7 +232,7 @@
             <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-neutral-100">Recent Videos</h3>
-                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400 transition-colors duration-300">View All</a>
+                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400 transition-colors duration-300">View All<i class="fa-duotone fa-thin fa-arrow-right ml-2"></i></a>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($recentVideos as $video)
@@ -274,7 +274,7 @@
             <div class="bg-neutral-800 rounded-xl shadow-sm p-6 mt-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-neutral-100">Popular Videos</h3>
-                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400">View All</a>
+                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400">View All<i class="fa-duotone fa-thin fa-arrow-right ml-2"></i></a>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($popularVideos as $video)
