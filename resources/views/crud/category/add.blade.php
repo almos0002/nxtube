@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <!-- Main Content -->
-<div class="ml-64 p-8">
+<div class="p-8">
     <header class="bg-neutral-800 shadow-sm rounded-xl p-4 mb-8 flex justify-between items-center">
         <div>
             <h2 class="text-2xl font-bold text-neutral-100">Add New Category</h2>

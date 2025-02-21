@@ -9,14 +9,16 @@ use App\Models\Video;
 use App\Models\VideoStats;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Calculate current and last month's stats
         $now = Carbon::now();
         $lastMonth = Carbon::now()->subMonth();
+        $last7Days = Carbon::now()->subDays(7);
+        $last30Days = Carbon::now()->subDays(30);
 
         // Videos stats
         $totalVideos = Video::count();
@@ -36,6 +38,22 @@ class DashboardController extends Controller
             ? (($totalViews - $lastMonthViews) / $lastMonthViews) * 100 
             : 0;
 
+        // Daily views for chart
+        $dailyViews = VideoStats::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('SUM(views_count) as total_views')
+        )
+            ->where('created_at', '>=', $last30Days)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'date' => Carbon::parse($item->date)->format('M d'),
+                    'views' => $item->total_views
+                ];
+            });
+
         // Categories stats
         $totalCategories = Category::count();
         $lastMonthCategories = Category::where('created_at', '<', $now->startOfMonth())
@@ -44,6 +62,12 @@ class DashboardController extends Controller
         $categoriesGrowth = $lastMonthCategories > 0 
             ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
             : 0;
+
+        // Top categories by video count
+        $topCategories = Category::withCount('videos')
+            ->orderByDesc('videos_count')
+            ->take(5)
+            ->get();
 
         // Actors stats
         $totalActors = Actor::count();
@@ -54,6 +78,12 @@ class DashboardController extends Controller
             ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
             : 0;
 
+        // Top actors by video count
+        $topActors = Actor::withCount('videos')
+            ->orderByDesc('videos_count')
+            ->take(5)
+            ->get();
+
         // Channels stats
         $totalChannels = Channel::count();
         $lastMonthChannels = Channel::where('created_at', '<', $now->startOfMonth())
@@ -63,13 +93,50 @@ class DashboardController extends Controller
             ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
             : 0;
 
-        // Get recent videos with relationships
+        // Top channels by views
+        $topChannels = Channel::select([
+                'channels.id',
+                'channels.profile_image',
+                'channels.channel_name',
+                'channels.handle',
+                'channels.description',
+                'channels.banner_image',
+                'channels.youtube',
+                'channels.twitter',
+                'channels.instagram',
+                'channels.visibility',
+                'channels.created_at',
+                'channels.updated_at',
+                DB::raw('SUM(video_stats.views_count) as total_views')
+            ])
+            ->join('channel_video', 'channels.id', '=', 'channel_video.channel_id')
+            ->join('videos', 'channel_video.video_id', '=', 'videos.id')
+            ->join('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->groupBy([
+                'channels.id',
+                'channels.profile_image',
+                'channels.channel_name',
+                'channels.handle',
+                'channels.description',
+                'channels.banner_image',
+                'channels.youtube',
+                'channels.twitter',
+                'channels.instagram',
+                'channels.visibility',
+                'channels.created_at',
+                'channels.updated_at'
+            ])
+            ->orderByDesc('total_views')
+            ->take(5)
+            ->get();
+
+        // Recent videos with relationships
         $recentVideos = Video::with(['channels', 'categories', 'videoStats'])
             ->latest()
             ->take(5)
             ->get();
 
-        // Get popular videos with relationships
+        // Popular videos with relationships
         $popularVideos = Video::with(['channels', 'categories', 'videoStats'])
             ->join('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
@@ -77,19 +144,46 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Video upload trends
+        $videoUploadTrends = Video::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as total_uploads')
+        )
+            ->where('created_at', '>=', $last7Days)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'date' => Carbon::parse($item->date)->format('M d'),
+                    'uploads' => $item->total_uploads
+                ];
+            });
+
+        // Video duration stats
+        $averageDuration = Video::avg(DB::raw('TIME_TO_SEC(duration)'));
+        $totalDuration = Video::sum(DB::raw('TIME_TO_SEC(duration)'));
+
         return view('admin.dashboard', compact(
             'totalVideos',
             'videosGrowth',
             'totalViews',
             'viewsGrowth',
+            'dailyViews',
             'totalCategories',
             'categoriesGrowth',
+            'topCategories',
             'totalActors',
             'actorsGrowth',
+            'topActors',
             'totalChannels',
             'channelsGrowth',
+            'topChannels',
             'recentVideos',
-            'popularVideos'
+            'popularVideos',
+            'videoUploadTrends',
+            'averageDuration',
+            'totalDuration'
         ));
     }
 }
