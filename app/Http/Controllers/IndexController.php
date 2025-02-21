@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\Category;
+use App\Models\Video;
+use App\Models\Channel;
+use App\Models\Actor;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -43,17 +46,20 @@ class IndexController extends Controller
 
     public function video($id)
     {
-        return view('index.video', compact('id'));
+        $video = Video::findOrFail($id);
+        return view('index.video', compact('video'));
     }
 
     public function channel($id)
     {
-        return view('index.channel', compact('id'));
+        $channel = Channel::findOrFail($id);
+        return view('index.channel', compact('channel'));
     }
 
     public function actor($id)
     {
-        return view('index.actor', compact('id'));
+        $actor = Actor::findOrFail($id);
+        return view('index.actor', compact('actor'));
     }
 
     public function category($id)

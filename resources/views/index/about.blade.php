@@ -1,4 +1,7 @@
 @extends('layouts.index')
+
+@section('title', 'About Us')
+
 @section('content')
 <!-- Main Content -->
 <main class="container mx-auto px-4 pt-24 pb-16">
