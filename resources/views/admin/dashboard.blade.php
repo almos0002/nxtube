@@ -240,7 +240,20 @@
                         <div class="relative flex-shrink-0">
                             <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
                                  class="w-32 h-20 object-cover rounded-lg transform group-hover:scale-105 transition-all duration-300">
-                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">{{ $video->duration }}</span>
+                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">
+                                @php
+                                    $duration = explode(':', $video->duration);
+                                    if (count($duration) === 3) {
+                                        if ($duration[0] !== '00') {
+                                            echo $video->duration;
+                                        } else {
+                                            echo $duration[1] . ':' . $duration[2];
+                                        }
+                                    } else {
+                                        echo $video->duration;
+                                    }
+                                @endphp
+                            </span>
                         </div>
                         <div class="flex-grow min-w-0">
                             <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors">{{ $video->title }}</h4>
@@ -272,7 +285,20 @@
                         <div class="relative flex-shrink-0">
                             <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
                                  class="w-32 h-20 object-cover rounded-lg transform group-hover:scale-105 transition-all duration-300">
-                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">{{ $video->duration }}</span>
+                            <span class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/70 text-white text-xs rounded">
+                                @php
+                                    $duration = explode(':', $video->duration);
+                                    if (count($duration) === 3) {
+                                        if ($duration[0] !== '00') {
+                                            echo $video->duration;
+                                        } else {
+                                            echo $duration[1] . ':' . $duration[2];
+                                        }
+                                    } else {
+                                        echo $video->duration;
+                                    }
+                                @endphp
+                            </span>
                         </div>
                         <div class="flex-grow min-w-0">
                             <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors">{{ $video->title }}</h4>

@@ -108,7 +108,20 @@
                     <!-- Thumbnail -->
                     <div class="relative w-64 flex-shrink-0 overflow-hidden rounded-lg">
                         <img src="{{ asset('storage/' . $video->thumbnail) }}" class="w-full aspect-video object-cover transform group-hover:scale-105 transition-all duration-500">
-                        <span class="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 text-white text-xs font-medium rounded-md backdrop-blur-sm">{{ $video->duration }}</span>
+                        <span class="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 text-white text-xs font-medium rounded-md backdrop-blur-sm">
+                            @php
+                                $duration = explode(':', $video->duration);
+                                if (count($duration) === 3) {
+                                    if ($duration[0] !== '00') {
+                                        echo $video->duration;
+                                    } else {
+                                        echo $duration[1] . ':' . $duration[2];
+                                    }
+                                } else {
+                                    echo $video->duration;
+                                }
+                            @endphp
+                        </span>
                     </div>
                     
                     <!-- Content -->
