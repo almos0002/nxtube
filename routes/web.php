@@ -14,6 +14,34 @@ Route::get('/', function () {
     return view('index.home');
 });
 
+Route::get('/about', function () {
+    return view('index.about');
+});
+
+Route::get('/contact', function () {
+    return view('index.contact');
+});
+
+Route::get('/privacy', function () {
+    return view('index.privacy');
+});
+
+Route::get('/video/{id}', function ($id) {
+    return view('index.video')->with('id', $id);
+});
+
+Route::get('channel/{id}', function ($id) {
+    return view('index.channel')->with('id', $id);
+});
+
+// Route::get('category/{id}', function ($id) {
+//     return view('index.category')->with('id', $id);
+// });
+
+Route::get('actor/{id}', function ($id) {
+    return view('index.actor')->with('id', $id);
+});
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
