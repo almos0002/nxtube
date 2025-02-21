@@ -22,7 +22,7 @@
     @endif
 
     <!-- Settings Form -->
-    <form action="{{ route('settings.update') }}" method="POST" class="w-full">
+    <form action="{{ route('settings.update') }}" method="POST" class="w-full" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         
@@ -30,6 +30,54 @@
         <div class="bg-neutral-800 rounded-xl shadow-sm p-6 mb-8">
             <h2 class="text-xl font-semibold text-neutral-100 mb-6">Site Configuration</h2>
             <div class="space-y-6">
+                <!-- Logo Upload -->
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Site Logo</label>
+                    <div class="flex items-center space-x-4">
+                        @if($settings->logo)
+                            <div class="w-32 h-12 bg-neutral-700 rounded-lg overflow-hidden">
+                                <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo" class="w-full h-full object-contain">
+                            </div>
+                        @endif
+                        <div class="relative">
+                            <input type="file" id="logoInput" name="logo" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('logoInput').click()" 
+                                    class="px-4 py-2 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600 transition-colors flex items-center">
+                                <i class="fas fa-upload mr-2"></i>
+                                Upload Logo
+                            </button>
+                            <p class="text-neutral-400 text-sm mt-1">Recommended: PNG or SVG (max 2MB)</p>
+                        </div>
+                    </div>
+                    @error('logo')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Favicon Upload -->
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Site Favicon</label>
+                    <div class="flex items-center space-x-4">
+                        @if($settings->favicon)
+                            <div class="w-8 h-8 bg-neutral-700 rounded-lg overflow-hidden">
+                                <img src="{{ asset('storage/' . $settings->favicon) }}" alt="Site Favicon" class="w-full h-full object-contain">
+                            </div>
+                        @endif
+                        <div class="relative">
+                            <input type="file" id="faviconInput" name="favicon" accept="image/x-icon,image/png" class="hidden">
+                            <button type="button" onclick="document.getElementById('faviconInput').click()" 
+                                    class="px-4 py-2 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600 transition-colors flex items-center">
+                                <i class="fas fa-upload mr-2"></i>
+                                Upload Favicon
+                            </button>
+                            <p class="text-neutral-400 text-sm mt-1">Recommended: .ico or .png file (32x32px)</p>
+                        </div>
+                    </div>
+                    @error('favicon')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-neutral-300 mb-2">Site Name</label>
                     <input type="text" name="site_name" class="form-input w-full bg-neutral-700 border-neutral-600 rounded-lg px-4 py-2.5 text-neutral-100 focus:outline-none" 
@@ -182,5 +230,39 @@
         input.setAttribute('type', type);
         button.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
     }
+</script>
+
+<script>
+    // Image preview handlers
+    function handleImagePreview(input, previewContainer) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let img = previewContainer.querySelector('img');
+                if (!img) {
+                    const div = document.createElement('div');
+                    div.className = input.id === 'logoInput' ? 'w-32 h-12' : 'w-8 h-8';
+                    div.className += ' bg-neutral-700 rounded-lg overflow-hidden';
+                    img = document.createElement('img');
+                    img.className = 'w-full h-full object-contain';
+                    div.appendChild(img);
+                    previewContainer.insertBefore(div, previewContainer.firstChild);
+                }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Logo preview
+    document.getElementById('logoInput').addEventListener('change', function(e) {
+        handleImagePreview(this, this.closest('.flex.items-center.space-x-4'));
+    });
+
+    // Favicon preview
+    document.getElementById('faviconInput').addEventListener('change', function(e) {
+        handleImagePreview(this, this.closest('.flex.items-center.space-x-4'));
+    });
 </script>
 @endsection

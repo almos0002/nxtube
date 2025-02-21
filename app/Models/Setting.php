@@ -17,7 +17,9 @@ class Setting extends Model
         'cache_enabled',
         'cache_duration',
         'cache_static_assets',
-        'cache_api_responses'
+        'cache_api_responses',
+        'logo',
+        'favicon'
     ];
 
     protected $casts = [

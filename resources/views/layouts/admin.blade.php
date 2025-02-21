@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - VideoFlex</title>
+    <title>{{ $settings->site_name }} - Admin Dashboard</title>
+    @if($settings->favicon)
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $settings->favicon) }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -62,10 +65,14 @@
         <div class="fixed inset-y-0 left-0 w-64 bg-neutral-800 text-neutral-100 transition-transform duration-300 transform md:translate-x-0 shadow-2xl z-30" id="sidebar">
             <div class="p-6 border-b border-neutral-700/30">
                 <div class="flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-play-circle text-white text-xl"></i>
-                    </div>
-                    <h1 class="text-2xl font-bold">NxTube</h1>
+                    @if($settings->logo)
+                        <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->site_name }}" class="h-8 w-auto">
+                    @else
+                        <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-play-circle text-white text-xl"></i>
+                        </div>
+                    @endif
+                    <h1 class="text-2xl font-bold">{{ $settings->site_name }}</h1>
                 </div>
             </div>
             <div class="sidebar-content">

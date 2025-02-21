@@ -27,11 +27,32 @@ class SettingController extends Controller
             'cache_enabled' => 'boolean',
             'cache_duration' => 'required_if:cache_enabled,true|integer|min:1',
             'cache_static_assets' => 'boolean',
-            'cache_api_responses' => 'boolean'
+            'cache_api_responses' => 'boolean',
+            'logo' => 'nullable|image|max:2048',
+            'favicon' => 'nullable|image|max:2048|dimensions:min_width=16,min_height=16'
         ]);
 
         $settings = Setting::firstOrCreate(['id' => 1]);
-        $settings->update($request->all());
+        
+        // Handle logo upload
+        if ($request->hasFile('logo')) {
+            if ($settings->logo) {
+                \Storage::disk('public')->delete($settings->logo);
+            }
+            $logoPath = $request->file('logo')->store('logos', 'public');
+            $settings->logo = $logoPath;
+        }
+
+        // Handle favicon upload
+        if ($request->hasFile('favicon')) {
+            if ($settings->favicon) {
+                \Storage::disk('public')->delete($settings->favicon);
+            }
+            $faviconPath = $request->file('favicon')->store('favicons', 'public');
+            $settings->favicon = $faviconPath;
+        }
+
+        $settings->update($request->except(['logo', 'favicon']));
 
         // Clear cache if cache settings are modified
         if ($request->has('cache_enabled') || $request->has('cache_duration')) {
