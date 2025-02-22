@@ -7,17 +7,20 @@ use App\Models\Category;
 use App\Models\Video;
 use App\Models\Channel;
 use App\Models\Actor;
+use App\Services\VideoViewService;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
     protected $settings;
     protected $categories;
+    protected $videoViewService;
 
-    public function __construct()
+    public function __construct(VideoViewService $videoViewService)
     {
         $this->settings = Setting::first();
         $this->categories = Category::all();
+        $this->videoViewService = $videoViewService;
         view()->share([
             'settings' => $this->settings,
             'categories' => $this->categories
@@ -66,6 +69,12 @@ class IndexController extends Controller
         // Get the current video with all its relationships
         $video = Video::with(['categories', 'actors', 'channels', 'tags', 'videoStats'])
             ->findOrFail($id);
+
+        // Record the view if not recently viewed
+        $ipAddress = request()->ip();
+        if (!$this->videoViewService->hasRecentlyViewed($video, $ipAddress)) {
+            $this->videoViewService->recordView($video, $ipAddress);
+        }
 
         // Get related videos based on categories and tags
         $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
