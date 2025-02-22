@@ -27,7 +27,7 @@
                         <div class="metadata space-y-1">
                             <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
                             <div class="flex items-center text-xs text-neutral-400">
-                                <span>{{ number_format($video->views_count) }} views</span>
+                                <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
                                 <span class="mx-1">•</span>
                                 <span>{{ $video->created_at->diffForHumans() }}</span>
                             </div>
@@ -69,7 +69,7 @@
                         <div class="metadata space-y-1">
                             <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
                             <div class="flex items-center text-xs text-neutral-400">
-                                <span>{{ number_format($video->views_count) }} views</span>
+                                <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
                                 <span class="mx-1">•</span>
                                 <span>{{ $video->created_at->diffForHumans() }}</span>
                             </div>
