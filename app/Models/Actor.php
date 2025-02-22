@@ -36,19 +36,21 @@ class Actor extends Model
         'type' => ActorType::class,
     ];
 
+    protected $with = ['actorStats']; // Eager load stats by default
+
     public function videos()
     {
         return $this->belongsToMany(Video::class);
     }
 
-    public function stats()
+    public function actorStats()
     {
         return $this->hasOne(ActorStats::class);
     }
 
     public function getViewsCountAttribute()
     {
-        return $this->stats ? $this->stats->views_count : 0;
+        return $this->actorStats ? $this->actorStats->views_count : 0;
     }
 
     // Get full name attribute

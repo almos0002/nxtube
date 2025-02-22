@@ -8,6 +8,7 @@ use App\Models\Video;
 use App\Models\Channel;
 use App\Models\Actor;
 use App\Services\VideoViewService;
+use App\Services\ActorViewService;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -15,12 +16,14 @@ class IndexController extends Controller
     protected $settings;
     protected $categories;
     protected $videoViewService;
+    protected $actorViewService;
 
-    public function __construct(VideoViewService $videoViewService)
+    public function __construct(VideoViewService $videoViewService, ActorViewService $actorViewService)
     {
         $this->settings = Setting::first();
         $this->categories = Category::all();
         $this->videoViewService = $videoViewService;
+        $this->actorViewService = $actorViewService;
         view()->share([
             'settings' => $this->settings,
             'categories' => $this->categories
@@ -112,8 +115,24 @@ class IndexController extends Controller
 
     public function actor($id)
     {
-        $actor = Actor::findOrFail($id);
-        return view('index.actor', compact('actor'));
+        // Get the actor with stats and videos
+        $actor = Actor::with(['videos.videoStats', 'actorStats'])
+            ->findOrFail($id);
+
+        // Record the view if not recently viewed
+        $ipAddress = request()->ip();
+        if (!$this->actorViewService->hasRecentlyViewed($actor, $ipAddress)) {
+            $this->actorViewService->recordView($actor, $ipAddress);
+        }
+
+        // Get actor's videos with stats
+        $videos = $actor->videos()
+            ->select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->orderBy('video_stats.views_count', 'desc')
+            ->paginate(12);
+
+        return view('index.actor', compact('actor', 'videos'));
     }
 
     public function category($id)
