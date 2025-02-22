@@ -79,13 +79,14 @@ class IndexController extends Controller
             ->where('videos.id', '!=', $video->id)
             ->with(['videoStats'])
             ->orderBy('video_stats.views_count', 'desc')
-            ->take(8)
+            ->take(6)
             ->get();
 
-        // Get recommended videos (most viewed videos)
+        // Get recommended videos (most viewed videos in last 3 days)
         $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->where('videos.id', '!=', $video->id)
+            ->where('videos.created_at', '>=', now()->subDays(3))
             ->with(['videoStats'])
             ->orderBy('video_stats.views_count', 'desc')
             ->take(10)

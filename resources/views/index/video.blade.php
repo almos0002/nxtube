@@ -27,14 +27,6 @@
                     </div>
                     <div class="flex items-center space-x-4">
                         <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span>{{ number_format($video->videoStats?->likes ?? 0) }}</span>
-                        </button>
-                        <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors">
-                            <i class="fas fa-thumbs-down"></i>
-                            <span>{{ number_format($video->videoStats?->dislikes ?? 0) }}</span>
-                        </button>
-                        <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors">
                             <i class="fas fa-share"></i>
                             <span>Share</span>
                         </button>
@@ -43,9 +35,22 @@
 
                 <!-- Categories, Actors, and Channels Section -->
                 <div class="space-y-4 mb-6 pt-6 border-t border-neutral-700">
+
+                    <!-- Tags -->
+                    @if($video->tags->count() > 0)
+                    <div class="flex items-center">
+                        <h3 class="text-sm font-semibold text-neutral-400 mr-2">Tags:</h3>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($video->tags as $tag)
+                            <span class="text-sm text-neutral-400">#{{ $tag->name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
                     <!-- Categories -->
                     @if($video->categories->count() > 0)
-                    <div class="flex">
+                    <div class="flex items-center">
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Categories:</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($video->categories as $category)
@@ -60,29 +65,17 @@
                     </div>
                     @endif
 
-                    <!-- Tags -->
-                    @if($video->tags->count() > 0)
-                    <div class="flex">
-                        <h3 class="text-sm font-semibold text-neutral-400 mr-2">Tags:</h3>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach($video->tags as $tag)
-                            <span class="text-sm text-neutral-400">#{{ $tag->name }}</span>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-
                     <!-- Actors -->
                     @if($video->actors->count() > 0)
-                    <div class="flex">
+                    <div class="flex items-center">
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Actors:</h3>
                         <div class="flex flex-wrap gap-4">
                             @foreach($video->actors as $actor)
                             <a href="{{ route('actor', $actor->id) }}" class="flex items-center space-x-3 group">
-                                <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden">
+                                <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
                                     <img src="{{ asset('storage/' . ($actor->profile_image ?? 'actors/default.jpg')) }}" alt="{{ $actor->name }}" class="w-full h-full object-cover">
                                 </div>
-                                <span class="text-sm group-hover:text-red-500 transition-colors">{{ $actor->name }}</span>
+                                <span class="text-sm group-hover:text-red-500 transition-colors self-center">{{ $actor->name }}</span>
                             </a>
                             @endforeach
                         </div>
@@ -91,15 +84,15 @@
 
                     <!-- Channels -->
                     @if($video->channels->count() > 0)
-                    <div class="flex">
+                    <div class="flex items-center">
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Channels:</h3>
                         <div class="flex flex-wrap gap-4">
                             @foreach($video->channels as $channel)
                             <a href="{{ route('channel', $channel->id) }}" class="flex items-center space-x-3 group">
-                                <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden">
+                                <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
                                     <img src="{{ asset('storage/' . ($channel->profile_image ?? 'channels/default.jpg')) }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
                                 </div>
-                                <span class="text-sm group-hover:text-red-500 transition-colors">{{ $channel->channel_name }}</span>
+                                <span class="text-sm group-hover:text-red-500 transition-colors self-center">{{ $channel->channel_name }}</span>
                             </a>
                             @endforeach
                         </div>
