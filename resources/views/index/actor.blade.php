@@ -53,11 +53,10 @@
     <!-- Actor's Videos -->
     <section class="py-8">
         <h2 class="text-2xl font-bold mb-6">Videos</h2>
-        @if($videos->count() > 0)
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach($videos as $video)
+            @forelse($videos as $video)
             <div class="video-card group">
-                <a href="{{ route('video', $video->id) }}" class="block">
+                <a href="{{ route('video', $video->slug) }}" class="block">
                     <div class="thumbnail-wrapper relative aspect-video mb-3">
                         <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}" 
                              alt="{{ $video->title }}" 
@@ -79,22 +78,21 @@
                     </div>
                 </a>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full text-center py-12">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
+                    <i class="fas fa-video text-2xl text-neutral-600"></i>
+                </div>
+                <h3 class="text-lg font-medium mb-2">No Videos Found</h3>
+                <p class="text-neutral-400">This actor hasn't uploaded any videos yet.</p>
+            </div>
+            @endforelse
         </div>
 
         <!-- Pagination -->
         @if($videos->hasPages())
         <div class="mt-8">
             {{ $videos->links() }}
-        </div>
-        @endif
-        @else
-        <div class="text-center py-12">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
-                <i class="fas fa-video text-2xl text-neutral-600"></i>
-            </div>
-            <h3 class="text-lg font-medium mb-2">No Videos Found</h3>
-            <p class="text-neutral-400">This actor hasn't uploaded any videos yet.</p>
         </div>
         @endif
     </section>

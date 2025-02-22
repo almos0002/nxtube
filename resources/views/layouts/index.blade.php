@@ -114,7 +114,7 @@
                                     <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-2">Browse Categories</h3>
                                 </div>
                                 @foreach($categories as $category)
-                                <a href="{{ url('/category/' . $category->id) }}" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
+                                <a href="{{ route('category', $category->slug) }}" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
                                     <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
                                         <span class="text-red-500 text-sm">#</span>
                                     </div>
@@ -177,7 +177,7 @@
                         <div id="mobile-categories-content" class="hidden">
                             <div class="grid grid-cols-2 gap-2 px-4">
                                 @foreach($categories as $category)
-                                <a href="{{ url('/category/' . $category->id) }}" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
+                                <a href="{{ route('category', $category->slug) }}" class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
                                     <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
                                         <span class="text-red-500 text-sm">#</span>
                                     </div>
@@ -269,7 +269,7 @@
                     <h4 class="text-lg font-semibold mb-4">Top Categories</h4>
                     <ul class="space-y-3">
                         @foreach($categories as $category)
-                        <li><a href="{{ url('/category/' . $category->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">{{ $category->name }}</a></li>
+                        <li><a href="{{ route('category', $category->slug) }}" class="text-neutral-400 hover:text-red-500 transition-colors">{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>

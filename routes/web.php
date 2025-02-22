@@ -15,22 +15,19 @@ Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
 Route::get('/contact', [IndexController::class, 'contact'])->name('contact');
 Route::get('/privacy', [IndexController::class, 'privacy'])->name('privacy');
-Route::get('/video/{id}', [IndexController::class, 'video'])->name('video');
-Route::get('/channel/{id}', [IndexController::class, 'channel'])->name('channel');
-Route::get('/actor/{id}', [IndexController::class, 'actor'])->name('actor');
-Route::get('/category/{id}', [IndexController::class, 'category'])->name('category');
-Route::get('/tag/{id}', [IndexController::class, 'tag'])->name('tag');
 Route::get('/search', [IndexController::class, 'search'])->name('search');
 
+// Auth routes must come before wildcard routes
 Auth::routes();
 
+// Admin routes
 Route::middleware(['auth'])->group(function () {
 
     // Admin Dashboard & Pages
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/videos', [VideoController::class, 'index'])->name('videos');
-    Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+    Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/channels', [ChannelController::class, 'index'])->name('channels');
     
     // Settings Routes
@@ -50,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/toggle-category-status/{category}', [CategoryController::class, 'toggleStatus'])->name('toggle-category-status');
 
     // Actor Routes
-    Route::get('/actors', [ActorController::class, 'index'])->name('actors');
     Route::get('/add-actor', [ActorController::class, 'create'])->name('add-actor');
     Route::post('/store-actor', [ActorController::class, 'store'])->name('store-actor');
     Route::get('/edit-actor/{id}', [ActorController::class, 'edit'])->name('edit-actor');
@@ -72,3 +68,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/update-video/{id}', [VideoController::class, 'update'])->name('update-video');
     Route::delete('/delete-video/{id}', [VideoController::class, 'destroy'])->name('delete-video');
 });
+
+// Public routes with slugs - these must come after fixed routes
+Route::get('/channel/{channel}', [IndexController::class, 'channel'])->name('channel');
+Route::get('/actor/{actor}', [IndexController::class, 'actor'])->name('actor');
+Route::get('/category/{category}', [IndexController::class, 'category'])->name('category');
+Route::get('/tag/{tag}', [IndexController::class, 'tag'])->name('tag');
+
+// This must be the last route since it's the most generic
+Route::get('/{video}', [IndexController::class, 'video'])->name('video');

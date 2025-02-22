@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 use App\Enums\ActiveStatus;
 use App\Enums\ActorType;
 
 class Actor extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $fillable = [
         'firstname',
@@ -27,7 +28,8 @@ class Actor extends Model
         'facebook',
         'twitter',
         'website',
-        'visibility'
+        'visibility',
+        'slug'
     ];
 
     protected $casts = [
@@ -37,6 +39,20 @@ class Actor extends Model
     ];
 
     protected $with = ['actorStats']; // Eager load stats by default
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'stagename'
+            ]
+        ];
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function videos()
     {

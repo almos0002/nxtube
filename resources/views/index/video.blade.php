@@ -42,7 +42,7 @@
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Tags:</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($video->tags as $tag)
-                            <a href="{{ route('tag', $tag->id) }}" class="text-sm text-neutral-400 hover:text-red-500 transition-colors">#{{ $tag->name }}</a>
+                            <a href="{{ route('tag', $tag->slug) }}" class="px-3 py-1 bg-neutral-800 rounded-full text-sm hover:bg-red-500 transition-colors">#{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -54,12 +54,7 @@
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Categories:</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($video->categories as $category)
-                            <a href="{{ route('category', $category->id) }}" class="flex items-center space-x-2 text-sm hover:text-red-500 transition-colors">
-                                <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
-                                    <span class="text-red-500 text-sm">#</span>
-                                </div>
-                                <span>{{ $category->name }}</span>
-                            </a>
+                            <a href="{{ route('category', $category->slug) }}" class="px-3 py-1 bg-neutral-800 rounded-full text-sm hover:bg-red-500 transition-colors">{{ $category->name }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -71,7 +66,7 @@
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Actors:</h3>
                         <div class="flex flex-wrap gap-4">
                             @foreach($video->actors as $actor)
-                            <a href="{{ route('actor', $actor->id) }}" class="flex items-center space-x-3 group">
+                            <a href="{{ route('actor', $actor->slug) }}" class="flex items-center space-x-3 group">
                                 <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
                                     <img src="{{ asset('storage/' . ($actor->profile_image ?? 'actors/default.jpg')) }}" alt="{{ $actor->name }}" class="w-full h-full object-cover">
                                 </div>
@@ -88,7 +83,7 @@
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Channels:</h3>
                         <div class="flex flex-wrap gap-4">
                             @foreach($video->channels as $channel)
-                            <a href="{{ route('channel', $channel->id) }}" class="flex items-center space-x-3 group">
+                            <a href="{{ route('channel', $channel->slug) }}" class="flex items-center space-x-3 group">
                                 <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
                                     <img src="{{ asset('storage/' . ($channel->profile_image ?? 'channels/default.jpg')) }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
                                 </div>
@@ -115,7 +110,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach($relatedVideos as $relatedVideo)
                     <div class="video-card group">
-                        <a href="{{ route('video', $relatedVideo->id) }}" class="block">
+                        <a href="{{ route('video', $relatedVideo->slug) }}" class="block">
                             <div class="thumbnail-wrapper relative aspect-video mb-3">
                                 <img src="{{ asset('storage/' . ($relatedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}" 
                                      alt="{{ $relatedVideo->title }}" 
@@ -152,7 +147,7 @@
                 <div class="space-y-2">
                     @foreach($recommendedVideos as $recommendedVideo)
                     <div class="video-card group hover:bg-neutral-800/30 rounded-xl p-2 transition-colors">
-                        <a href="{{ route('video', $recommendedVideo->id) }}" class="flex items-start">
+                        <a href="{{ route('video', $recommendedVideo->slug) }}" class="flex items-start">
                             <div class="thumbnail-wrapper relative w-40 aspect-video rounded-lg overflow-hidden">
                                 <img src="{{ asset('storage/' . ($recommendedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}" 
                                      alt="{{ $recommendedVideo->title }}" 

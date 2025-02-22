@@ -22,7 +22,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($videos as $video)
                 <div class="video-card group">
-                    <a href="{{ route('video', $video->id) }}" class="block">
+                    <a href="{{ route('video', $video->slug) }}" class="block">
                         <div class="thumbnail-wrapper relative aspect-video mb-3">
                             <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}" 
                                  alt="{{ $video->title }}" 

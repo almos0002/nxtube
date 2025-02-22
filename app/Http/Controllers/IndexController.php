@@ -76,11 +76,10 @@ class IndexController extends Controller
         return view('index.privacy');
     }
 
-    public function video($id)
+    public function video(Video $video)
     {
         // Get the current video with all its relationships
-        $video = Video::with(['categories', 'actors', 'channels', 'tags', 'videoStats'])
-            ->findOrFail($id);
+        $video = $video->load(['categories', 'actors', 'channels', 'tags', 'videoStats']);
 
         // Record the view if not recently viewed
         $ipAddress = request()->ip();
@@ -116,11 +115,8 @@ class IndexController extends Controller
         return view('index.video', compact('video', 'relatedVideos', 'recommendedVideos'));
     }
 
-    public function channel($id)
+    public function channel(Channel $channel)
     {
-        // Get the channel with its relationships
-        $channel = Channel::findOrFail($id);
-
         // Get channel's videos with stats and categories
         $videos = $channel->videos()
             ->select('videos.*', 'video_stats.views_count')
@@ -137,18 +133,8 @@ class IndexController extends Controller
         return view('index.channel', compact('channel', 'videos', 'totalViews'));
     }
 
-    public function actor($id)
+    public function actor(Actor $actor)
     {
-        // Get the actor with stats and videos
-        $actor = Actor::with(['videos.videoStats', 'actorStats'])
-            ->findOrFail($id);
-
-        // Record the view if not recently viewed
-        $ipAddress = request()->ip();
-        if (!$this->actorViewService->hasRecentlyViewed($actor, $ipAddress)) {
-            $this->actorViewService->recordView($actor, $ipAddress);
-        }
-
         // Get actor's videos with stats
         $videos = $actor->videos()
             ->select('videos.*', 'video_stats.views_count')
@@ -156,12 +142,17 @@ class IndexController extends Controller
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
 
+        // Record the view if not recently viewed
+        $ipAddress = request()->ip();
+        if (!$this->actorViewService->hasRecentlyViewed($actor, $ipAddress)) {
+            $this->actorViewService->recordView($actor, $ipAddress);
+        }
+
         return view('index.actor', compact('actor', 'videos'));
     }
 
-    public function category($id)
+    public function category(Category $category)
     {
-        $category = Category::findOrFail($id);
         $videos = $category->videos()
             ->select('videos.*', 'video_stats.views_count')
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
@@ -170,11 +161,8 @@ class IndexController extends Controller
         return view('index.category', compact('category', 'videos'));
     }
 
-    public function tag($id)
+    public function tag(Tag $tag)
     {
-        // Get the tag with its videos and stats
-        $tag = Tag::findOrFail($id);
-
         // Get tag's videos with stats
         $videos = $tag->videos()
             ->select('videos.*', 'video_stats.views_count')

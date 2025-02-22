@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\VisibilityStatus;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Video extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $fillable = [
         'title',
+        'slug',
         'video_link',
         'duration',
         'description',
@@ -23,6 +25,20 @@ class Video extends Model
     protected $casts = [
         'visibility' => VisibilityStatus::class
     ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function channels()
     {
