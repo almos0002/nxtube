@@ -22,6 +22,8 @@ class Category extends Model
         'status' => ActiveStatus::class
     ];
 
+    protected $withCount = ['videos'];
+
     public function sluggable(): array
     {
         return [

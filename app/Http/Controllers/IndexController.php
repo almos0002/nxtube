@@ -30,7 +30,7 @@ class IndexController extends Controller
                 'favicon' => 'favicon.ico'
             ]
         );
-        $this->categories = Category::all();
+        $this->categories = Category::withCount('videos')->get();
         $this->videoViewService = $videoViewService;
         $this->actorViewService = $actorViewService;
         view()->share([

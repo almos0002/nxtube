@@ -120,7 +120,7 @@
                                     </div>
                                     <div>
                                         <h4 class="font-medium group-hover/item:text-red-500 transition-colors">{{ $category->name }}</h4>
-                                        <p class="text-sm text-neutral-400">{{ $category->videos_count ?? '0' }} videos</p>
+                                        <p class="text-sm text-neutral-400">{{ $category->videos_count }} videos</p>
                                     </div>
                                 </a>
                                 @endforeach
