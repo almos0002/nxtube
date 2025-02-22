@@ -76,6 +76,11 @@ class IndexController extends Controller
         return view('index.privacy');
     }
 
+    public function dmca()
+    {
+        return view('index.dmca');
+    }
+
     public function video(Video $video)
     {
         // Get the current video with all its relationships

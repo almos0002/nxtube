@@ -15,6 +15,7 @@ Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
 Route::get('/contact', [IndexController::class, 'contact'])->name('contact');
 Route::get('/privacy', [IndexController::class, 'privacy'])->name('privacy');
+Route::get('/dmca', [IndexController::class, 'dmca'])->name('dmca');
 Route::get('/search', [IndexController::class, 'search'])->name('search');
 
 // Auth routes must come before wildcard routes

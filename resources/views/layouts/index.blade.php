@@ -299,9 +299,10 @@
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <p class="text-neutral-400 text-sm"> 2025 VideoFlex. All rights reserved.</p>
                     <div class="flex items-center space-x-6">
-                        <a href="#" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">Privacy</a>
-                        <a href="#" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">Terms</a>
-                        <a href="#" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">Cookies</a>
+                        <a href="{{ route('privacy') }}" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">Privacy</a>
+                        <a href="{{ route('dmca') }}" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">DMCA</a>
+                        <a href="{{ route('about') }}" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">About</a>
+                        <a href="{{ route('contact') }}" class="text-neutral-400 hover:text-red-500 transition-colors text-sm">Contact</a>
                     </div>
                 </div>
             </div>
