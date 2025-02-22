@@ -21,7 +21,15 @@ class IndexController extends Controller
 
     public function __construct(VideoViewService $videoViewService, ActorViewService $actorViewService)
     {
-        $this->settings = Setting::first();
+        $this->settings = Setting::firstOrCreate(
+            ['id' => 1],
+            [
+                'site_name' => 'NxTube',
+                'site_description' => 'Your Video Platform',
+                'logo' => 'logo.png',
+                'favicon' => 'favicon.ico'
+            ]
+        );
         $this->categories = Category::all();
         $this->videoViewService = $videoViewService;
         $this->actorViewService = $actorViewService;
