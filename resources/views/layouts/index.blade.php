@@ -87,15 +87,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo and Desktop Navigation -->
-                <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-4 md:space-x-8">
                     <!-- Mobile menu button -->
                     <button id="mobile-menu-button" class="md:hidden flex items-center justify-center w-10 h-10 text-neutral-100 hover:text-red-500 transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
 
-                    <a href="{{ url('/') }}" class="flex items-center space-x-3">
-                        <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}" alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
-                        <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                    <a href="{{ url('/') }}" class="flex items-center space-x-2 md:space-x-3">
+                        <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}" alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-6 md:h-8 w-auto">
+                        <span class="text-lg md:text-xl font-bold truncate">{{ $settings->site_name ?? 'VideoFlex' }}</span>
                     </a>
 
                     <!-- Desktop Navigation -->
@@ -137,8 +137,8 @@
                                    name="q" 
                                    value="{{ request('q') }}"
                                    placeholder="Search videos..." 
-                                   class="w-96 px-4 py-2 rounded-xl bg-neutral-800/50 border border-neutral-700 text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-red-500 transition-colors">
+                                   class="w-48 md:w-64 lg:w-96 px-4 py-2 rounded-xl bg-neutral-800/50 border border-neutral-700 text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-400 hover:text-red-500 transition-colors">
                                 <i class="fas fa-search"></i>
                             </button>
                         </form>
