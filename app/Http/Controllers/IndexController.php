@@ -63,8 +63,35 @@ class IndexController extends Controller
 
     public function video($id)
     {
-        $video = Video::findOrFail($id);
-        return view('index.video', compact('video'));
+        // Get the current video with all its relationships
+        $video = Video::with(['categories', 'actors', 'channels', 'tags', 'videoStats'])
+            ->findOrFail($id);
+
+        // Get related videos based on categories and tags
+        $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->whereHas('categories', function($query) use ($video) {
+                $query->whereIn('categories.id', $video->categories->pluck('id'));
+            })
+            ->orWhereHas('tags', function($query) use ($video) {
+                $query->whereIn('tags.id', $video->tags->pluck('id'));
+            })
+            ->where('videos.id', '!=', $video->id)
+            ->with(['videoStats'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->take(8)
+            ->get();
+
+        // Get recommended videos (most viewed videos)
+        $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->where('videos.id', '!=', $video->id)
+            ->with(['videoStats'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('index.video', compact('video', 'relatedVideos', 'recommendedVideos'));
     }
 
     public function channel($id)
