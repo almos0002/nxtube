@@ -19,6 +19,7 @@ Route::get('/video/{id}', [IndexController::class, 'video'])->name('video');
 Route::get('/channel/{id}', [IndexController::class, 'channel'])->name('channel');
 Route::get('/actor/{id}', [IndexController::class, 'actor'])->name('actor');
 Route::get('/category/{id}', [IndexController::class, 'category'])->name('category');
+Route::get('/tag/{id}', [IndexController::class, 'tag'])->name('tag');
 
 Auth::routes();
 

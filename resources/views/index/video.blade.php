@@ -42,7 +42,7 @@
                         <h3 class="text-sm font-semibold text-neutral-400 mr-2">Tags:</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($video->tags as $tag)
-                            <span class="text-sm text-neutral-400">#{{ $tag->name }}</span>
+                            <a href="{{ route('tag', $tag->id) }}" class="text-sm text-neutral-400 hover:text-red-500 transition-colors">#{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>

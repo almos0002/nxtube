@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Video;
 use App\Models\Channel;
 use App\Models\Actor;
+use App\Models\Tag;
 use App\Services\VideoViewService;
 use App\Services\ActorViewService;
 use Illuminate\Http\Request;
@@ -159,5 +160,20 @@ class IndexController extends Controller
             ->with('videoStats')
             ->paginate(12);
         return view('index.category', compact('category', 'videos'));
+    }
+
+    public function tag($id)
+    {
+        // Get the tag with its videos and stats
+        $tag = Tag::findOrFail($id);
+
+        // Get tag's videos with stats
+        $videos = $tag->videos()
+            ->select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->orderBy('video_stats.views_count', 'desc')
+            ->paginate(12);
+
+        return view('index.tag', compact('tag', 'videos'));
     }
 }
