@@ -176,4 +176,39 @@ class IndexController extends Controller
 
         return view('index.tag', compact('tag', 'videos'));
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+        
+        if (!$query) {
+            return redirect()->route('home');
+        }
+
+        // Search in videos
+        $videos = Video::select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->where('videos.title', 'like', "%{$query}%")
+            ->orWhere('videos.description', 'like', "%{$query}%")
+            ->orWhereHas('tags', function($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%");
+            })
+            ->orWhereHas('categories', function($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%");
+            })
+            ->orWhereHas('actors', function($q) use ($query) {
+                $q->where('stagename', 'like', "%{$query}%")
+                  ->orWhere('firstname', 'like', "%{$query}%")
+                  ->orWhere('lastname', 'like', "%{$query}%");
+            })
+            ->orWhereHas('channels', function($q) use ($query) {
+                $q->where('channel_name', 'like', "%{$query}%")
+                  ->orWhere('handle', 'like', "%{$query}%");
+            })
+            ->with(['categories', 'videoStats'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->paginate(12);
+
+        return view('index.search', compact('videos', 'query'));
+    }
 }

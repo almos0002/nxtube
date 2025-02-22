@@ -132,10 +132,16 @@
                 <!-- Search Bar -->
                 <div class="flex-1 flex justify-end items-center">
                     <div class="relative">
-                        <input type="text" placeholder="Search videos..." class="w-36 md:w-64 bg-neutral-700 text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-neutral-600 transition-all">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-neutral-400"></i>
-                        </div>
+                        <form action="{{ route('search') }}" method="GET" class="relative">
+                            <input type="text" 
+                                   name="q" 
+                                   value="{{ request('q') }}"
+                                   placeholder="Search videos..." 
+                                   class="w-96 px-4 py-2 rounded-xl bg-neutral-800/50 border border-neutral-700 text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-red-500 transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
