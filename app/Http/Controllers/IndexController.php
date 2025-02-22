@@ -82,7 +82,11 @@ class IndexController extends Controller
     public function category($id)
     {
         $category = Category::findOrFail($id);
-        $videos = $category->videos()->paginate(12);
+        $videos = $category->videos()
+            ->select('videos.*', 'video_stats.views_count')
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->with('videoStats')
+            ->paginate(12);
         return view('index.category', compact('category', 'videos'));
     }
 }
