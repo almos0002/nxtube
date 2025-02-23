@@ -86,6 +86,18 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Site Tagline</label>
+                    <input type="text" name="tagline" class="form-input w-full bg-neutral-700 border-neutral-600 rounded-lg px-4 py-2.5 text-neutral-100 focus:outline-none" 
+                           value="{{ old('tagline', $settings->tagline) }}"
+                           placeholder="Enter a brief tagline for your site">
+                    <p class="text-neutral-400 text-sm mt-1">This will appear in the homepage title</p>
+                    @error('tagline')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-neutral-300 mb-2">Site Description</label>
                     <textarea name="site_description" class="form-input w-full bg-neutral-700 border-neutral-600 rounded-lg px-4 py-2.5 text-neutral-100 focus:outline-none" 
