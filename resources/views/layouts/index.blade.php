@@ -174,10 +174,10 @@
                     </a>
                     <div class="space-y-4">
                         <button id="mobile-categories-button" class="w-full flex items-center justify-between py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
-                            <div class="flex items-center">
+                            <span class="flex items-center">
                                 <i class="fas fa-list-ul mr-3"></i>
                                 <span>Categories</span>
-                            </div>
+                            </span>
                             <i class="fas fa-chevron-down transition-transform duration-300"></i>
                         </button>
                         <div id="mobile-categories-content" class="hidden">
