@@ -91,7 +91,10 @@ class IndexController extends Controller
     {
         // Only allow access to public videos
         if ($video->visibility !== VisibilityStatus::PUBLIC) {
-            abort(404);
+            return response()
+                ->view('errors.404', [
+                    'message' => 'This Video is Currently Not Available'
+                ], 404);
         }
 
         // Get the current video with all its relationships
@@ -138,7 +141,10 @@ class IndexController extends Controller
     {
         // Only allow access to active channels
         if ($channel->visibility !== ActiveStatus::ACTIVE) {
-            abort(404);
+            return response()
+                ->view('errors.404', [
+                    'message' => 'This Channel is Currently Not Available'
+                ], 404);
         }
 
         // Get channel's videos with stats and categories
@@ -162,7 +168,10 @@ class IndexController extends Controller
     {
         // Only allow access to active actors
         if ($actor->visibility !== ActiveStatus::ACTIVE) {
-            abort(404);
+            return response()
+                ->view('errors.404', [
+                    'message' => 'This Actor is Currently Not Available'
+                ], 404);
         }
 
         // Get actor's videos with stats
@@ -186,7 +195,10 @@ class IndexController extends Controller
     {
         // Only allow access to active categories
         if ($category->status !== ActiveStatus::ACTIVE) {
-            abort(404);
+            return response()
+                ->view('errors.404', [
+                    'message' => 'This Category is Currently Not Available'
+                ], 404);
         }
 
         $videos = $category->videos()
