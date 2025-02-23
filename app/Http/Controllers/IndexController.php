@@ -11,6 +11,8 @@ use App\Models\Tag;
 use App\Services\VideoViewService;
 use App\Services\ActorViewService;
 use Illuminate\Http\Request;
+use App\Enums\VisibilityStatus;
+use App\Enums\ActiveStatus;
 
 class IndexController extends Controller
 {
@@ -30,7 +32,9 @@ class IndexController extends Controller
                 'favicon' => 'favicon.ico'
             ]
         );
-        $this->categories = Category::withCount('videos')->get();
+        $this->categories = Category::where('status', ActiveStatus::ACTIVE)
+            ->withCount('videos')
+            ->get();
         $this->videoViewService = $videoViewService;
         $this->actorViewService = $actorViewService;
         view()->share([
@@ -43,6 +47,7 @@ class IndexController extends Controller
     {
         // Get trending videos by views from video_stats
         $trendingVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->orderBy('videos.created_at', 'desc')
@@ -52,6 +57,7 @@ class IndexController extends Controller
 
         // Get recent videos with their stats
         $recentVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->latest('videos.created_at')
             ->take(8)
@@ -83,6 +89,11 @@ class IndexController extends Controller
 
     public function video(Video $video)
     {
+        // Only allow access to public videos
+        if ($video->visibility !== VisibilityStatus::PUBLIC) {
+            abort(404);
+        }
+
         // Get the current video with all its relationships
         $video = $video->load(['categories', 'actors', 'channels', 'tags', 'videoStats']);
 
@@ -94,9 +105,11 @@ class IndexController extends Controller
 
         // Get related videos based on categories and tags
         $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->whereHas('categories', function($query) use ($video) {
-                $query->whereIn('categories.id', $video->categories->pluck('id'));
+                $query->whereIn('categories.id', $video->categories->pluck('id'))
+                      ->where('status', ActiveStatus::ACTIVE);
             })
             ->orWhereHas('tags', function($query) use ($video) {
                 $query->whereIn('tags.id', $video->tags->pluck('id'));
@@ -109,6 +122,7 @@ class IndexController extends Controller
 
         // Get recommended videos (most viewed videos in last 3 days)
         $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->where('videos.id', '!=', $video->id)
             ->where('videos.created_at', '>=', now()->subDays(3))
@@ -122,9 +136,15 @@ class IndexController extends Controller
 
     public function channel(Channel $channel)
     {
+        // Only allow access to active channels
+        if ($channel->visibility !== ActiveStatus::ACTIVE) {
+            abort(404);
+        }
+
         // Get channel's videos with stats and categories
         $videos = $channel->videos()
             ->select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->with(['categories'])
             ->orderBy('video_stats.views_count', 'desc')
@@ -140,9 +160,15 @@ class IndexController extends Controller
 
     public function actor(Actor $actor)
     {
+        // Only allow access to active actors
+        if ($actor->visibility !== ActiveStatus::ACTIVE) {
+            abort(404);
+        }
+
         // Get actor's videos with stats
         $videos = $actor->videos()
             ->select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
@@ -158,11 +184,18 @@ class IndexController extends Controller
 
     public function category(Category $category)
     {
+        // Only allow access to active categories
+        if ($category->status !== ActiveStatus::ACTIVE) {
+            abort(404);
+        }
+
         $videos = $category->videos()
             ->select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->with('videoStats')
             ->paginate(12);
+
         return view('index.category', compact('category', 'videos'));
     }
 
@@ -171,6 +204,7 @@ class IndexController extends Controller
         // Get tag's videos with stats
         $videos = $tag->videos()
             ->select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
@@ -188,23 +222,31 @@ class IndexController extends Controller
 
         // Search in videos
         $videos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->where('videos.title', 'like', "%{$query}%")
-            ->orWhere('videos.description', 'like', "%{$query}%")
-            ->orWhereHas('tags', function($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
-            })
-            ->orWhereHas('categories', function($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
-            })
-            ->orWhereHas('actors', function($q) use ($query) {
-                $q->where('stagename', 'like', "%{$query}%")
-                  ->orWhere('firstname', 'like', "%{$query}%")
-                  ->orWhere('lastname', 'like', "%{$query}%");
-            })
-            ->orWhereHas('channels', function($q) use ($query) {
-                $q->where('channel_name', 'like', "%{$query}%")
-                  ->orWhere('handle', 'like', "%{$query}%");
+            ->where(function($q) use ($query) {
+                $q->where('videos.title', 'like', "%{$query}%")
+                  ->orWhere('videos.description', 'like', "%{$query}%")
+                  ->orWhereHas('tags', function($q) use ($query) {
+                      $q->where('name', 'like', "%{$query}%");
+                  })
+                  ->orWhereHas('categories', function($q) use ($query) {
+                      $q->where('name', 'like', "%{$query}%")
+                        ->where('status', ActiveStatus::ACTIVE);
+                  })
+                  ->orWhereHas('actors', function($q) use ($query) {
+                      $q->where(function($q) use ($query) {
+                          $q->where('stagename', 'like', "%{$query}%")
+                            ->orWhere('firstname', 'like', "%{$query}%")
+                            ->orWhere('lastname', 'like', "%{$query}%");
+                      })
+                      ->where('visibility', ActiveStatus::ACTIVE);
+                  })
+                  ->orWhereHas('channels', function($q) use ($query) {
+                      $q->where('channel_name', 'like', "%{$query}%")
+                        ->orWhere('handle', 'like', "%{$query}%")
+                        ->where('visibility', ActiveStatus::ACTIVE);
+                  });
             })
             ->with(['categories', 'videoStats'])
             ->orderBy('video_stats.views_count', 'desc')
