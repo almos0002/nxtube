@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        @if(request()->is('/'))
-            {{ $settings->site_name }} - {{ $settings->tagline }}
-        @else
-            @yield('title') - {{ $settings->site_name }}
-        @endif
-    </title>
+    <title>@if(request()->is('/')){{ $settings->site_name }} - {{ $settings->tagline }}@else @yield('title') - {{ $settings->site_name }}@endif</title>
+    <meta name="description" content="@yield('meta_description', $settings->site_description ?? 'Watch cool videos online for free')"/>
+    <meta name="keywords" content="@yield('meta_keywords', "Amazing, cool, video," )"/>
+    <meta name="og:image" content="@yield('og_image', $settings->site_logo)"/>
     <link rel="shortcut icon" href="{{ asset('storage/' . ($settings->favicon ?? 'favicon.ico')) }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

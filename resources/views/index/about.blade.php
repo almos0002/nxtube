@@ -1,6 +1,8 @@
 @extends('layouts.index')
 
 @section('title', 'About Us')
+@section('meta_description', 'At VideoFlex, we are committed to providing a seamless and enjoyable video streaming experience for our users. Our about page provides an overview of our mission, values, and team.')
+@section('meta_keywords', 'about, us, mission, values, team, video, streaming, experience')
 
 @section('content')
 <!-- Main Content -->

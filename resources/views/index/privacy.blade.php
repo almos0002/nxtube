@@ -1,6 +1,8 @@
 @extends('layouts.index')
 
 @section('title', 'Privacy Policy')
+@section('meta_description', 'At VideoFlex, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our video streaming platform.')
+@section('meta_keywords', 'privacy, security, data protection, data privacy, data protection law')
 
 @section('content')
 <!-- Main Content -->

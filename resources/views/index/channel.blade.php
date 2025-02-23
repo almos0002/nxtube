@@ -1,6 +1,8 @@
 @extends('layouts.index')
 
 @section('title', $channel->channel_name)
+@section('meta_description', $channel->description)
+@section('og_image', url('storage/' . $channel->banner_image))
 
 @section('content')
 <!-- Main Content -->

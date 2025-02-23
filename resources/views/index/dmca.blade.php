@@ -1,6 +1,8 @@
 @extends('layouts.index')
 
 @section('title', 'DMCA Policy')
+@section('meta_description', 'This Digital Millennium Copyright Act policy ("Policy") applies to the {{ $settings->site_name }} website ("Website" or "Service") and any of its related products and services (collectively, "Services") and outlines how this Website operator ("Operator", "we", "us" or "our") addresses copyright infringement notifications and how you ("you" or "your") may submit a copyright infringement complaint.')
+@section('meta_keywords', 'DMCA, Digital Millennium Copyright Act, Copyright, Infringement, Notification, Policy, Compliance, Complaint, Protection')
 
 @section('content')
 <!-- Main Content -->

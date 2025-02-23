@@ -1,6 +1,9 @@
 @extends('layouts.index')
 
 @section('title', $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname)
+@section('meta_description', $actor->biography)
+@section('meta_keywords', $actor->specialties)
+@section('og_image', asset('storage/' . $actor->banner_image))
 
 @section('content')
 <!-- Main Content -->

@@ -1,6 +1,9 @@
 @extends('layouts.index')
 
 @section('title', $video->title)
+@section('meta_description', $video->description)
+@section('meta_keywords', implode(', ', $video->tags->pluck('name')->toArray()))
+@section('og_image', url('storage/' . $video->thumbnail))
 
 @section('content')
 <!-- Main Content with Right Sidebar Layout -->

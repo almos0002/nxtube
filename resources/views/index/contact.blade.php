@@ -1,6 +1,8 @@
 @extends('layouts.index')
 
 @section('title', 'Contact Us')
+@section('meta_description', 'At VideoFlex, we are committed to providing a seamless and enjoyable video streaming experience for our users. Our contact page is where you can reach out to us with any questions, feedback, or inquiries you may have.')
+@section('meta_keywords', 'contact, support, feedback, query, enquiry')
 
 @section('content')
 <!-- Main Content -->

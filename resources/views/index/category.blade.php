@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', $category->name)
+@section('meta_description', $category->description)
 
 @section('content')
 <!-- Main Content -->
