@@ -270,6 +270,14 @@
                     </li>
                     
                     @if(request()->routeIs('category') && isset($category))
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('categories') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Categories</a>
+                        </div>
+                    </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -281,6 +289,14 @@
                     @endif
                     
                     @if(request()->routeIs('tag') && isset($tag))
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('tags') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Tags</a>
+                        </div>
+                    </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -292,6 +308,14 @@
                     @endif
                     
                     @if(request()->routeIs('actor') && isset($actor))
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('actors') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Actors</a>
+                        </div>
+                    </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -303,6 +327,14 @@
                     @endif
                     
                     @if(request()->routeIs('channel') && isset($channel))
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('channels') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Channels</a>
+                        </div>
+                    </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -314,6 +346,36 @@
                     @endif
                     
                     @if(request()->routeIs('video') && isset($video))
+                    @if($video->categories->count() > 0)
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('category', $video->categories->first()->slug) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->categories->first()->name }}</a>
+                        </div>
+                    </li>
+                    @endif
+                    @if($video->actors->count() > 0)
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('actor', $video->actors->first()->slug) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->actors->first()->stagename ?? $video->actors->first()->firstname . ' ' . $video->actors->first()->lastname }}</a>
+                        </div>
+                    </li>
+                    @endif
+                    @if($video->channels->count() > 0)
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('channel', $video->channels->first()->slug) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->channels->first()->channel_name }}</a>
+                        </div>
+                    </li>
+                    @endif
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
