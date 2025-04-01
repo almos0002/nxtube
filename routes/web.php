@@ -82,5 +82,10 @@ Route::get('/actor/{actor}', [IndexController::class, 'actor'])->name('actor');
 Route::get('/category/{category}', [IndexController::class, 'category'])->name('category');
 Route::get('/tag/{tag}', [IndexController::class, 'tag'])->name('tag');
 
+// Public listing pages
+Route::get('/all-categories', [IndexController::class, 'allCategories'])->name('all-categories');
+Route::get('/all-actors', [IndexController::class, 'allActors'])->name('all-actors');
+Route::get('/all-channels', [IndexController::class, 'allChannels'])->name('all-channels');
+
 // This must be the last route since it's the most generic
 Route::get('/{video}', [IndexController::class, 'video'])->name('video');

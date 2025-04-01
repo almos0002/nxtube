@@ -226,44 +226,58 @@ class IndexController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->get('q');
+        $query = $request->input('q');
         
-        if (!$query) {
+        if (empty($query)) {
             return redirect()->route('home');
         }
 
-        // Search in videos
         $videos = Video::select('videos.*', 'video_stats.views_count')
             ->where('visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->where(function($q) use ($query) {
-                $q->where('videos.title', 'like', "%{$query}%")
-                  ->orWhere('videos.description', 'like', "%{$query}%")
-                  ->orWhereHas('tags', function($q) use ($query) {
-                      $q->where('name', 'like', "%{$query}%");
-                  })
-                  ->orWhereHas('categories', function($q) use ($query) {
-                      $q->where('name', 'like', "%{$query}%")
-                        ->where('status', ActiveStatus::ACTIVE);
-                  })
-                  ->orWhereHas('actors', function($q) use ($query) {
-                      $q->where(function($q) use ($query) {
-                          $q->where('stagename', 'like', "%{$query}%")
-                            ->orWhere('firstname', 'like', "%{$query}%")
-                            ->orWhere('lastname', 'like', "%{$query}%");
-                      })
-                      ->where('visibility', ActiveStatus::ACTIVE);
-                  })
-                  ->orWhereHas('channels', function($q) use ($query) {
-                      $q->where('channel_name', 'like', "%{$query}%")
-                        ->orWhere('handle', 'like', "%{$query}%")
-                        ->where('visibility', ActiveStatus::ACTIVE);
-                  });
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('description', 'like', "%{$query}%");
             })
-            ->with(['categories', 'videoStats'])
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
 
         return view('index.search', compact('videos', 'query'));
+    }
+
+    public function allCategories()
+    {
+        $categories = Category::where('status', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->orderBy('name')
+            ->paginate(24);
+            
+        return view('index.categories', compact('categories'));
+    }
+
+    public function allActors()
+    {
+        $actors = Actor::where('visibility', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->orderBy('stagename')
+            ->paginate(24);
+            
+        return view('index.actors', compact('actors'));
+    }
+
+    public function allChannels()
+    {
+        $channels = Channel::where('visibility', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->orderBy('channel_name')
+            ->paginate(24);
+            
+        return view('index.channels', compact('channels'));
     }
 }
