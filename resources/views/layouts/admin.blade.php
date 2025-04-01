@@ -122,6 +122,11 @@
                             <i class="fa-duotone fa-thin fa-cog text-lg w-8"></i>
                             <span>Settings</span>
                         </a>
+                        <a href="{{ route('ads') }}" 
+                            class="nav-item px-4 py-3 flex items-center transition-colors hover:bg-neutral-700/30 {{ request()->routeIs('ads') ? 'bg-neutral-700/30' : '' }}">
+                            <i class="fa-duotone fa-thin fa-rectangle-ad text-lg w-8"></i>
+                            <span>Ads</span>
+                        </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                             @csrf
                         </form>

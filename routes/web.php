@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\AdsController;
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
@@ -35,6 +36,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::get('/settings/clear-cache', [SettingController::class, 'clearCache'])->name('settings.clear-cache');
+    
+    // Ads Routes
+    Route::get('/ads', [AdsController::class, 'index'])->name('ads');
+    Route::put('/ads', [AdsController::class, 'update'])->name('ads.update');
+    Route::post('/ads/toggle-status', [AdsController::class, 'toggleStatus'])->name('ads.toggle-status');
 
     Route::view('/profile', 'admin.profile')->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('update-profile');
