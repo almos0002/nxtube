@@ -183,7 +183,7 @@
                 <!-- Recommended Videos -->
                 <div class="space-y-2">
                     @foreach ($recommendedVideos as $recommendedVideo)
-                        <div class="video-card group hover:bg-neutral-800/30 rounded-xl p-2 transition-colors">
+                        <div class="video-card group p-2">
                             <a href="{{ route('video', $recommendedVideo->slug) }}" class="flex items-start">
                                 <div class="thumbnail-wrapper relative w-40 aspect-video rounded-lg overflow-hidden">
                                     <img src="{{ asset('storage/' . ($recommendedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
@@ -199,8 +199,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-1 ml-3">
-                                    <h3 class="text-sm font-medium line-clamp-2 group-hover:text-red-500 transition-colors">
-                                        {{ $recommendedVideo->title }}</h3>
+                                    <h3 class="text-sm font-medium line-clamp-2">{{ $recommendedVideo->title }}</h3>
                                     <div class="mt-1 text-xs text-neutral-400">
                                         <span>{{ number_format($recommendedVideo->videoStats?->views_count ?? 0) }}
                                             views</span>
