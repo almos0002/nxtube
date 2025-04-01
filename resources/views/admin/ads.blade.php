@@ -11,7 +11,7 @@
         <div>
             <form action="{{ route('ads.toggle-status') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="px-4 py-2 rounded-lg {{ $ads->is_active ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }} text-white transition-colors">
+                <button type="submit" class="px-4 py-2 rounded-lg {{ $ads->is_active ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-500 hover:bg-red-600' }} text-white transition-colors">
                     {{ $ads->is_active ? 'Disable Ads' : 'Enable Ads' }}
                 </button>
             </form>
@@ -27,6 +27,16 @@
                 document.getElementById('successMessage').style.display = 'none';
             }, 3000);
         </script>
+    @endif
+
+    @if($errors->any())
+        <div class="bg-red-500 text-white p-4 rounded-xl mb-8">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <!-- Ads Form -->
@@ -45,7 +55,15 @@
                     <div class="flex items-start space-x-4">
                         @if($ads->ads_banner_1)
                             <div class="w-64 h-32 bg-neutral-700 rounded-lg overflow-hidden">
-                                <img src="{{ asset('storage/' . $ads->ads_banner_1) }}" alt="Banner 1" class="w-full h-full object-contain">
+                                @if(Str::startsWith($ads->ads_banner_1, ['http://', 'https://']) || Str::contains($ads->ads_banner_1, ['<script', '<iframe', '<div']))
+                                    <div class="p-2 text-neutral-300 text-sm">HTML/JS Ad Code</div>
+                                @else
+                                    <img src="{{ asset('storage/' . $ads->ads_banner_1) }}" alt="Banner 1" class="w-full h-full object-contain">
+                                @endif
+                            </div>
+                        @else
+                            <div class="w-64 h-32 bg-neutral-700 rounded-lg flex items-center justify-center">
+                                <span class="text-neutral-400">No banner set</span>
                             </div>
                         @endif
                         <div class="flex-1">
@@ -70,7 +88,15 @@
                     <div class="flex items-start space-x-4">
                         @if($ads->ads_banner_2)
                             <div class="w-64 h-32 bg-neutral-700 rounded-lg overflow-hidden">
-                                <img src="{{ asset('storage/' . $ads->ads_banner_2) }}" alt="Banner 2" class="w-full h-full object-contain">
+                                @if(Str::startsWith($ads->ads_banner_2, ['http://', 'https://']) || Str::contains($ads->ads_banner_2, ['<script', '<iframe', '<div']))
+                                    <div class="p-2 text-neutral-300 text-sm">HTML/JS Ad Code</div>
+                                @else
+                                    <img src="{{ asset('storage/' . $ads->ads_banner_2) }}" alt="Banner 2" class="w-full h-full object-contain">
+                                @endif
+                            </div>
+                        @else
+                            <div class="w-64 h-32 bg-neutral-700 rounded-lg flex items-center justify-center">
+                                <span class="text-neutral-400">No banner set</span>
                             </div>
                         @endif
                         <div class="flex-1">
@@ -96,26 +122,10 @@
             <h2 class="text-xl font-semibold text-neutral-100 mb-6">Popup Ad</h2>
             
             <div>
-                <div class="flex items-start space-x-4">
-                    @if($ads->ads_popup)
-                        <div class="w-64 h-32 bg-neutral-700 rounded-lg overflow-hidden">
-                            <img src="{{ asset('storage/' . $ads->ads_popup) }}" alt="Popup Ad" class="w-full h-full object-contain">
-                        </div>
-                    @endif
-                    <div class="flex-1">
-                        <div class="relative mb-4">
-                            <input type="file" id="popupInput" name="popup_image" accept="image/*" class="hidden">
-                            <button type="button" onclick="document.getElementById('popupInput').click()" 
-                                    class="px-4 py-2 bg-neutral-700 text-neutral-300 rounded-lg hover:bg-neutral-600 transition-colors flex items-center">
-                                <i class="fas fa-upload mr-2"></i>
-                                Upload Popup Image
-                            </button>
-                            <p class="text-neutral-400 text-sm mt-1">Recommended size: 600x400 (max 2MB)</p>
-                        </div>
-                        <p class="text-neutral-400 text-sm mb-2">Or paste custom HTML/JS code:</p>
-                        <textarea name="ads_popup" rows="4" class="form-textarea w-full bg-neutral-700 border-neutral-600 rounded-lg px-4 py-2.5 text-neutral-100 focus:outline-none">{{ old('ads_popup', $ads->ads_popup) }}</textarea>
-                    </div>
-                </div>
+                <label class="block text-sm font-medium text-neutral-300 mb-2">Popup Ad Code</label>
+                <p class="text-neutral-400 text-sm mb-2">Paste HTML/JS code for popup ad:</p>
+                <textarea name="ads_popup" rows="6" class="form-textarea w-full bg-neutral-700 border-neutral-600 rounded-lg px-4 py-2.5 text-neutral-100 focus:outline-none">{{ old('ads_popup', $ads->ads_popup) }}</textarea>
+                <p class="text-neutral-400 text-sm mt-2">This code will be used for popup advertisements on your site.</p>
             </div>
         </div>
         
@@ -140,14 +150,14 @@
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="is_active" class="sr-only peer" {{ $ads->is_active ? 'checked' : '' }}>
-                    <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
                 </label>
             </div>
         </div>
         
         <!-- Submit Button -->
         <div class="flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button type="submit" class="px-6 py-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                 Save Changes
             </button>
         </div>

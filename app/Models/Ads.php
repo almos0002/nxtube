@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ads extends Model
 {
+    protected $table = 'ads';
+    
     protected $fillable = [
+        'id',
         'ads_banner_1',
         'ads_banner_2',
         'ads_popup',

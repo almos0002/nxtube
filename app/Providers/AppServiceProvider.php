@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Ads;
+use App\Helpers\AdsHelper;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Share ads data with all views
         View::composer('*', function ($view) {
-            $ads = Ads::firstOrCreate(['id' => 1]);
+            $ads = AdsHelper::getAllAds();
             $view->with('siteAds', $ads);
         });
     }
