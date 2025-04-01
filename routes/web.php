@@ -20,10 +20,12 @@ Route::get('/dmca', [IndexController::class, 'dmca'])->name('dmca');
 Route::get('/search', [IndexController::class, 'search'])->name('search');
 
 // Auth routes must come before wildcard routes
-Auth::routes();
+Route::prefix('admin')->group(function () {
+    Auth::routes();
+});
 
 // Admin routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     // Admin Dashboard & Pages
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
