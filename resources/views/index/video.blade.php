@@ -61,7 +61,7 @@
                 @if ($video->channels->count() > 0)
                     <div class="flex flex-wrap items-center gap-4 mb-4 pb-4 border-b border-neutral-700">
                         @foreach ($video->channels as $channel)
-                            <a href="{{ route('channel', $channel->slug) }}"
+                            <a href="{{ route('channel', $channel->handle ?? $channel->slug) }}"
                                 class="flex items-center space-x-3 group">
                                 <div class="w-10 h-10 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0 ring-2 ring-red-500/30">
                                     <img src="{{ asset('storage/' . ($channel->profile_image ?? 'channels/default.jpg')) }}"
