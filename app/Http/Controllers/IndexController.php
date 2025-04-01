@@ -47,7 +47,7 @@ class IndexController extends Controller
     {
         // Get trending videos by views from video_stats
         $trendingVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->orderBy('videos.created_at', 'desc')
@@ -57,14 +57,88 @@ class IndexController extends Controller
 
         // Get recent videos with their stats
         $recentVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->latest('videos.created_at')
             ->take(8)
             ->with('videoStats')
             ->get();
+            
+        // Get popular actors based on video views and engagement
+        $popularActors = Actor::where('actors.visibility', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->with(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
+                      ->select('videos.id', 'videos.title')
+                      ->take(1);
+            }])
+            ->leftJoin('actor_video', 'actors.id', '=', 'actor_video.actor_id')
+            ->leftJoin('videos', function($join) {
+                $join->on('actor_video.video_id', '=', 'videos.id')
+                     ->where('videos.visibility', '=', VisibilityStatus::PUBLIC);
+            })
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->groupBy('actors.id')
+            ->orderByRaw('SUM(IFNULL(video_stats.views_count, 0)) DESC')
+            ->orderBy('videos_count', 'desc')
+            ->take(6)
+            ->get();
+            
+        // Get popular channels based on video count and recent activity
+        $popularChannels = Channel::where('channels.visibility', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->with(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
+                      ->select('videos.id', 'videos.title')
+                      ->take(1);
+            }])
+            ->leftJoin('channel_video', 'channels.id', '=', 'channel_video.channel_id')
+            ->leftJoin('videos', function($join) {
+                $join->on('channel_video.video_id', '=', 'videos.id')
+                     ->where('videos.visibility', '=', VisibilityStatus::PUBLIC);
+            })
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->groupBy('channels.id')
+            ->orderByRaw('SUM(IFNULL(video_stats.views_count, 0)) DESC')
+            ->orderBy('videos_count', 'desc')
+            ->orderBy('channels.updated_at', 'desc')
+            ->take(4)
+            ->get();
+            
+        // Get popular categories with their most viewed videos
+        $popularCategories = Category::where('categories.status', ActiveStatus::ACTIVE)
+            ->withCount(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+            }])
+            ->having('videos_count', '>', 0)
+            ->orderBy('videos_count', 'desc')
+            ->take(3)
+            ->get();
+            
+        // For each popular category, get its top 4 videos
+        foreach ($popularCategories as $category) {
+            $category->topVideos = Video::select('videos.*', 'video_stats.views_count')
+                ->where('videos.visibility', VisibilityStatus::PUBLIC)
+                ->leftJoin('category_video', 'videos.id', '=', 'category_video.video_id')
+                ->where('category_video.category_id', $category->id)
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->orderBy('video_stats.views_count', 'desc')
+                ->take(4)
+                ->with('videoStats')
+                ->get();
+        }
 
-        return view('index.home', compact('trendingVideos', 'recentVideos'));
+        return view('index.home', compact(
+            'trendingVideos', 
+            'recentVideos', 
+            'popularActors', 
+            'popularChannels', 
+            'popularCategories'
+        ));
     }
 
     public function about()
@@ -108,7 +182,7 @@ class IndexController extends Controller
 
         // Get related videos based on categories and tags
         $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->whereHas('categories', function($query) use ($video) {
                 $query->whereIn('categories.id', $video->categories->pluck('id'))
@@ -125,7 +199,7 @@ class IndexController extends Controller
 
         // Get recommended videos (most viewed videos in last 3 days)
         $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->where('videos.id', '!=', $video->id)
             ->where('videos.created_at', '>=', now()->subDays(3))
@@ -150,7 +224,7 @@ class IndexController extends Controller
         // Get channel's videos with stats and categories
         $videos = $channel->videos()
             ->select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->with(['categories'])
             ->orderBy('video_stats.views_count', 'desc')
@@ -177,7 +251,7 @@ class IndexController extends Controller
         // Get actor's videos with stats
         $videos = $actor->videos()
             ->select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
@@ -203,7 +277,7 @@ class IndexController extends Controller
 
         $videos = $category->videos()
             ->select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->with('videoStats')
             ->paginate(12);
@@ -216,7 +290,7 @@ class IndexController extends Controller
         // Get tag's videos with stats
         $videos = $tag->videos()
             ->select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
@@ -233,10 +307,10 @@ class IndexController extends Controller
         }
 
         $videos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->where(function($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                  ->orWhere('description', 'like', "%{$query}%");
+                $q->where('videos.title', 'like', "%{$query}%")
+                  ->orWhere('videos.description', 'like', "%{$query}%");
             })
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->orderBy('video_stats.views_count', 'desc')
@@ -247,9 +321,9 @@ class IndexController extends Controller
 
     public function allCategories()
     {
-        $categories = Category::where('status', ActiveStatus::ACTIVE)
+        $categories = Category::where('categories.status', ActiveStatus::ACTIVE)
             ->withCount(['videos' => function($query) {
-                $query->where('visibility', VisibilityStatus::PUBLIC);
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
             }])
             ->orderBy('name')
             ->paginate(24);
@@ -261,7 +335,7 @@ class IndexController extends Controller
     {
         $actors = Actor::where('visibility', ActiveStatus::ACTIVE)
             ->withCount(['videos' => function($query) {
-                $query->where('visibility', VisibilityStatus::PUBLIC);
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
             }])
             ->orderBy('stagename')
             ->paginate(24);
@@ -273,7 +347,7 @@ class IndexController extends Controller
     {
         $channels = Channel::where('visibility', ActiveStatus::ACTIVE)
             ->withCount(['videos' => function($query) {
-                $query->where('visibility', VisibilityStatus::PUBLIC);
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
             }])
             ->orderBy('channel_name')
             ->paginate(24);
@@ -299,7 +373,7 @@ class IndexController extends Controller
         // Get channel's videos with stats and categories
         $videos = $channel->videos()
             ->select('videos.*', 'video_stats.views_count')
-            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
             ->with(['categories'])
             ->orderBy('video_stats.views_count', 'desc')
