@@ -112,28 +112,28 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         /* Breadcrumbs Styles */
         .breadcrumbs {
             overflow: visible;
             white-space: normal;
             padding-bottom: 5px;
         }
-        
+
         .breadcrumbs ol {
             flex-wrap: wrap;
         }
-        
+
         .breadcrumbs .truncate {
             max-width: 150px;
         }
-        
+
         @media (min-width: 640px) {
             .breadcrumbs .truncate {
                 max-width: 250px;
             }
         }
-        
+
         @media (min-width: 768px) {
             .breadcrumbs .truncate {
                 max-width: 350px;
@@ -159,8 +159,10 @@
                     <a href="{{ url('/') }}" class="flex items-center space-x-2 md:space-x-3">
                         <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}"
                             alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-6 md:h-8 w-auto">
-                        <span
-                            class="text-lg md:text-xl font-bold truncate">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                        @if (!isset($settings->logo))
+                            <span
+                                class="text-lg md:text-xl font-bold truncate">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                        @endif
                     </a>
 
                     <!-- Desktop Navigation -->
@@ -199,6 +201,10 @@
                                 @endforeach
                             </div>
                         </div>
+                        <a href="{{ route('all-actors') }}"
+                            class="text-neutral-100 hover:text-red-500 transition-colors">Actors</a>
+                        <a href="{{ route('all-channels') }}"
+                            class="text-neutral-100 hover:text-red-500 transition-colors">Channels</a>
                     </div>
                 </div>
 
@@ -231,7 +237,9 @@
                 <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
                     <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}"
                         alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
-                    <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                    @if (!isset($settings->logo))
+                        <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                    @endif
                 </a>
             </div>
 
@@ -265,6 +273,14 @@
                             </div>
                         </div>
                     </div>
+                    <a href="{{ route('all-actors') }}"
+                        class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
+                        <i class="fas fa-user-tie mr-3"></i>Actors
+                    </a>
+                    <a href="{{ route('all-channels') }}"
+                        class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
+                        <i class="fas fa-tv mr-3"></i>Channels
+                    </a>
                 </div>
             </div>
 
@@ -283,193 +299,261 @@
     </div>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
         <!-- Breadcrumbs -->
-        @if(!request()->routeIs('home') && !isset($hideBreadcrumbs))
-        <div class="breadcrumbs mb-6">
-            <nav class="flex" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-2">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('home') }}" class="inline-flex items-center text-sm font-medium text-neutral-400 hover:text-red-500">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                            </svg>
-                            Home
-                        </a>
-                    </li>
-                    
-                    @if(request()->routeIs('category') && isset($category))
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('all-categories') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Categories</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300 truncate">{{ $category->name }}</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('tag') && isset($tag))
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('tags') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Tags</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">#{{ $tag->name }}</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('actor') && isset($actor))
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('all-actors') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Actors</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('channel') && isset($channel))
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('all-channels') }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Channels</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">{{ $channel->handle ? '@'.$channel->handle : $channel->channel_name }}</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('video') && isset($video))
-                    @if($video->categories->count() > 0)
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('category', $video->categories->first()->slug) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->categories->first()->name }}</a>
-                        </div>
-                    </li>
-                    @endif
-                    @if($video->actors->count() > 0)
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('actor', $video->actors->first()->slug) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->actors->first()->stagename ?? $video->actors->first()->firstname . ' ' . $video->actors->first()->lastname }}</a>
-                        </div>
-                    </li>
-                    @endif
-                    @if($video->channels->count() > 0)
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('channel', $video->channels->first()->handle) }}" class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->channels->first()->channel_name }}</a>
-                        </div>
-                    </li>
-                    @endif
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300 truncate">{{ $video->title }}</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('search') && isset($query))
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">Search Results: "{{ $query }}"</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('contact'))
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">Contact Us</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('about'))
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">About Us</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('privacy'))
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">Privacy Policy</span>
-                        </div>
-                    </li>
-                    @endif
-                    
-                    @if(request()->routeIs('dmca'))
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 text-sm font-medium text-neutral-300">DMCA Policy</span>
-                        </div>
-                    </li>
-                    @endif
-                </ol>
-            </nav>
-        </div>
+        @if (!request()->routeIs('home') && !isset($hideBreadcrumbs))
+            <div class="breadcrumbs mb-6">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                        <li class="inline-flex items-center">
+                            <a href="{{ route('home') }}"
+                                class="inline-flex items-center text-sm font-medium text-neutral-400 hover:text-red-500">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                    </path>
+                                </svg>
+                                Home
+                            </a>
+                        </li>
+
+                        @if (request()->routeIs('category') && isset($category))
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <a href="{{ route('all-categories') }}"
+                                        class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Categories</a>
+                                </div>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span
+                                        class="ml-1 text-sm font-medium text-neutral-300 truncate">{{ $category->name }}</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('tag') && isset($tag))
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <a href="{{ route('tags') }}"
+                                        class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Tags</a>
+                                </div>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span
+                                        class="ml-1 text-sm font-medium text-neutral-300">#{{ $tag->name }}</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('actor') && isset($actor))
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <a href="{{ route('all-actors') }}"
+                                        class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Actors</a>
+                                </div>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span
+                                        class="ml-1 text-sm font-medium text-neutral-300">{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('channel') && isset($channel))
+                            <li>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <a href="{{ route('all-channels') }}"
+                                        class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">Channels</a>
+                                </div>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span
+                                        class="ml-1 text-sm font-medium text-neutral-300">{{ $channel->handle ? '@' . $channel->handle : $channel->channel_name }}</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('video') && isset($video))
+                            @if ($video->categories->count() > 0)
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="{{ route('category', $video->categories->first()->slug) }}"
+                                            class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->categories->first()->name }}</a>
+                                    </div>
+                                </li>
+                            @endif
+                            @if ($video->actors->count() > 0)
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="{{ route('actor', $video->actors->first()->slug) }}"
+                                            class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->actors->first()->stagename ?? $video->actors->first()->firstname . ' ' . $video->actors->first()->lastname }}</a>
+                                    </div>
+                                </li>
+                            @endif
+                            @if ($video->channels->count() > 0)
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <a href="{{ route('channel', $video->channels->first()->handle) }}"
+                                            class="ml-1 text-sm font-medium text-neutral-400 hover:text-red-500">{{ $video->channels->first()->channel_name }}</a>
+                                    </div>
+                                </li>
+                            @endif
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span
+                                        class="ml-1 text-sm font-medium text-neutral-300 truncate">{{ $video->title }}</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('search') && isset($query))
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-neutral-300">Search Results:
+                                        "{{ $query }}"</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('contact'))
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-neutral-300">Contact Us</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('about'))
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-neutral-300">About Us</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('privacy'))
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-neutral-300">Privacy Policy</span>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if (request()->routeIs('dmca'))
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="ml-1 text-sm font-medium text-neutral-300">DMCA Policy</span>
+                                </div>
+                            </li>
+                        @endif
+                    </ol>
+                </nav>
+            </div>
         @endif
 
         @if ($siteAds->is_active && $siteAds->ads_banner_1 && !request()->route()->named('video'))
@@ -532,7 +616,9 @@
                     <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
                         <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}"
                             alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
-                        <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                        @if (!isset($settings->logo))
+                            <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
+                        @endif
                     </a>
                     <p class="text-neutral-400 text-sm">Your ultimate destination for high-quality video content.
                         Stream, share, and enjoy!</p>
