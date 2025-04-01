@@ -74,7 +74,7 @@
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Trending Videos</h2>
                     <div class="flex items-center">
-                        <div class="scroll-buttons mr-3">
+                        <div class="scroll-buttons">
                             <button class="scroll-button scroll-left" onclick="scrollSection('trending-videos', -600)">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -86,53 +86,45 @@
                                 </svg>
                             </button>
                         </div>
-                        <a href="#" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
-                            View All
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
                     </div>
                 </div>
             </div>
-            <div class="scrollable-section" id="trending-videos">
-                <div class="scrollable-grid">
-                    @forelse($trendingVideos as $video)
-                        <div class="video-card group">
-                            <a href="{{ route('video', $video->slug) }}" class="block">
-                                <div class="thumbnail-wrapper relative aspect-video mb-3">
-                                    <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                        alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
-                                    <span
-                                        class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @forelse($trendingVideos as $video)
+                    <div class="video-card group">
+                        <a href="{{ route('video', $video->slug) }}" class="block">
+                            <div class="thumbnail-wrapper relative aspect-video mb-3">
+                                <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
+                                    alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
+                                <span
+                                    class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                     <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div
-                                            class="play-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-play text-white"></i>
-                                        </div>
+                                        class="play-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-play text-white"></i>
                                     </div>
                                 </div>
-                                <div class="metadata space-y-1">
-                                    <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
-                                    <div class="flex items-center text-xs text-neutral-400">
-                                        <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
-                                        <span class="mx-1">•</span>
-                                        <span>{{ $video->created_at->diffForHumans() }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @empty
-                        <div class="col-span-full text-center py-12">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
-                                <i class="fas fa-video text-2xl text-neutral-600"></i>
                             </div>
-                            <h3 class="text-lg font-medium mb-2">No Trending Videos</h3>
-                            <p class="text-neutral-400">There are no trending videos at the moment.</p>
+                            <div class="metadata space-y-1">
+                                <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
+                                <div class="flex items-center text-xs text-neutral-400">
+                                    <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
+                                    <span class="mx-1">•</span>
+                                    <span>{{ $video->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
+                            <i class="fas fa-video text-2xl text-neutral-600"></i>
                         </div>
-                    @endforelse
-                </div>
+                        <h3 class="text-lg font-medium mb-2">No Trending Videos</h3>
+                        <p class="text-neutral-400">There are no trending videos at the moment.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -232,40 +224,38 @@
                 </div>
             </div>
             
-            <div class="scrollable-section" id="popular-category">
-                <div class="scrollable-grid">
-                    @forelse($popularCategories[0]->topVideos as $video)
-                        <div class="video-card group">
-                            <a href="{{ route('video', $video->slug) }}" class="block">
-                                <div class="thumbnail-wrapper relative aspect-video mb-3">
-                                    <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                        alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
-                                    <span
-                                        class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @forelse($popularCategories[0]->topVideos as $video)
+                    <div class="video-card group">
+                        <a href="{{ route('video', $video->slug) }}" class="block">
+                            <div class="thumbnail-wrapper relative aspect-video mb-3">
+                                <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
+                                    alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
+                                <span
+                                    class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                     <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div
-                                            class="play-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-play text-white"></i>
-                                        </div>
+                                        class="play-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-play text-white"></i>
                                     </div>
                                 </div>
-                                <div class="metadata space-y-1">
-                                    <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
-                                    <div class="flex items-center text-xs text-neutral-400">
-                                        <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
-                                        <span class="mx-1">•</span>
-                                        <span>{{ $video->created_at->diffForHumans() }}</span>
-                                    </div>
+                            </div>
+                            <div class="metadata space-y-1">
+                                <h3 class="title text-sm font-medium line-clamp-2">{{ $video->title }}</h3>
+                                <div class="flex items-center text-xs text-neutral-400">
+                                    <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
+                                    <span class="mx-1">•</span>
+                                    <span>{{ $video->created_at->diffForHumans() }}</span>
                                 </div>
-                            </a>
-                        </div>
-                    @empty
-                        <div class="col-span-full text-center py-8">
-                            <p class="text-neutral-400">No videos found in this category.</p>
-                        </div>
-                    @endforelse
-                </div>
+                            </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-neutral-400">No videos found in this category.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
