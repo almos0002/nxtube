@@ -394,8 +394,19 @@
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-6">
-                <div class="flex items-center">
+                <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Recent Videos</h2>
+                    <div class="flex items-center">
+                        <a href="{{ route('all-videos') }}"
+                            class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
