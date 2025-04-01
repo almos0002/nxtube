@@ -578,7 +578,7 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Top Categories</h4>
                     <ul class="space-y-3">
-                        @foreach ($categories as $category)
+                        @foreach ($categories->take(5) as $category)
                             <li><a href="{{ route('category', $category->slug) }}"
                                     class="text-neutral-400 hover:text-red-500 transition-colors">{{ $category->name }}</a>
                             </li>
