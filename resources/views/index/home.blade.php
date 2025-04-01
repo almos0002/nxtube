@@ -6,7 +6,12 @@
     <!-- Trending Section -->
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold mb-6">Trending Videos</h2>
+            <div class="mb-6">
+                <div class="flex items-center">
+                    <h2 class="text-2xl font-bold text-white">Trending Videos</h2>
+                    <div class="h-0.5 flex-grow bg-gradient-to-r from-red-500 to-transparent ml-4"></div>
+                </div>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($trendingVideos as $video)
                     <div class="video-card group">
@@ -48,38 +53,42 @@
     </section>
 
     <!-- Popular Actors Section -->
-    <section class="py-8 bg-neutral-800/30">
+    <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold">Popular Actors</h2>
-                <a href="{{ route('actors') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center">
-                    View All
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </a>
+            <div class="mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center flex-grow">
+                        <h2 class="text-2xl font-bold text-white">Popular Actors</h2>
+                        <div class="h-0.5 flex-grow bg-gradient-to-r from-red-500 to-transparent ml-4 mr-4"></div>
+                    </div>
+                    <a href="{{ route('actors') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                        View All
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
             </div>
             
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                 @forelse($popularActors as $actor)
-                    <a href="{{ route('actor', $actor->slug) }}" class="block group">
-                        <div class="aspect-square rounded-xl overflow-hidden bg-neutral-800 relative mb-3">
+                    <a href="{{ route('actor', $actor->slug) }}" class="block group text-center">
+                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-neutral-700 mb-2">
                             @if($actor->profile_image)
                                 <img src="{{ asset('storage/' . $actor->profile_image) }}" alt="{{ $actor->stagename }}" 
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-red-500/10">
-                                    <svg class="w-12 h-12 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
                             @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
-                        <h3 class="font-medium text-neutral-100 text-center group-hover:text-red-500 transition-colors">
+                        <h3 class="text-sm font-medium text-neutral-100 group-hover:text-red-500 transition-colors truncate">
                             {{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}
                         </h3>
-                        <p class="text-xs text-neutral-400 text-center">{{ number_format($actor->videos_count) }} videos</p>
+                        <p class="text-xs text-neutral-400">{{ number_format($actor->videos_count) }}</p>
                     </a>
                 @empty
                     <div class="col-span-full text-center py-8">
@@ -93,14 +102,19 @@
     <!-- Popular Channels Section -->
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold">Popular Channels</h2>
-                <a href="{{ route('channels') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center">
-                    View All
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </a>
+            <div class="mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center flex-grow">
+                        <h2 class="text-2xl font-bold text-white">Popular Channels</h2>
+                        <div class="h-0.5 flex-grow bg-gradient-to-r from-red-500 to-transparent ml-4 mr-4"></div>
+                    </div>
+                    <a href="{{ route('channels') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                        View All
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -144,9 +158,14 @@
     </section>
 
     <!-- Recent Videos Section -->
-    <section class="py-8 bg-neutral-800/30">
+    <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold mb-6">Recent Videos</h2>
+            <div class="mb-6">
+                <div class="flex items-center">
+                    <h2 class="text-2xl font-bold text-white">Recent Videos</h2>
+                    <div class="h-0.5 flex-grow bg-gradient-to-r from-red-500 to-transparent ml-4"></div>
+                </div>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($recentVideos as $video)
                     <div class="video-card group">
@@ -189,21 +208,24 @@
 
     <!-- Popular Categories with Videos -->
     @foreach($popularCategories as $category)
-    <section class="py-8 {{ $loop->index % 2 == 0 ? '' : 'bg-neutral-800/30' }}">
+    <section class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center mr-3">
-                        <span class="text-red-500 text-sm font-bold">#</span>
+            <div class="mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center flex-grow">
+                        <div class="w-8 h-8 bg-red-500/10 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-red-500 text-sm font-bold">#</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">{{ $category->name }}</h2>
+                        <div class="h-0.5 flex-grow bg-gradient-to-r from-red-500 to-transparent ml-4 mr-4"></div>
                     </div>
-                    <h2 class="text-2xl font-bold">{{ $category->name }}</h2>
+                    <a href="{{ route('category', $category->slug) }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                        View All
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
                 </div>
-                <a href="{{ route('category', $category->slug) }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center">
-                    View All
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </a>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
