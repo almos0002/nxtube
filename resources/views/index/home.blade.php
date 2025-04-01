@@ -35,6 +35,36 @@
             grid-auto-columns: 300px;
             gap: 1.5rem;
         }
+        .scroll-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .scroll-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .scroll-button:hover {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+        .scroll-button svg {
+            width: 18px;
+            height: 18px;
+            color: white;
+        }
+        
+        /* Hide scroll buttons on mobile */
+        @media (max-width: 768px) {
+            .scroll-buttons {
+                display: none;
+            }
+        }
     </style>
 
     <!-- Trending Section -->
@@ -43,15 +73,29 @@
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Trending Videos</h2>
-                    <a href="#" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
-                        View All
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
+                    <div class="flex items-center">
+                        <div class="scroll-buttons mr-3">
+                            <button class="scroll-button scroll-left" onclick="scrollSection('trending-videos', -600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button class="scroll-button scroll-right" onclick="scrollSection('trending-videos', 600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="#" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="scrollable-section">
+            <div class="scrollable-section" id="trending-videos">
                 <div class="scrollable-grid">
                     @forelse($trendingVideos as $video)
                         <div class="video-card group">
@@ -99,16 +143,30 @@
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Popular Actors</h2>
-                    <a href="{{ route('actors') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
-                        View All
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
+                    <div class="flex items-center">
+                        <div class="scroll-buttons mr-3">
+                            <button class="scroll-button scroll-left" onclick="scrollSection('popular-actors', -600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button class="scroll-button scroll-right" onclick="scrollSection('popular-actors', 600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="{{ route('actors') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="scrollable-section">
+            <div class="scrollable-section" id="popular-actors">
                 <div class="actors-grid">
                     @forelse($popularActors as $actor)
                         <a href="{{ route('actor', $actor->slug) }}" class="block group text-center">
@@ -151,16 +209,30 @@
                         </div>
                         <h2 class="text-2xl font-bold text-white">{{ $popularCategories[0]->name }}</h2>
                     </div>
-                    <a href="{{ route('category', $popularCategories[0]->slug) }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
-                        View All
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
+                    <div class="flex items-center">
+                        <div class="scroll-buttons mr-3">
+                            <button class="scroll-button scroll-left" onclick="scrollSection('popular-category', -600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button class="scroll-button scroll-right" onclick="scrollSection('popular-category', 600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="{{ route('category', $popularCategories[0]->slug) }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="scrollable-section">
+            <div class="scrollable-section" id="popular-category">
                 <div class="scrollable-grid">
                     @forelse($popularCategories[0]->topVideos as $video)
                         <div class="video-card group">
@@ -205,16 +277,30 @@
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Popular Channels</h2>
-                    <a href="{{ route('channels') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
-                        View All
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
+                    <div class="flex items-center">
+                        <div class="scroll-buttons mr-3">
+                            <button class="scroll-button scroll-left" onclick="scrollSection('popular-channels', -600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button class="scroll-button scroll-right" onclick="scrollSection('popular-channels', 600)">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="{{ route('channels') }}" class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             
-            <div class="scrollable-section">
+            <div class="scrollable-section" id="popular-channels">
                 <div class="channels-grid">
                     @forelse($popularChannels as $channel)
                         <a href="{{ route('channel', $channel->handle ?? $channel->slug) }}" class="block group bg-neutral-800 rounded-xl overflow-hidden hover:bg-neutral-700/50 transition-colors">
@@ -303,4 +389,18 @@
             </div>
         </div>
     </section>
+
+    <!-- JavaScript for scroll buttons -->
+    <script>
+        // Function to scroll sections horizontally
+        function scrollSection(sectionId, scrollAmount) {
+            const scrollContainer = document.getElementById(sectionId);
+            if (scrollContainer) {
+                scrollContainer.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
 @endsection
