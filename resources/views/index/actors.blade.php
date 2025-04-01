@@ -7,12 +7,16 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <!-- Header -->
-    <header class="bg-neutral-800 shadow-sm rounded-xl p-4 mb-8 flex justify-between items-center">
-        <div>
-            <h2 class="text-2xl font-bold text-neutral-100">All Actors</h2>
-            <p class="text-neutral-400">Browse videos by actor</p>
+    <div class="mb-10">
+        <div class="flex items-center mb-2">
+            <svg class="w-8 h-8 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+            </svg>
+            <h2 class="text-3xl font-bold text-white">All Actors</h2>
         </div>
-    </header>
+        <p class="text-neutral-400 text-lg ml-11">Browse videos by actor</p>
+        <div class="h-px bg-gradient-to-r from-red-500/50 via-neutral-700 to-transparent mt-6"></div>
+    </div>
     
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         @foreach($actors as $actor)
