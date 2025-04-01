@@ -190,6 +190,13 @@
                                         alt="{{ $recommendedVideo->title }}" class="thumbnail w-full h-full object-cover">
                                     <span
                                         class="duration absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/90 text-xs font-medium rounded">{{ $recommendedVideo->duration }}</span>
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <div
+                                            class="play-icon absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-play text-white text-xs"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="flex-1 ml-3">
                                     <h3 class="text-sm font-medium line-clamp-2 group-hover:text-red-500 transition-colors">
