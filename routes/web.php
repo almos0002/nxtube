@@ -86,6 +86,7 @@ Route::get('/tag/{tag}', [IndexController::class, 'tag'])->name('tag');
 Route::get('/all-categories', [IndexController::class, 'allCategories'])->name('all-categories');
 Route::get('/all-actors', [IndexController::class, 'allActors'])->name('all-actors');
 Route::get('/all-channels', [IndexController::class, 'allChannels'])->name('all-channels');
+Route::get('/all', [IndexController::class, 'allVideos'])->name('all-videos');
 
 // This must be the last route since it's the most generic
 Route::get('/{video}', [IndexController::class, 'video'])->name('video');

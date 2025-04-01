@@ -101,7 +101,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <a href="{{ route('videos') }}"
+                        <a href="{{ route('all-videos') }}"
                             class="text-red-500 hover:text-red-400 text-sm font-medium flex items-center whitespace-nowrap">
                             View All
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"

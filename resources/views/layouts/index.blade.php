@@ -256,7 +256,7 @@
     </div>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
         <!-- Breadcrumbs -->
-        @if(!request()->routeIs('home'))
+        @if(!request()->routeIs('home') && !isset($hideBreadcrumbs))
         <div class="breadcrumbs mb-6">
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">

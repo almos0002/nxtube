@@ -386,4 +386,17 @@ class IndexController extends Controller
 
         return view('index.channel', compact('channel', 'videos', 'totalViews'));
     }
+
+    public function allVideos(Request $request)
+    {
+        // Get all public videos with pagination
+        $videos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->with(['categories', 'channels'])
+            ->orderBy('videos.created_at', 'desc')
+            ->paginate(12);
+
+        return view('index.videos', compact('videos'))->with('hideBreadcrumbs', true);
+    }
 }
