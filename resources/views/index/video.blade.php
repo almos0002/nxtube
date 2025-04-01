@@ -167,7 +167,7 @@
             <div class="sticky top-24">
                 <!-- Banner 2 above Recommended -->
                 @if ($siteAds->is_active && $siteAds->ads_banner_2)
-                    <div class="w-full h-24 mb-4 overflow-hidden">
+                    <div class="w-full h-60 mb-4 overflow-hidden">
                         @if (Str::startsWith($siteAds->ads_banner_2, ['http://', 'https://']) ||
                                 Str::contains($siteAds->ads_banner_2, ['<script', '<iframe', '<div']))
                             {!! $siteAds->ads_banner_2 !!}
