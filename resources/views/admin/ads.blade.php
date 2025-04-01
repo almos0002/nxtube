@@ -11,7 +11,7 @@
         <div>
             <form action="{{ route('ads.toggle-status') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="px-4 py-2 rounded-lg {{ $ads->is_active ? 'bg-neutral-700 hover:bg-neutral-600' : 'bg-red-500 hover:bg-red-600' }} text-white transition-colors">
+                <button type="submit" class="px-4 py-2 rounded-lg {{ $ads->is_active ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }} text-white transition-colors">
                     {{ $ads->is_active ? 'Disable Ads' : 'Enable Ads' }}
                 </button>
             </form>
