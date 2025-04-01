@@ -16,7 +16,7 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($channels as $channel)
-        <a href="{{ route('channel', $channel->slug) }}" class="bg-neutral-800 rounded-xl shadow-sm overflow-hidden hover:bg-neutral-700/50 transition-colors">
+        <a href="{{ route('channel', $channel->handle) }}" class="bg-neutral-800 rounded-xl shadow-sm overflow-hidden hover:bg-neutral-700/50 transition-colors">
             <div class="relative">
                 @if($channel->banner_image)
                 <div class="h-32 overflow-hidden">

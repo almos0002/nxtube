@@ -280,4 +280,36 @@ class IndexController extends Controller
             
         return view('index.channels', compact('channels'));
     }
+
+    public function channelByHandle($handle)
+    {
+        // Find the channel by handle
+        $channel = Channel::where('handle', $handle)
+            ->where('visibility', ActiveStatus::ACTIVE)
+            ->firstOrFail();
+
+        // Only allow access to active channels
+        if ($channel->visibility !== ActiveStatus::ACTIVE) {
+            return response()
+                ->view('errors.404', [
+                    'message' => 'This Channel is Currently Not Available'
+                ], 404);
+        }
+
+        // Get channel's videos with stats and categories
+        $videos = $channel->videos()
+            ->select('videos.*', 'video_stats.views_count')
+            ->where('visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->with(['categories'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->paginate(12);
+
+        // Get total views for the channel
+        $totalViews = $channel->videos()
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->sum('video_stats.views_count');
+
+        return view('index.channel', compact('channel', 'videos', 'totalViews'));
+    }
 }

@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Public routes with slugs - these must come after fixed routes
-Route::get('/channel/{channel}', [IndexController::class, 'channel'])->name('channel');
+Route::get('/channel/{handle}', [IndexController::class, 'channelByHandle'])->name('channel');
 Route::get('/actor/{actor}', [IndexController::class, 'actor'])->name('actor');
 Route::get('/category/{category}', [IndexController::class, 'category'])->name('category');
 Route::get('/tag/{tag}', [IndexController::class, 'tag'])->name('tag');
