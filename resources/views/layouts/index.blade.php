@@ -52,6 +52,11 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        /* Center the play icon within the circle */
+        .video-card .play-icon .fa-play {
+            margin-left: 2px; /* Adjust for visual centering */
+        }
+
         .video-card .duration {
             opacity: 0.9;
             transform: translateY(0);
@@ -290,7 +295,7 @@
                     <div class="flex-1 max-w-md w-full">
                         <form class="flex gap-2">
                             <input type="email" placeholder="Enter your email"
-                                class="flex-1 px-4 py-2 bg-neutral-700/50 rounded-lg border border-neutral-600 focus:outline-none focus:border-red-500 transition-colors">
+                                class="flex-1 px-4 py-2 bg-neutral-700/50 rounded-lg border border-neutral-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
                             <button type="submit"
                                 class="px-6 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors">
                                 Subscribe
