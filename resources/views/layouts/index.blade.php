@@ -115,19 +115,13 @@
         
         /* Breadcrumbs Styles */
         .breadcrumbs {
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            overflow: visible;
+            white-space: normal;
             padding-bottom: 5px;
         }
         
-        .breadcrumbs::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-        
         .breadcrumbs ol {
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
         
         .breadcrumbs .truncate {
