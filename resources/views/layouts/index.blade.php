@@ -54,7 +54,8 @@
 
         /* Center the play icon within the circle */
         .video-card .play-icon .fa-play {
-            margin-left: 2px; /* Adjust for visual centering */
+            margin-left: 2px;
+            /* Adjust for visual centering */
         }
 
         .video-card .duration {
@@ -256,7 +257,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
         @if ($siteAds->is_active && $siteAds->ads_banner_1 && !request()->route()->named('video'))
             <!-- Top Banner Ad (not shown on video page) -->
-            <div class="w-full h-24 overflow-hidden flex justify-center">
+            <div class="w-full h-30 overflow-hidden flex justify-center">
                 @if (Str::startsWith($siteAds->ads_banner_1, ['http://', 'https://']) ||
                         Str::contains($siteAds->ads_banner_1, ['<script', '<iframe', '<div']))
                     {!! $siteAds->ads_banner_1 !!}
@@ -269,7 +270,7 @@
         @yield('content')
         @if ($siteAds->is_active && $siteAds->ads_banner_1 && !request()->route()->named('video'))
             <!-- Bottom Banner Ad (not shown on video page) -->
-            <div class="w-full h-24 overflow-hidden flex justify-center">
+            <div class="w-full h-30 overflow-hidden flex justify-center">
                 @if (Str::startsWith($siteAds->ads_banner_1, ['http://', 'https://']) ||
                         Str::contains($siteAds->ads_banner_1, ['<script', '<iframe', '<div']))
                     {!! $siteAds->ads_banner_1 !!}

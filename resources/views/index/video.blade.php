@@ -11,7 +11,7 @@
         <div class="flex-1">
             <!-- Banner 1 above video -->
             @if ($siteAds->is_active && $siteAds->ads_banner_1)
-                <div class="w-full h-24 mb-4 overflow-hidden">
+                <div class="w-full h-30 mb-4 overflow-hidden flex items-center justify-center">
                     @if (Str::startsWith($siteAds->ads_banner_1, ['http://', 'https://']) ||
                             Str::contains($siteAds->ads_banner_1, ['<script', '<iframe', '<div']))
                         {!! $siteAds->ads_banner_1 !!}
@@ -167,7 +167,7 @@
             <div class="sticky top-24">
                 <!-- Banner 2 above Recommended -->
                 @if ($siteAds->is_active && $siteAds->ads_banner_2)
-                    <div class="w-full h-60 mb-4 overflow-hidden">
+                    <div class="w-full h-auto max-h-60 mb-4 overflow-hidden flex items-center justify-center">
                         @if (Str::startsWith($siteAds->ads_banner_2, ['http://', 'https://']) ||
                                 Str::contains($siteAds->ads_banner_2, ['<script', '<iframe', '<div']))
                             {!! $siteAds->ads_banner_2 !!}
