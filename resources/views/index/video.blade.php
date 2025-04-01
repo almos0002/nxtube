@@ -31,98 +31,195 @@
             </div>
 
             <!-- Video Info -->
-            <div class="bg-neutral-800 rounded-xl p-6">
-                <h1 class="text-2xl font-bold mb-2">{{ $video->title }}</h1>
-                <div class="flex items-center justify-between mb-6">
-                    <div class="text-neutral-400 text-sm">
-                        <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
-                        <span class="mx-2">•</span>
-                        <span>{{ $video->created_at->diffForHumans() }}</span>
+            <div class="bg-neutral-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-neutral-700/50">
+                <h1 class="text-2xl md:text-3xl font-bold mb-3 text-white">{{ $video->title }}</h1>
+                
+                <div class="flex flex-wrap items-center justify-between mb-4">
+                    <div class="flex items-center space-x-4 text-neutral-300 text-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-eye mr-2 text-red-500"></i>
+                            <span>{{ number_format($video->videoStats?->views_count ?? 0) }} views</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="far fa-clock mr-2 text-red-500"></i>
+                            <span>{{ $video->created_at->diffForHumans() }}</span>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors">
+                    <div class="flex items-center space-x-4 mt-2 sm:mt-0">
+                        <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors bg-neutral-700/50 px-4 py-2 rounded-full">
                             <i class="fas fa-share"></i>
                             <span>Share</span>
+                        </button>
+                        <button class="flex items-center space-x-2 text-neutral-100 hover:text-red-500 transition-colors bg-neutral-700/50 px-4 py-2 rounded-full">
+                            <i class="fas fa-bookmark"></i>
+                            <span>Save</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Categories, Actors, and Channels Section -->
-                <div class="space-y-4 mb-6 pt-6 border-t border-neutral-700">
-
-                    <!-- Tags -->
-                    @if ($video->tags->count() > 0)
-                        <div class="flex items-center">
-                            <h3 class="text-sm font-semibold text-neutral-400 mr-2">Tags:</h3>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($video->tags as $tag)
-                                    <a href="{{ route('tag', $tag->slug) }}"
-                                        class="px-3 py-1 bg-neutral-800 rounded-full text-sm hover:bg-red-500 transition-colors">#{{ $tag->name }}</a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Categories -->
-                    @if ($video->categories->count() > 0)
-                        <div class="flex items-center">
-                            <h3 class="text-sm font-semibold text-neutral-400 mr-2">Categories:</h3>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($video->categories as $category)
-                                    <a href="{{ route('category', $category->slug) }}"
-                                        class="px-3 py-1 bg-neutral-800 rounded-full text-sm hover:bg-red-500 transition-colors">{{ $category->name }}</a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Actors -->
-                    @if ($video->actors->count() > 0)
-                        <div class="flex items-center">
-                            <h3 class="text-sm font-semibold text-neutral-400 mr-2">Actors:</h3>
-                            <div class="flex flex-wrap gap-4">
-                                @foreach ($video->actors as $actor)
-                                    <a href="{{ route('actor', $actor->slug) }}" class="flex items-center space-x-3 group">
-                                        <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
-                                            <img src="{{ asset('storage/' . ($actor->profile_image ?? 'actors/default.jpg')) }}"
-                                                alt="{{ $actor->name }}" class="w-full h-full object-cover">
-                                        </div>
-                                        <span
-                                            class="text-sm group-hover:text-red-500 transition-colors self-center">{{ $actor->name }}</span>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Channels -->
-                    @if ($video->channels->count() > 0)
-                        <div class="flex items-center">
-                            <h3 class="text-sm font-semibold text-neutral-400 mr-2">Channels:</h3>
-                            <div class="flex flex-wrap gap-4">
-                                @foreach ($video->channels as $channel)
-                                    <a href="{{ route('channel', $channel->slug) }}"
-                                        class="flex items-center space-x-3 group">
-                                        <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
-                                            <img src="{{ asset('storage/' . ($channel->profile_image ?? 'channels/default.jpg')) }}"
-                                                alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
-                                        </div>
-                                        <span
-                                            class="text-sm group-hover:text-red-500 transition-colors self-center">{{ $channel->channel_name }}</span>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                </div>
-
-                <!-- Description -->
-                @if ($video->description)
-                    <div class="pt-6 border-t border-neutral-700">
-                        <p class="text-sm text-neutral-400 whitespace-pre-line">{{ $video->description }}</p>
+                <!-- Channels Section - Always visible -->
+                @if ($video->channels->count() > 0)
+                    <div class="flex flex-wrap items-center gap-4 mb-4 pb-4 border-b border-neutral-700">
+                        @foreach ($video->channels as $channel)
+                            <a href="{{ route('channel', $channel->slug) }}"
+                                class="flex items-center space-x-3 group">
+                                <div class="w-10 h-10 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0 ring-2 ring-red-500/30">
+                                    <img src="{{ asset('storage/' . ($channel->profile_image ?? 'channels/default.jpg')) }}"
+                                        alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-medium group-hover:text-red-500 transition-colors">{{ $channel->channel_name }}</span>
+                                    <span class="text-xs text-neutral-400">{{ $channel->handle ? '@'.$channel->handle : '' }}</span>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
                 @endif
+
+                <!-- Compact Description Preview - Always visible -->
+                @if ($video->description)
+                    <div class="mb-4">
+                        <div id="descriptionContainer" class="relative">
+                            <div id="descriptionText" class="text-sm text-neutral-300 whitespace-pre-line overflow-hidden transition-all duration-300" style="max-height: 3rem;">{{ $video->description }}</div>
+                            <div id="descriptionGradient" class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-neutral-800/80 to-transparent pointer-events-none"></div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Toggle Button -->
+                <div class="flex justify-center mb-2">
+                    <button id="toggleCardDetails" class="text-sm text-red-500 hover:text-red-400 flex items-center px-4 py-1 rounded-full bg-neutral-700/30 hover:bg-neutral-700/50 transition-colors">
+                        <span id="toggleText">Show more</span>
+                        <i id="toggleIcon" class="fas fa-chevron-down ml-2 transition-transform duration-300"></i>
+                    </button>
+                </div>
+
+                <!-- Expandable Content Section -->
+                <div id="expandableContent" class="hidden space-y-5 mt-4">
+                    <!-- Categories, Actors, and Tags Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Left Column -->
+                        <div class="space-y-5">
+                            <!-- Categories -->
+                            @if ($video->categories->count() > 0)
+                                <div class="flex flex-col">
+                                    <h3 class="text-sm font-semibold text-white mb-2">Categories</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach ($video->categories as $category)
+                                            <a href="{{ route('category', $category->slug) }}"
+                                                class="px-3 py-1 bg-neutral-700/50 hover:bg-red-500 rounded-full text-sm transition-colors">{{ $category->name }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Tags -->
+                            @if ($video->tags->count() > 0)
+                                <div class="flex flex-col">
+                                    <h3 class="text-sm font-semibold text-white mb-2">Tags</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach ($video->tags as $tag)
+                                            <a href="{{ route('tag', $tag->slug) }}"
+                                                class="px-3 py-1 bg-neutral-700/50 hover:bg-red-500 rounded-full text-sm transition-colors">#{{ $tag->name }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-5">
+                            <!-- Actors -->
+                            @if ($video->actors->count() > 0)
+                                <div class="flex flex-col">
+                                    <h3 class="text-sm font-semibold text-white mb-2">Actors</h3>
+                                    <div class="flex flex-wrap gap-3">
+                                        @foreach ($video->actors as $actor)
+                                            <a href="{{ route('actor', $actor->slug) }}" class="flex items-center space-x-2 group bg-neutral-700/30 px-3 py-2 rounded-lg hover:bg-neutral-700/70 transition-all">
+                                                <div class="w-8 h-8 rounded-full bg-neutral-600 overflow-hidden flex-shrink-0">
+                                                    <img src="{{ asset('storage/' . ($actor->profile_image ?? 'actors/default.jpg')) }}"
+                                                        alt="{{ $actor->name }}" class="w-full h-full object-cover">
+                                                </div>
+                                                <span class="text-sm group-hover:text-red-500 transition-colors">{{ $actor->name }}</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Toggle Button (Bottom) - Only visible when expanded -->
+                <div id="bottomToggleContainer" class="hidden justify-center mt-4">
+                    <button id="toggleCardDetailsBottom" class="text-sm text-red-500 hover:text-red-400 flex items-center px-4 py-1 rounded-full bg-neutral-700/30 hover:bg-neutral-700/50 transition-colors">
+                        <span>Show less</span>
+                        <i class="fas fa-chevron-up ml-2"></i>
+                    </button>
+                </div>
             </div>
+
+            <!-- Add JavaScript for expandable card -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const toggleBtn = document.getElementById('toggleCardDetails');
+                    const toggleBtnBottom = document.getElementById('toggleCardDetailsBottom');
+                    const bottomToggleContainer = document.getElementById('bottomToggleContainer');
+                    const expandableContent = document.getElementById('expandableContent');
+                    const toggleText = document.getElementById('toggleText');
+                    const toggleIcon = document.getElementById('toggleIcon');
+                    const descriptionText = document.getElementById('descriptionText');
+                    const descriptionGradient = document.getElementById('descriptionGradient');
+                    
+                    // Function to expand content
+                    function expandContent() {
+                        // Expand content
+                        expandableContent.classList.remove('hidden');
+                        bottomToggleContainer.classList.remove('hidden');
+                        bottomToggleContainer.classList.add('flex');
+                        
+                        // Hide top toggle button
+                        toggleBtn.style.display = 'none';
+                        
+                        // Expand description
+                        if(descriptionText) {
+                            descriptionText.style.maxHeight = 'none';
+                            if(descriptionGradient) descriptionGradient.style.display = 'none';
+                        }
+                    }
+                    
+                    // Function to collapse content
+                    function collapseContent() {
+                        // Collapse content
+                        expandableContent.classList.add('hidden');
+                        bottomToggleContainer.classList.add('hidden');
+                        bottomToggleContainer.classList.remove('flex');
+                        
+                        // Show top toggle button
+                        toggleBtn.style.display = '';
+                        
+                        // Collapse description
+                        if(descriptionText) {
+                            descriptionText.style.maxHeight = '3rem';
+                            if(descriptionGradient) descriptionGradient.style.display = 'block';
+                        }
+                        
+                        // Scroll back to the top of the card if needed
+                        const videoInfoCard = document.querySelector('.bg-neutral-800\\/80');
+                        if (videoInfoCard) {
+                            videoInfoCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }
+                    
+                    if(toggleBtn && expandableContent) {
+                        toggleBtn.addEventListener('click', expandContent);
+                    }
+                    
+                    if(toggleBtnBottom) {
+                        toggleBtnBottom.addEventListener('click', collapseContent);
+                    }
+                });
+            </script>
 
             <!-- Related Videos Section -->
             @if ($relatedVideos->count() > 0)
@@ -136,7 +233,7 @@
                                         <img src="{{ asset('storage/' . ($relatedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
                                             alt="{{ $relatedVideo->title }}" class="thumbnail w-full h-full object-cover">
                                         <span
-                                            class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $relatedVideo->duration }}</span>
+                                            class="duration absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-xs rounded-md font-medium">{{ $relatedVideo->duration }}</span>
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                             <div
