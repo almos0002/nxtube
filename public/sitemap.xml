@@ -2,32 +2,146 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost</loc>
-    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <lastmod>2025-04-02T06:23:31+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost/categories</loc>
-    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <lastmod>2025-04-02T06:23:31+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost/actors</loc>
-    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <lastmod>2025-04-02T06:23:31+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost/channels</loc>
-    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <lastmod>2025-04-02T06:23:31+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost/videos</loc>
-    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <lastmod>2025-04-02T06:23:31+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/amazinf</loc>
+    <lastmod>2025-04-01T11:01:24+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/this-is-nsfws</loc>
+    <lastmod>2025-04-01T11:04:09+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/round-singh</loc>
+    <lastmod>2025-04-01T10:52:12+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/this-is-okflix</loc>
+    <lastmod>2025-04-01T10:34:40+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/almos-mali</loc>
+    <lastmod>2025-04-01T05:43:21+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/gaming</loc>
+    <lastmod>2025-04-01T10:49:24+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/technology</loc>
+    <lastmod>2025-04-01T10:49:33+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/tech</loc>
+    <lastmod>2025-04-01T10:49:39+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/items</loc>
+    <lastmod>2025-04-01T10:49:45+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/cutie</loc>
+    <lastmod>2025-04-02T04:56:43+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/category/pussy</loc>
+    <lastmod>2025-04-01T10:49:56+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/actor/asdads</loc>
+    <lastmod>2025-04-01T05:45:05+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/actor/asdadasd</loc>
+    <lastmod>2025-04-01T10:51:33+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/actor/amazingrainforest</loc>
+    <lastmod>2025-04-02T04:29:25+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/actor/amazingrainforests222</loc>
+    <lastmod>2025-04-01T11:32:17+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/channel/nexnimeofficial</loc>
+    <lastmod>2025-04-01T05:45:25+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/channel/nexnimeofficialsss</loc>
+    <lastmod>2025-04-01T06:47:05+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/channel/asdasdsadsdadasdads</loc>
+    <lastmod>2025-04-02T04:29:36+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost/channel/asdasdsadsdadasdads123</loc>
+    <lastmod>2025-04-01T11:07:27+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

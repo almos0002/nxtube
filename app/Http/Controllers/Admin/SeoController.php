@@ -88,39 +88,92 @@ class SeoController extends Controller
         try {
             $seo = SeoSetting::first() ?? new SeoSetting();
             
-            // Create a basic sitemap manually
+            // Start building the sitemap XML
             $content = '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+            
+            // Add home page
+            $content .= '
   <url>
     <loc>' . url('/') . '</loc>
     <lastmod>' . now()->toAtomString() . '</lastmod>
     <changefreq>' . $seo->sitemap_frequency . '</changefreq>
     <priority>' . $seo->sitemap_priority . '</priority>
-  </url>
+  </url>';
+            
+            // Add main pages
+            $mainPages = [
+                '/categories' => 'Categories',
+                '/actors' => 'Actors',
+                '/channels' => 'Channels',
+                '/videos' => 'Videos',
+            ];
+            
+            foreach ($mainPages as $path => $name) {
+                $content .= '
   <url>
-    <loc>' . url('/categories') . '</loc>
+    <loc>' . url($path) . '</loc>
     <lastmod>' . now()->toAtomString() . '</lastmod>
     <changefreq>' . $seo->sitemap_frequency . '</changefreq>
     <priority>0.8</priority>
-  </url>
+  </url>';
+            }
+            
+            // Add videos
+            $videos = \App\Models\Video::where('visibility', 'public')
+                ->orWhere('visibility', 'published')
+                ->latest()
+                ->take(500)
+                ->get();
+                
+            foreach ($videos as $video) {
+                $content .= '
   <url>
-    <loc>' . url('/actors') . '</loc>
-    <lastmod>' . now()->toAtomString() . '</lastmod>
+    <loc>' . route('video', $video->slug) . '</loc>
+    <lastmod>' . $video->updated_at->toAtomString() . '</lastmod>
     <changefreq>' . $seo->sitemap_frequency . '</changefreq>
-    <priority>0.8</priority>
-  </url>
+    <priority>' . $seo->sitemap_priority . '</priority>
+  </url>';
+            }
+            
+            // Add categories
+            $categories = \App\Models\Category::all();
+            foreach ($categories as $category) {
+                $content .= '
   <url>
-    <loc>' . url('/channels') . '</loc>
-    <lastmod>' . now()->toAtomString() . '</lastmod>
+    <loc>' . route('category', $category->slug) . '</loc>
+    <lastmod>' . $category->updated_at->toAtomString() . '</lastmod>
     <changefreq>' . $seo->sitemap_frequency . '</changefreq>
-    <priority>0.8</priority>
-  </url>
+    <priority>0.7</priority>
+  </url>';
+            }
+            
+            // Add actors
+            $actors = \App\Models\Actor::all();
+            foreach ($actors as $actor) {
+                $content .= '
   <url>
-    <loc>' . url('/videos') . '</loc>
-    <lastmod>' . now()->toAtomString() . '</lastmod>
+    <loc>' . route('actor', $actor->slug) . '</loc>
+    <lastmod>' . $actor->updated_at->toAtomString() . '</lastmod>
     <changefreq>' . $seo->sitemap_frequency . '</changefreq>
-    <priority>0.8</priority>
-  </url>
+    <priority>0.7</priority>
+  </url>';
+            }
+            
+            // Add channels
+            $channels = \App\Models\Channel::all();
+            foreach ($channels as $channel) {
+                $content .= '
+  <url>
+    <loc>' . route('channel', $channel->handle) . '</loc>
+    <lastmod>' . $channel->updated_at->toAtomString() . '</lastmod>
+    <changefreq>' . $seo->sitemap_frequency . '</changefreq>
+    <priority>0.7</priority>
+  </url>';
+            }
+            
+            // Close the sitemap
+            $content .= '
 </urlset>';
             
             // Save sitemap to public directory with proper permissions
