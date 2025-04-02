@@ -202,7 +202,7 @@
     }
 
     function toggleCategoryStatus(categoryId, element) {
-        fetch(`/toggle-category-status/${categoryId}`, {
+        fetch(`/admin/toggle-category-status/${categoryId}`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
