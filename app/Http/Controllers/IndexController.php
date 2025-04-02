@@ -83,20 +83,17 @@ class IndexController extends Controller
     {
         $cacheKey = 'home_page_data';
         
-        // Check if home page data is cached
-        if (Cache::has($cacheKey)) {
-            $data = Cache::get($cacheKey);
-            return view('index.home', $data);
-        }
+        // Clear the cache to ensure fresh content
+        Cache::forget($cacheKey);
         
         // If not cached, generate the data
-        // Get trending videos by views from video_stats
-        $trendingVideos = $this->getPublicVideosWithStats(8, 'video_stats.views_count', 'desc');
+        // Get trending videos by views from video_stats - increased to 10
+        $trendingVideos = $this->getPublicVideosWithStats(10, 'video_stats.views_count', 'desc');
         
         // Get recent videos with their stats
         $recentVideos = $this->getPublicVideosWithStats(8, 'videos.created_at', 'desc');
             
-        // Get popular actors based on video views and engagement
+        // Get popular actors based on video views and engagement - increased to 20
         $popularActors = Actor::where('actors.visibility', ActiveStatus::ACTIVE)
             ->select('actors.*')
             ->selectRaw('(SELECT COUNT(*) FROM actor_video av 
@@ -115,7 +112,7 @@ class IndexController extends Controller
             }])
             ->orderBy('total_views', 'desc')
             ->orderBy('videos_count', 'desc')
-            ->take(6)
+            ->take(20)
             ->get();
             
         // Get popular channels based on video count and recent activity
@@ -151,7 +148,7 @@ class IndexController extends Controller
             ->take(3)
             ->get();
             
-        // For each popular category, get its top 4 videos
+        // For each popular category, get its top 10 videos (increased from 4)
         foreach ($popularCategories as $category) {
             $category->topVideos = Video::select('videos.*', 'video_stats.views_count')
                 ->where('videos.visibility', VisibilityStatus::PUBLIC)
@@ -159,7 +156,7 @@ class IndexController extends Controller
                 ->where('category_video.category_id', $category->id)
                 ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
                 ->orderBy('video_stats.views_count', 'desc')
-                ->take(4)
+                ->take(10)
                 ->with('videoStats')
                 ->get();
         }
