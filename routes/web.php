@@ -11,6 +11,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AdsController;
+use App\Http\Controllers\Admin\SeoController;
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
@@ -43,6 +44,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/ads', [AdsController::class, 'index'])->name('ads');
     Route::put('/ads', [AdsController::class, 'update'])->name('ads.update');
     Route::post('/ads/toggle-status', [AdsController::class, 'toggleStatus'])->name('ads.toggle-status');
+    
+    // SEO Routes
+    Route::get('/seo', [SeoController::class, 'index'])->name('admin.seo.index');
+    Route::post('/seo', [SeoController::class, 'update'])->name('admin.seo.update');
+    Route::get('/seo/generate-sitemap', [SeoController::class, 'generateSitemap'])->name('admin.seo.generate-sitemap');
 
     Route::view('/profile', 'admin.profile')->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('update-profile');
