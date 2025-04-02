@@ -76,7 +76,7 @@ class ChannelController extends Controller
 
         $growth = $lastMonthChannels > 0 
             ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
-            : 0;
+            : ($totalChannels > 0 ? 100 : 0);
 
         // Get popular channel
         $popularChannel = Channel::withCount('videos')

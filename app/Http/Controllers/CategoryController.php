@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
         $growth = $lastMonthCategories > 0 
             ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
-            : 0;
+            : ($totalCategories > 0 ? 100 : 0);
 
         // Get popular categories
         $popularCategories = Category::withCount('videos')

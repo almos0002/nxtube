@@ -57,7 +57,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if(abs(round($videosGrowth)) > 0)
-                    <span class="text-{{ $videosGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                    <span class="text-orange-500 flex items-center">
                         <i class="fa-duotone fa-thin fa-arrow-{{ $videosGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                         {{ number_format(abs(round($videosGrowth)), 1) }}%
                     </span>
@@ -84,7 +84,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if(abs(round($viewsGrowth)) > 0)
-                    <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                    <span class="text-lime-500 flex items-center">
                         <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                         {{ number_format(abs(round($viewsGrowth)), 1) }}%
                     </span>
@@ -111,7 +111,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if(abs(round($categoriesGrowth)) > 0)
-                    <span class="text-{{ $categoriesGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                    <span class="text-purple-500 flex items-center">
                         <i class="fa-duotone fa-thin fa-arrow-{{ $categoriesGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                         {{ number_format(abs(round($categoriesGrowth)), 1) }}%
                     </span>
@@ -138,7 +138,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if(abs(round($actorsGrowth)) > 0)
-                    <span class="text-{{ $actorsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                    <span class="text-yellow-500 flex items-center">
                         <i class="fa-duotone fa-thin fa-arrow-{{ $actorsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                         {{ number_format(abs(round($actorsGrowth)), 1) }}%
                     </span>
@@ -165,7 +165,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if(abs(round($channelsGrowth)) > 0)
-                    <span class="text-{{ $channelsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                    <span class="text-blue-500 flex items-center">
                         <i class="fa-duotone fa-thin fa-arrow-{{ $channelsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                         {{ number_format(abs(round($channelsGrowth)), 1) }}%
                     </span>
@@ -319,7 +319,7 @@
                         <h4 class="text-xl font-semibold text-neutral-100 mt-1">{{ number_format($totalViews) }}</h4>
                         <div class="flex items-center mt-2">
                             @if(abs(round($viewsGrowth)) > 0)
-                                <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-500 text-sm flex items-center">
+                                <span class="text-lime-500 text-sm flex items-center">
                                     <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
                                     {{ number_format(abs(round($viewsGrowth)), 1) }}%
                                 </span>

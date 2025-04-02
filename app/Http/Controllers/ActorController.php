@@ -36,7 +36,7 @@ class ActorController extends Controller
 
         $growth = $lastMonthActors > 0 
             ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
-            : 0;
+            : ($totalActors > 0 ? 100 : 0);
 
         // Get actor type distribution
         $actorsByType = Actor::selectRaw('type, COUNT(*) as count')

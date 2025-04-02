@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $growth >= 0 ? 'blue' : 'red' }}-400 flex items-center">
+                <span class="text-blue-500 flex items-center">
                     <i class="fa-duotone fa-thin fa-arrow-{{ $growth >= 0 ? 'up' : 'down' }} mr-1"></i> 
                     {{ abs(round($growth)) }}%
                 </span>
