@@ -177,21 +177,21 @@
             max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
         }
 
         @media (min-width: 640px) {
             .nx-container {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
         }
 
         @media (min-width: 1024px) {
             .nx-container {
-                padding-left: 2rem;
-                padding-right: 2rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
         }
     </style>
@@ -249,7 +249,7 @@
                                 @endphp
                                 @foreach ($topCategories as $category)
                                     <a href="{{ route('category', $category->slug) }}"
-                                        class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
+                                        class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors">
                                         <div
                                             class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:bg-red-500/20 transition-colors">
                                             <span class="text-red-500 text-sm">#</span>
