@@ -217,40 +217,39 @@ class IndexController extends Controller
         // Cache key based on video ID
         $cacheKey = "video_page_{$video->id}";
         
-        // Get related and recommended videos from cache or generate
-        if (Cache::has($cacheKey)) {
-            list($relatedVideos, $recommendedVideos) = Cache::get($cacheKey);
-        } else {
-            // Get related videos based on categories and tags
-            $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
-                ->where('videos.visibility', VisibilityStatus::PUBLIC)
-                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-                ->whereHas('categories', function($query) use ($video) {
-                    $query->whereIn('categories.id', $video->categories->pluck('id'))
-                          ->where('status', ActiveStatus::ACTIVE);
-                })
-                ->orWhereHas('tags', function($query) use ($video) {
-                    $query->whereIn('tags.id', $video->tags->pluck('id'));
-                })
-                ->where('videos.id', '!=', $video->id)
-                ->with(['videoStats'])
-                ->orderBy('video_stats.views_count', 'desc')
-                ->take(6)
-                ->get();
+        // Clear the cache to ensure fresh content
+        Cache::forget($cacheKey);
+        
+        // Get related videos based on categories and tags
+        $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->whereHas('categories', function($query) use ($video) {
+                $query->whereIn('categories.id', $video->categories->pluck('id'))
+                      ->where('status', ActiveStatus::ACTIVE);
+            })
+            ->orWhereHas('tags', function($query) use ($video) {
+                $query->whereIn('tags.id', $video->tags->pluck('id'));
+            })
+            ->where('videos.id', '!=', $video->id)
+            ->with(['videoStats'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->take(6)
+            ->get();
 
-            // Get recommended videos (most viewed videos in last 3 days)
-            $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
-                ->where('videos.visibility', VisibilityStatus::PUBLIC)
-                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-                ->where('videos.id', '!=', $video->id)
-                ->where('videos.created_at', '>=', now()->subDays(3))
-                ->with(['videoStats'])
-                ->orderBy('video_stats.views_count', 'desc')
-                ->take(10)
-                ->get();
-                
-            Cache::put($cacheKey, [$relatedVideos, $recommendedVideos], 1800);
-        }
+        // Get recommended videos (most viewed videos in last 3 days)
+        $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->where('videos.id', '!=', $video->id)
+            ->where('videos.created_at', '>=', now()->subDays(3))
+            ->with(['videoStats'])
+            ->orderBy('video_stats.views_count', 'desc')
+            ->take(10)
+            ->get();
+            
+        // Store in cache for future requests (optional)
+        Cache::put($cacheKey, [$relatedVideos, $recommendedVideos], 1800);
 
         return view('index.video', compact('video', 'relatedVideos', 'recommendedVideos'));
     }
@@ -274,16 +273,19 @@ class IndexController extends Controller
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
 
-        // Get total views for the channel (cached for 1 hour)
+        // Get total views for the channel - clear cache to ensure fresh data
         $cacheKey = "channel_views_{$channel->id}";
-        if (Cache::has($cacheKey)) {
-            $totalViews = Cache::get($cacheKey);
-        } else {
-            $totalViews = $channel->videos()
-                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-                ->sum('video_stats.views_count');
-            Cache::put($cacheKey, $totalViews, $this->cacheExpiration);
-        }
+        
+        // Clear the cache to ensure fresh content
+        Cache::forget($cacheKey);
+        
+        // Get fresh data
+        $totalViews = $channel->videos()
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->sum('video_stats.views_count');
+        
+        // Store in cache for future requests (optional)
+        Cache::put($cacheKey, $totalViews, $this->cacheExpiration);
 
         return view('index.channel', compact('channel', 'videos', 'totalViews'));
     }
