@@ -326,7 +326,7 @@
             <div class="flex-1 overflow-y-auto py-4">
                 <div class="px-4 space-y-2">
                     <a href="{{ url('/') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-home mr-3 w-5 text-center"></i>Home
                     </a>
                     <div class="space-y-2">
@@ -360,24 +360,24 @@
                         </div>
                     </div>
                     <a href="{{ route('all-actors') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-user-tie mr-3 w-5 text-center"></i>Actors
                     </a>
                     <a href="{{ route('all-channels') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-tv mr-3 w-5 text-center"></i>Channels
                     </a>
                     <div class="border-t border-neutral-700/30 my-4"></div>
                     <a href="{{ route('about') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-info-circle mr-3 w-5 text-center"></i>About
                     </a>
                     <a href="{{ route('contact') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-envelope mr-3 w-5 text-center"></i>Contact
                     </a>
                     <a href="{{ route('privacy') }}"
-                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        class="flex items-center py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                         <i class="fas fa-shield-alt mr-3 w-5 text-center"></i>Privacy
                     </a>
                 </div>
