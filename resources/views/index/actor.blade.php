@@ -22,13 +22,24 @@
                     class="w-28 h-28 md:w-32 md:h-32 rounded-2xl border-4 border-neutral-100 shadow-xl -mt-14 md:mt-0"
                     alt="{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}">
                 <div class="flex-1 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-2">
-                        <h1 class="text-2xl md:text-3xl font-bold">{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}</h1>
+                    <!-- Actor Name Section -->
+                    <div class="mb-2">
+                        @if($actor->stagename)
+                            <h1 class="text-2xl md:text-3xl font-bold">{{ $actor->stagename }}</h1>
+                            <p class="text-neutral-300 text-sm md:text-base mt-1">{{ $actor->firstname }} {{ $actor->lastname }}</p>
+                        @else
+                            <h1 class="text-2xl md:text-3xl font-bold">{{ $actor->firstname }} {{ $actor->lastname }}</h1>
+                        @endif
+                    </div>
+                    
+                    <!-- Actor Type Badge -->
+                    <div class="mb-3">
                         <span class="px-3 py-1 rounded-lg bg-neutral-800/90 text-sm backdrop-blur-sm inline-block">
                             <i class="fas fa-user text-neutral-400 mr-1"></i>
                             {{ $actor->type }}
                         </span>
                     </div>
+                    
                     @if ($actor->specialties)
                         <p class="text-neutral-300 text-base md:text-lg mb-4 line-clamp-2 md:line-clamp-none">{{ $actor->specialties }}</p>
                     @endif

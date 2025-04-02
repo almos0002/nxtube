@@ -20,13 +20,16 @@
                     class="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-neutral-100 shadow-xl -mt-14 md:mt-0"
                     alt="{{ $channel->channel_name }}">
                 <div class="flex-1 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-2">
+                    <!-- Channel Name Section -->
+                    <div class="mb-3">
                         <h1 class="text-2xl md:text-3xl font-bold">{{ $channel->channel_name }}</h1>
-                        <span class="px-3 py-1 rounded-lg bg-neutral-800/90 text-sm backdrop-blur-sm inline-block">
-                            <i class="fas fa-at text-neutral-400 mr-1"></i>
-                            {{ $channel->handle }}
-                        </span>
+                        @if($channel->handle)
+                            <p class="text-neutral-300 text-sm md:text-base mt-1">
+                                <i class="fas fa-at text-neutral-400 mr-1"></i>{{ $channel->handle }}
+                            </p>
+                        @endif
                     </div>
+                    
                     @if ($channel->description)
                         <p class="text-neutral-300 text-base md:text-lg mb-4 line-clamp-2 md:line-clamp-none">{{ Str::limit($channel->description, 120) }}</p>
                     @endif
