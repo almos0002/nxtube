@@ -194,6 +194,26 @@
                 padding-right: 1rem;
             }
         }
+
+        /* Footer specific styles to ensure consistent padding */
+        footer .nx-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            footer .nx-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            footer .nx-container {
+                padding-left: 1.75rem;
+                padding-right: 1.75rem;
+            }
+        }
     </style>
 </head>
 
@@ -240,12 +260,16 @@
                                         Browse Categories</h3>
                                     <div class="flex justify-between items-center">
                                         <p class="text-xs text-neutral-500">Showing popular categories</p>
-                                        <a href="{{ route('all-categories') }}" class="text-xs text-red-500 hover:text-red-400">View All</a>
+                                        <a href="{{ route('all-categories') }}"
+                                            class="text-xs text-red-500 hover:text-red-400">View All</a>
                                     </div>
                                 </div>
                                 @php
                                     // Get only top 9 categories with videos
-                                    $topCategories = $categories->where('videos_count', '>', 0)->sortByDesc('videos_count')->take(9);
+                                    $topCategories = $categories
+                                        ->where('videos_count', '>', 0)
+                                        ->sortByDesc('videos_count')
+                                        ->take(9);
                                 @endphp
                                 @foreach ($topCategories as $category)
                                     <a href="{{ route('category', $category->slug) }}"
@@ -312,8 +336,7 @@
             <!-- Mobile Search -->
             <div class="p-4 border-b border-neutral-700/50">
                 <form action="{{ route('search') }}" method="GET" class="relative">
-                    <input type="text" name="q" value="{{ request('q') }}"
-                        placeholder="Search videos..."
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search videos..."
                         class="w-full px-4 py-2 rounded-xl bg-neutral-700/50 border border-neutral-700 text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
                     <button type="submit"
                         class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-400 hover:text-red-500 transition-colors">
@@ -336,12 +359,16 @@
                                 <i class="fas fa-list-ul mr-3 w-5 text-center"></i>
                                 <span>Categories</span>
                             </span>
-                            <i id="mobile-categories-icon" class="fas fa-chevron-down transition-transform duration-300"></i>
+                            <i id="mobile-categories-icon"
+                                class="fas fa-chevron-down transition-transform duration-300"></i>
                         </button>
                         <div id="mobile-categories-content" class="hidden bg-neutral-700/20 rounded-xl p-3 mt-1">
                             @php
                                 // Get only top 8 categories with videos for mobile
-                                $topMobileCategories = $categories->where('videos_count', '>', 0)->sortByDesc('videos_count')->take(8);
+                                $topMobileCategories = $categories
+                                    ->where('videos_count', '>', 0)
+                                    ->sortByDesc('videos_count')
+                                    ->take(8);
                             @endphp
                             <div class="grid grid-cols-2 gap-2">
                                 @foreach ($topMobileCategories as $category)
@@ -355,7 +382,8 @@
                                 @endforeach
                             </div>
                             <div class="mt-2 pt-2 border-t border-neutral-700/50 text-center">
-                                <a href="{{ route('all-categories') }}" class="text-xs text-red-500 hover:text-red-400">View All Categories</a>
+                                <a href="{{ route('all-categories') }}"
+                                    class="text-xs text-red-500 hover:text-red-400">View All Categories</a>
                             </div>
                         </div>
                     </div>
@@ -706,7 +734,7 @@
         <!-- Newsletter Section -->
         <div class="border-b border-neutral-700/50">
             <div class="nx-container py-12">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 w-full">
                     <div class="text-center md:text-left">
                         <h3
                             class="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
@@ -729,7 +757,7 @@
 
         <!-- Main Footer Content -->
         <div class="nx-container py-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-full">
                 <!-- Brand Section -->
                 <div class="space-y-4">
                     <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
@@ -812,7 +840,7 @@
             </div>
 
             <!-- Bottom Bar -->
-            <div class="mt-12 pt-8 border-t border-neutral-700">
+            <div class="mt-12 pt-8 border-t border-neutral-700 w-full">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <p class="text-neutral-400 text-sm"> 2025 VideoFlex. All rights reserved.</p>
                     <div class="flex items-center space-x-6">
@@ -835,7 +863,7 @@
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-            
+
             if (mobileMenu.classList.contains('active')) {
                 // Close menu
                 mobileMenu.classList.remove('active');
@@ -854,15 +882,15 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const closeMobileMenuButton = document.getElementById('close-mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-            
+
             if (mobileMenuButton) {
                 mobileMenuButton.addEventListener('click', toggleMobileMenu);
             }
-            
+
             if (closeMobileMenuButton) {
                 closeMobileMenuButton.addEventListener('click', toggleMobileMenu);
             }
-            
+
             if (mobileMenuOverlay) {
                 mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
             }
@@ -871,7 +899,7 @@
             const mobileCategoriesButton = document.getElementById('mobile-categories-button');
             const mobileCategoriesContent = document.getElementById('mobile-categories-content');
             const mobileCategoriesIcon = document.getElementById('mobile-categories-icon');
-            
+
             if (mobileCategoriesButton && mobileCategoriesContent) {
                 mobileCategoriesButton.addEventListener('click', function() {
                     mobileCategoriesContent.classList.toggle('hidden');
@@ -890,30 +918,40 @@
     @endif
 
     <!-- Cookie Consent Banner -->
-    <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 border-t border-red-600/30 shadow-lg transform translate-y-full transition-all duration-300 ease-in-out z-50">
+    <div id="cookie-consent"
+        class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 border-t border-red-600/30 shadow-lg transform translate-y-full transition-all duration-300 ease-in-out z-50">
         <div class="nx-container py-4 relative overflow-hidden">
             <!-- Cool decorative elements -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/4"></div>
-            <div class="absolute bottom-0 left-0 w-32 h-32 bg-red-600/5 rounded-full filter blur-2xl translate-y-1/2 -translate-x-1/4"></div>
-            
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/4">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-32 h-32 bg-red-600/5 rounded-full filter blur-2xl translate-y-1/2 -translate-x-1/4">
+            </div>
+
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative">
                 <div class="text-neutral-200 flex items-center space-x-3">
                     <div class="hidden sm:block text-red-500 text-xl">
                         <i class="fas fa-cookie-bite"></i>
                     </div>
                     <p class="text-sm">
-                        This website uses cookies to ensure you get the best experience. 
-                        <a href="{{ route('privacy') }}" class="text-red-500 hover:text-red-400 underline transition-colors">Learn more</a>
+                        This website uses cookies to ensure you get the best experience.
+                        <a href="{{ route('privacy') }}"
+                            class="text-red-500 hover:text-red-400 underline transition-colors">Learn more</a>
                     </p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <button id="cookie-decline" class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
+                    <button id="cookie-decline"
+                        class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
                         <span class="relative z-10">Decline</span>
-                        <span class="absolute inset-0 bg-gradient-to-r from-neutral-700 to-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                        <span
+                            class="absolute inset-0 bg-gradient-to-r from-neutral-700 to-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                     </button>
-                    <button id="cookie-accept" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
+                    <button id="cookie-accept"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
                         <span class="relative z-10">Accept</span>
-                        <span class="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                        <span
+                            class="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                     </button>
                 </div>
             </div>
@@ -926,7 +964,7 @@
             const cookieConsent = document.getElementById('cookie-consent');
             const acceptButton = document.getElementById('cookie-accept');
             const declineButton = document.getElementById('cookie-decline');
-            
+
             // Check if user has already made a choice
             if (!localStorage.getItem('cookieConsent')) {
                 // Show the banner with a slight delay
@@ -934,13 +972,13 @@
                     cookieConsent.classList.remove('translate-y-full');
                 }, 1000);
             }
-            
+
             // Handle accept button click
             acceptButton.addEventListener('click', function() {
                 localStorage.setItem('cookieConsent', 'accepted');
                 cookieConsent.classList.add('translate-y-full');
             });
-            
+
             // Handle decline button click
             declineButton.addEventListener('click', function() {
                 localStorage.setItem('cookieConsent', 'declined');
