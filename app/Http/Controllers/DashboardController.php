@@ -84,6 +84,7 @@ class DashboardController extends Controller
                 'actors.firstname',
                 'actors.lastname',
                 'actors.stagename',
+                'actors.slug',
                 'actor_stats.views_count'
             ])
             ->leftJoin('actor_stats', 'actors.id', '=', 'actor_stats.actor_id')

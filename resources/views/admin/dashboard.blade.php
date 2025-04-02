@@ -196,41 +196,104 @@
             <!-- Top Performers Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Top Categories -->
-                <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-neutral-100 mb-4">Top Categories</h3>
-                    <div class="space-y-4">
-                        @foreach($topCategories as $category)
+                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
+                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-purple-500/5">
                         <div class="flex items-center justify-between">
-                            <span class="text-neutral-300">{{ $category->name }}</span>
-                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-video mr-2"></i>{{ $category->videos_count }} videos</span>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
+                                    <i class="fa-duotone fa-thin fa-folder text-lg"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-neutral-100">Top Categories</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded-lg">{{ $topCategories->count() }}</span>
                         </div>
+                    </div>
+                    <div class="p-5 space-y-1">
+                        @foreach($topCategories as $index => $category)
+                        <a href="{{ route('category', $category->slug) }}" class="flex items-center justify-between py-3 px-3 {{ $index == 0 ? 'bg-purple-500/5 rounded-lg' : 'hover:bg-neutral-700/20 rounded-lg' }} transition-all duration-200 group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-neutral-400 text-sm font-medium w-5">{{ $index + 1 }}</span>
+                                <span class="text-neutral-200 font-medium group-hover:text-purple-400 transition-colors">{{ $category->name }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-neutral-400 text-sm">{{ $category->videos_count }}</span>
+                                <i class="fa-duotone fa-thin fa-video text-purple-400 text-sm"></i>
+                            </div>
+                        </a>
                         @endforeach
+                        <div class="pt-4 text-right">
+                            <a href="{{ route('categories') }}" class="inline-flex items-center text-sm text-purple-400 hover:text-purple-300 transition-colors group">
+                                View all<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Top Actors -->
-                <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-neutral-100 mb-4">Top Actors</h3>
-                    <div class="space-y-4">
-                        @foreach($topActors as $actor)
+                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
+                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-yellow-500/5">
                         <div class="flex items-center justify-between">
-                            <span class="text-neutral-300">{{ $actor->stagename ?: $actor->firstname . ' ' . $actor->lastname }}</span>
-                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-eye mr-2"></i>{{ number_format($actor->views_count) }} views</span>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-yellow-500/10 text-yellow-400">
+                                    <i class="fa-duotone fa-thin fa-user-tie text-lg"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-neutral-100">Top Actors</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-yellow-500/10 text-yellow-400 rounded-lg">{{ $topActors->count() }}</span>
                         </div>
+                    </div>
+                    <div class="p-5 space-y-1">
+                        @foreach($topActors as $index => $actor)
+                        <a href="{{ route('actor', $actor->slug) }}" class="flex items-center justify-between py-3 px-3 {{ $index == 0 ? 'bg-yellow-500/5 rounded-lg' : 'hover:bg-neutral-700/20 rounded-lg' }} transition-all duration-200 group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-neutral-400 text-sm font-medium w-5">{{ $index + 1 }}</span>
+                                <span class="text-neutral-200 font-medium truncate max-w-[140px] group-hover:text-yellow-400 transition-colors">{{ $actor->stagename ?: $actor->firstname . ' ' . $actor->lastname }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-neutral-400 text-sm">{{ number_format($actor->views_count) }}</span>
+                                <i class="fa-duotone fa-thin fa-eye text-yellow-400 text-sm"></i>
+                            </div>
+                        </a>
                         @endforeach
+                        <div class="pt-4 text-right">
+                            <a href="{{ route('actors') }}" class="inline-flex items-center text-sm text-yellow-400 hover:text-yellow-300 transition-colors group">
+                                View all<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Top Channels -->
-                <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-neutral-100 mb-4">Top Channels</h3>
-                    <div class="space-y-4">
-                        @foreach($topChannels as $channel)
+                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
+                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-blue-500/5">
                         <div class="flex items-center justify-between">
-                            <span class="text-neutral-300">{{ $channel->channel_name }}</span>
-                            <span class="text-neutral-400 text-sm"><i class="fa-duotone fa-thin fa-eye mr-2"></i>{{ number_format($channel->total_views) }} views</span>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+                                    <i class="fa-duotone fa-thin fa-hashtag text-lg"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-neutral-100">Top Channels</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded-lg">{{ $topChannels->count() }}</span>
                         </div>
+                    </div>
+                    <div class="p-5 space-y-1">
+                        @foreach($topChannels as $index => $channel)
+                        <a href="{{ route('channel', $channel->handle) }}" class="flex items-center justify-between py-3 px-3 {{ $index == 0 ? 'bg-blue-500/5 rounded-lg' : 'hover:bg-neutral-700/20 rounded-lg' }} transition-all duration-200 group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-neutral-400 text-sm font-medium w-5">{{ $index + 1 }}</span>
+                                <span class="text-neutral-200 font-medium truncate max-w-[140px] group-hover:text-blue-400 transition-colors">{{ $channel->channel_name }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-neutral-400 text-sm">{{ number_format($channel->total_views) }}</span>
+                                <i class="fa-duotone fa-thin fa-eye text-blue-400 text-sm"></i>
+                            </div>
+                        </a>
                         @endforeach
+                        <div class="pt-4 text-right">
+                            <a href="{{ route('channels') }}" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 transition-colors group">
+                                View all<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,7 +331,7 @@
                             </div>
                         </div>
                         <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors duration-300">
+                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">
                                 <i class="fa-duotone fa-thin fa-edit text-lg"></i>
                             </a>
                         </div>
