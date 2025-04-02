@@ -5,7 +5,7 @@
 @section('content')
     <!-- Search Header -->
     <section class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="flex items-center space-x-4 mb-8">
                 <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
                     <i class="fas fa-search text-2xl text-red-500"></i>

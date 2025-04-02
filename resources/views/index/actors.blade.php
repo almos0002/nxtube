@@ -5,7 +5,7 @@
 @section('meta_keywords', 'actors, performers, browse, ' . $settings->site_name)
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="nx-container py-8">
     <!-- Header -->
     <div class="mb-10">
         <div class="flex items-center mb-2">

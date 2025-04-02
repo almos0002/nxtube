@@ -8,7 +8,7 @@
 @section('meta_keywords', 'contact, support, feedback, query, enquiry')
 
 @section('content')
-    <section class="container mx-auto px-4 pt-8 pb-8">
+    <section class="nx-container py-8">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold mb-8">Contact Us</h1>
 

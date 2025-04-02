@@ -139,6 +139,29 @@
                 max-width: 350px;
             }
         }
+
+        /* Standard container class */
+        .nx-container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .nx-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .nx-container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
     </style>
 </head>
 
@@ -146,7 +169,7 @@
     <!-- Navbar -->
     <nav
         class="fixed top-0 left-0 right-0 z-30 bg-neutral-800/80 backdrop-blur-md border-b border-neutral-700/50 transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo and Desktop Navigation -->
                 <div class="flex items-center space-x-4 md:space-x-8">
@@ -297,7 +320,7 @@
             </div>
         </div>
     </div>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+    <main class="nx-container py-8 mt-16">
         <!-- Breadcrumbs -->
         @if (!request()->routeIs('home') && !isset($hideBreadcrumbs) && 
             (request()->routeIs('category') || request()->routeIs('tag') || request()->routeIs('actor') || 
@@ -313,7 +336,7 @@
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 001 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                                     </path>
                                 </svg>
                                 Home
@@ -590,7 +613,7 @@
     <footer class="bg-gradient-to-b from-neutral-900 to-neutral-800 border-t border-neutral-700">
         <!-- Newsletter Section -->
         <div class="border-b border-neutral-700/50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="nx-container py-12">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                     <div class="text-center md:text-left">
                         <h3
@@ -613,7 +636,7 @@
         </div>
 
         <!-- Main Footer Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="nx-container py-12">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                 <!-- Brand Section -->
                 <div class="space-y-4">

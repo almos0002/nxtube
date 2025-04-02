@@ -98,7 +98,7 @@
 
     <!-- Trending Section -->
     <section class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Trending Videos</h2>
@@ -175,7 +175,7 @@
 
     <!-- Popular Actors Section -->
     <section class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Popular Actors</h2>
@@ -248,7 +248,7 @@
     <!-- Popular Categories with Videos (Only first category) -->
     @if (count($popularCategories) > 0)
         <section class="py-8">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="nx-container">
                 <div class="mb-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
@@ -330,7 +330,7 @@
 
     <!-- Popular Channels Section -->
     <section class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Popular Channels</h2>
@@ -414,7 +414,7 @@
 
     <!-- Recent Videos Section -->
     <section class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-container">
             <div class="mb-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl font-bold text-white">Recent Videos</h2>
