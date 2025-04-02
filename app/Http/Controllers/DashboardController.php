@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\Channel;
 use App\Models\Video;
 use App\Models\VideoStats;
+use App\Models\SeoSetting;
+use App\Helpers\AdsHelper;
+use App\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,27 +19,38 @@ class DashboardController extends Controller
     public function index()
     {
         $now = Carbon::now();
-        $lastMonth = Carbon::now()->subMonth();
+        $currentMonth = Carbon::now()->startOfMonth();
+        $lastMonth = Carbon::now()->subMonth()->startOfMonth();
+        $twoMonthsAgo = Carbon::now()->subMonths(2)->startOfMonth();
         $last7Days = Carbon::now()->subDays(7);
         $last30Days = Carbon::now()->subDays(30);
 
+        // Get ads information
+        $ads = AdsHelper::getAllAds();
+        $adsEnabled = AdsHelper::isEnabled();
+
+        // Get SEO settings
+        $seoSettings = SeoHelper::getSeoSettings();
+
         // Videos stats
         $totalVideos = Video::count();
-        $lastMonthVideos = Video::where('created_at', '<', $now->startOfMonth())
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
+        $currentMonthVideos = Video::where('created_at', '>=', $currentMonth)->count();
+        $lastMonthVideos = Video::where('created_at', '>=', $lastMonth)
+            ->where('created_at', '<', $currentMonth)
             ->count();
         $videosGrowth = $lastMonthVideos > 0 
-            ? (($totalVideos - $lastMonthVideos) / $lastMonthVideos) * 100 
-            : 0;
+            ? (($currentMonthVideos - $lastMonthVideos) / $lastMonthVideos) * 100 
+            : ($currentMonthVideos > 0 ? 100 : 0);
 
         // Views stats
         $totalViews = VideoStats::sum('views_count') ?? 0;
-        $lastMonthViews = VideoStats::where('created_at', '<', $now->startOfMonth())
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
+        $currentMonthViews = VideoStats::where('created_at', '>=', $currentMonth)->sum('views_count') ?? 0;
+        $lastMonthViews = VideoStats::where('created_at', '>=', $lastMonth)
+            ->where('created_at', '<', $currentMonth)
             ->sum('views_count') ?? 0;
         $viewsGrowth = $lastMonthViews > 0 
-            ? (($totalViews - $lastMonthViews) / $lastMonthViews) * 100 
-            : 0;
+            ? (($currentMonthViews - $lastMonthViews) / $lastMonthViews) * 100 
+            : ($currentMonthViews > 0 ? 100 : 0);
 
         // Daily views for chart
         $dailyViews = VideoStats::select(
@@ -56,12 +70,13 @@ class DashboardController extends Controller
 
         // Categories stats
         $totalCategories = Category::count();
-        $lastMonthCategories = Category::where('created_at', '<', $now->startOfMonth())
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
+        $currentMonthCategories = Category::where('created_at', '>=', $currentMonth)->count();
+        $lastMonthCategories = Category::where('created_at', '>=', $lastMonth)
+            ->where('created_at', '<', $currentMonth)
             ->count();
         $categoriesGrowth = $lastMonthCategories > 0 
-            ? (($totalCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
-            : 0;
+            ? (($currentMonthCategories - $lastMonthCategories) / $lastMonthCategories) * 100 
+            : ($currentMonthCategories > 0 ? 100 : 0);
 
         // Top categories by video count
         $topCategories = Category::withCount('videos')
@@ -71,12 +86,13 @@ class DashboardController extends Controller
 
         // Actors stats
         $totalActors = Actor::count();
-        $lastMonthActors = Actor::where('created_at', '<', $now->startOfMonth())
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
+        $currentMonthActors = Actor::where('created_at', '>=', $currentMonth)->count();
+        $lastMonthActors = Actor::where('created_at', '>=', $lastMonth)
+            ->where('created_at', '<', $currentMonth)
             ->count();
         $actorsGrowth = $lastMonthActors > 0 
-            ? (($totalActors - $lastMonthActors) / $lastMonthActors) * 100 
-            : 0;
+            ? (($currentMonthActors - $lastMonthActors) / $lastMonthActors) * 100 
+            : ($currentMonthActors > 0 ? 100 : 0);
 
         // Top actors by video count
         $topActors = Actor::select([
@@ -94,12 +110,13 @@ class DashboardController extends Controller
 
         // Channels stats
         $totalChannels = Channel::count();
-        $lastMonthChannels = Channel::where('created_at', '<', $now->startOfMonth())
-            ->where('created_at', '>=', $lastMonth->startOfMonth())
+        $currentMonthChannels = Channel::where('created_at', '>=', $currentMonth)->count();
+        $lastMonthChannels = Channel::where('created_at', '>=', $lastMonth)
+            ->where('created_at', '<', $currentMonth)
             ->count();
         $channelsGrowth = $lastMonthChannels > 0 
-            ? (($totalChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
-            : 0;
+            ? (($currentMonthChannels - $lastMonthChannels) / $lastMonthChannels) * 100 
+            : ($currentMonthChannels > 0 ? 100 : 0);
 
         // Top channels by views
         $topChannels = Channel::select([
@@ -191,7 +208,10 @@ class DashboardController extends Controller
             'popularVideos',
             'videoUploadTrends',
             'averageDuration',
-            'totalDuration'
+            'totalDuration',
+            'ads',
+            'adsEnabled',
+            'seoSettings'
         ));
     }
 }

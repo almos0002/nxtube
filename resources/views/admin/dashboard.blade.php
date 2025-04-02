@@ -56,10 +56,17 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $videosGrowth >= 0 ? 'orange' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $videosGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                    {{ abs(round($videosGrowth)) }}%
-                </span>
+                @if(abs(round($videosGrowth)) > 0)
+                    <span class="text-{{ $videosGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                        <i class="fa-duotone fa-thin fa-arrow-{{ $videosGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                        {{ number_format(abs(round($videosGrowth)), 1) }}%
+                    </span>
+                @else
+                    <span class="text-neutral-400 flex items-center">
+                        <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                        0%
+                    </span>
+                @endif
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
@@ -76,10 +83,17 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $viewsGrowth >= 0 ? 'lime' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                    {{ abs(round($viewsGrowth)) }}%
-                </span>
+                @if(abs(round($viewsGrowth)) > 0)
+                    <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                        <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                        {{ number_format(abs(round($viewsGrowth)), 1) }}%
+                    </span>
+                @else
+                    <span class="text-neutral-400 flex items-center">
+                        <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                        0%
+                    </span>
+                @endif
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
@@ -96,10 +110,17 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $categoriesGrowth >= 0 ? 'purple' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $categoriesGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                    {{ abs(round($categoriesGrowth)) }}%
-                </span>
+                @if(abs(round($categoriesGrowth)) > 0)
+                    <span class="text-{{ $categoriesGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                        <i class="fa-duotone fa-thin fa-arrow-{{ $categoriesGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                        {{ number_format(abs(round($categoriesGrowth)), 1) }}%
+                    </span>
+                @else
+                    <span class="text-neutral-400 flex items-center">
+                        <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                        0%
+                    </span>
+                @endif
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
@@ -116,10 +137,17 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $actorsGrowth >= 0 ? 'yellow' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $actorsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                    {{ abs(round($actorsGrowth)) }}%
-                </span>
+                @if(abs(round($actorsGrowth)) > 0)
+                    <span class="text-{{ $actorsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                        <i class="fa-duotone fa-thin fa-arrow-{{ $actorsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                        {{ number_format(abs(round($actorsGrowth)), 1) }}%
+                    </span>
+                @else
+                    <span class="text-neutral-400 flex items-center">
+                        <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                        0%
+                    </span>
+                @endif
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
@@ -136,10 +164,17 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-{{ $channelsGrowth >= 0 ? 'blue' : 'red' }}-400 flex items-center">
-                    <i class="fa-duotone fa-thin fa-arrow-{{ $channelsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                    {{ abs(round($channelsGrowth)) }}%
-                </span>
+                @if(abs(round($channelsGrowth)) > 0)
+                    <span class="text-{{ $channelsGrowth >= 0 ? 'green' : 'red' }}-500 flex items-center">
+                        <i class="fa-duotone fa-thin fa-arrow-{{ $channelsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                        {{ number_format(abs(round($channelsGrowth)), 1) }}%
+                    </span>
+                @else
+                    <span class="text-neutral-400 flex items-center">
+                        <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                        0%
+                    </span>
+                @endif
                 <span class="text-neutral-500 ml-2">vs last month</span>
             </div>
         </div>
@@ -149,6 +184,122 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left Column -->
         <div class="lg:col-span-1 space-y-6">
+            <!-- Ads Status -->
+            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl shadow-sm overflow-hidden border border-neutral-700/30">
+                <div class="px-6 py-5 border-b border-neutral-700/30 bg-red-500/5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400">
+                                <i class="fa-duotone fa-thin fa-rectangle-ad text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-neutral-100">Ads Status</h3>
+                        </div>
+                        <span class="text-xs px-2 py-1 {{ $adsEnabled ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' }} rounded-lg">
+                            {{ $adsEnabled ? 'Enabled' : 'Disabled' }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Banner Ads 1</p>
+                                <span class="text-xs px-2 py-1 {{ !empty($ads->ads_banner_1) ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ !empty($ads->ads_banner_1) ? 'Configured' : 'Not Set' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Banner Ads 2</p>
+                                <span class="text-xs px-2 py-1 {{ !empty($ads->ads_banner_2) ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ !empty($ads->ads_banner_2) ? 'Configured' : 'Not Set' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Popup Ads</p>
+                                <span class="text-xs px-2 py-1 {{ !empty($ads->ads_popup) ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ !empty($ads->ads_popup) ? 'Configured' : 'Not Set' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Video Ads</p>
+                                <span class="text-xs px-2 py-1 {{ !empty($ads->ads_video) ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ !empty($ads->ads_video) ? 'Configured' : 'Not Set' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-right">
+                        <a href="{{ route('ads') }}" class="inline-flex items-center text-sm text-red-400 hover:text-red-300 transition-colors group">
+                            Manage Ads<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SEO Configuration -->
+            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl shadow-sm overflow-hidden border border-neutral-700/30">
+                <div class="px-6 py-5 border-b border-neutral-700/30 bg-teal-500/5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-teal-500/10 text-teal-400">
+                                <i class="fa-duotone fa-thin fa-search-plus text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-neutral-100">SEO Status</h3>
+                        </div>
+                        <span class="text-xs px-2 py-1 {{ $seoSettings->is_active ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' }} rounded-lg">
+                            {{ $seoSettings->is_active ? 'Enabled' : 'Disabled' }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Sitemap</p>
+                                <span class="text-xs px-2 py-1 {{ $seoSettings->auto_generate_sitemap ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ $seoSettings->auto_generate_sitemap ? 'Auto-Generated' : 'Manual' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Social Meta</p>
+                                <span class="text-xs px-2 py-1 {{ $seoSettings->enable_social_meta ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ $seoSettings->enable_social_meta ? 'Enabled' : 'Disabled' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Canonical URLs</p>
+                                <span class="text-xs px-2 py-1 {{ $seoSettings->enable_canonical_urls ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ $seoSettings->enable_canonical_urls ? 'Enabled' : 'Disabled' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-700/20 p-4 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <p class="text-neutral-300">Verification Tags</p>
+                                <span class="text-xs px-2 py-1 {{ !empty($seoSettings->google_verification) || !empty($seoSettings->bing_verification) ? 'bg-green-500/10 text-green-400' : 'bg-neutral-600/30 text-neutral-400' }} rounded-lg">
+                                    {{ !empty($seoSettings->google_verification) || !empty($seoSettings->bing_verification) ? 'Configured' : 'Not Set' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-right">
+                        <a href="{{ route('admin.seo.index') }}" class="inline-flex items-center text-sm text-teal-400 hover:text-teal-300 transition-colors group">
+                            Manage SEO<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Views Analytics -->
             <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
                 <div class="flex justify-between items-center mb-6">
@@ -167,10 +318,17 @@
                         <p class="text-neutral-400 text-sm">Total Views</p>
                         <h4 class="text-xl font-semibold text-neutral-100 mt-1">{{ number_format($totalViews) }}</h4>
                         <div class="flex items-center mt-2">
-                            <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-400 text-sm flex items-center">
-                                <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
-                                {{ abs(round($viewsGrowth)) }}%
-                            </span>
+                            @if(abs(round($viewsGrowth)) > 0)
+                                <span class="text-{{ $viewsGrowth >= 0 ? 'green' : 'red' }}-500 text-sm flex items-center">
+                                    <i class="fa-duotone fa-thin fa-arrow-{{ $viewsGrowth >= 0 ? 'up' : 'down' }} mr-1"></i>
+                                    {{ number_format(abs(round($viewsGrowth)), 1) }}%
+                                </span>
+                            @else
+                                <span class="text-neutral-400 text-sm flex items-center">
+                                    <i class="fa-duotone fa-thin fa-minus mr-1"></i>
+                                    0%
+                                </span>
+                            @endif
                             <span class="text-neutral-500 text-sm ml-2">vs last month</span>
                         </div>
                     </div>
