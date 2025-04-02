@@ -96,5 +96,23 @@ Route::get('/actors', [IndexController::class, 'allActors'])->name('all-actors')
 Route::get('/channels', [IndexController::class, 'allChannels'])->name('all-channels');
 Route::get('/videos', [IndexController::class, 'allVideos'])->name('all-videos');
 
+// SEO Routes
+Route::get('/sitemap.xml', function() {
+    // Check if sitemap exists
+    if (file_exists(public_path('sitemap.xml'))) {
+        return response()->file(public_path('sitemap.xml'), [
+            'Content-Type' => 'application/xml'
+        ]);
+    }
+    
+    // If sitemap doesn't exist, generate it
+    $controller = app()->make(\App\Http\Controllers\Admin\SeoController::class);
+    $controller->generateSitemap();
+    
+    return response()->file(public_path('sitemap.xml'), [
+        'Content-Type' => 'application/xml'
+    ]);
+});
+
 // This must be the last route since it's the most generic
 Route::get('/{video}', [IndexController::class, 'video'])->name('video');

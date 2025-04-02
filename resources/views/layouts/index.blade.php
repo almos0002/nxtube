@@ -14,18 +14,18 @@
     <meta name="description" content="@yield('meta_description', $settings->site_description ?? 'Watch cool videos online for free')" />
     <meta name="keywords" content="@yield('meta_keywords', 'Amazing, cool, video,')" />
     <meta name="og:image" content="@yield('og_image', $settings->site_logo)" />
-    
-    @if(isset($seoSettings) && $seoSettings->is_active)
+
+    @if (isset($seoSettings) && $seoSettings->is_active)
         <!-- SEO Verification Tags -->
         {!! \App\Helpers\SeoHelper::getVerificationTags() !!}
-        
+
         <!-- Canonical URL -->
-        @if($seoSettings->enable_canonical_urls)
+        @if ($seoSettings->enable_canonical_urls)
             <link rel="canonical" href="{{ \App\Helpers\SeoHelper::getCanonicalUrl(url()->current()) }}" />
         @endif
-        
+
         <!-- Social Meta Tags -->
-        @if($seoSettings->enable_social_meta)
+        @if ($seoSettings->enable_social_meta)
             <meta property="og:title" content="@yield('title', $settings->site_name)" />
             <meta property="og:description" content="@yield('meta_description', $settings->site_description)" />
             <meta property="og:url" content="{{ url()->current() }}" />
@@ -34,18 +34,18 @@
             <meta name="twitter:title" content="@yield('title', $settings->site_name)" />
             <meta name="twitter:description" content="@yield('meta_description', $settings->site_description)" />
         @endif
-        
+
         <!-- Custom Meta Tags -->
         {!! $seoSettings->custom_meta_tags ?? '' !!}
-        
+
         <!-- Structured Data -->
-        @if($seoSettings->structured_data)
+        @if ($seoSettings->structured_data)
             <script type="application/ld+json">
                 {!! $seoSettings->structured_data !!}
             </script>
         @endif
     @endif
-    
+
     <link rel="shortcut icon" href="{{ asset('storage/' . ($settings->favicon ?? 'favicon.ico')) }}"
         type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -354,11 +354,19 @@
     </div>
     <main class="nx-container py-8 mt-16">
         <!-- Breadcrumbs -->
-        @if (!request()->routeIs('home') && !isset($hideBreadcrumbs) && 
-            (request()->routeIs('category') || request()->routeIs('tag') || request()->routeIs('actor') || 
-            request()->routeIs('channel') || request()->routeIs('video') || request()->routeIs('search') || 
-            request()->routeIs('contact') || request()->routeIs('about') || request()->routeIs('privacy') || 
-            request()->routeIs('dmca')))
+        @if (
+            !request()->routeIs('home') &&
+                !isset($hideBreadcrumbs) &&
+                (request()->routeIs('category') ||
+                    request()->routeIs('tag') ||
+                    request()->routeIs('actor') ||
+                    request()->routeIs('channel') ||
+                    request()->routeIs('video') ||
+                    request()->routeIs('search') ||
+                    request()->routeIs('contact') ||
+                    request()->routeIs('about') ||
+                    request()->routeIs('privacy') ||
+                    request()->routeIs('dmca')))
             <div class="nx-container">
                 <div class="breadcrumbs mb-6">
                     <nav class="flex" aria-label="Breadcrumb">
@@ -488,8 +496,8 @@
                                 @if ($video->categories->count() > 0)
                                     <li>
                                         <div class="flex items-center">
-                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
                                                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                     clip-rule="evenodd"></path>
@@ -502,8 +510,8 @@
                                 @if ($video->actors->count() > 0)
                                     <li>
                                         <div class="flex items-center">
-                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
                                                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                     clip-rule="evenodd"></path>
@@ -516,8 +524,8 @@
                                 @if ($video->channels->count() > 0)
                                     <li>
                                         <div class="flex items-center">
-                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor" viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="w-5 h-5 text-neutral-500" fill="currentColor"
+                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
                                                     d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                     clip-rule="evenodd"></path>

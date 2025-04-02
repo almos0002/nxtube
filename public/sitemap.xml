@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost</loc>
+    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/categories</loc>
+    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/actors</loc>
+    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/channels</loc>
+    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost/videos</loc>
+    <lastmod>2025-04-02T06:21:08+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
