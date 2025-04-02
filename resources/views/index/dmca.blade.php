@@ -10,6 +10,10 @@
     'DMCA, Digital Millennium Copyright Act, Copyright, Infringement, Notification, Policy,
     Compliance, Complaint, Protection')
 
+@php
+$hideBreadcrumbs = true;
+@endphp
+
 @section('content')
     <section class="nx-container py-8">
         <div class="max-w-4xl mx-auto">

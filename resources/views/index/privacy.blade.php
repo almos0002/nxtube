@@ -6,6 +6,10 @@
     use, disclose, and safeguard your information when you use our video streaming platform.')
 @section('meta_keywords', 'privacy, security, data protection, data privacy, data protection law')
 
+@php
+$hideBreadcrumbs = true;
+@endphp
+
 @section('content')
     <section class="container mx-auto px-4 pt-8 pb-8">
         <div class="max-w-4xl mx-auto">

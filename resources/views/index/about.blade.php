@@ -6,6 +6,10 @@
     experience for our users. Our about page provides an overview of our mission, values, and team.')
 @section('meta_keywords', 'about, us, mission, values, team, video, streaming, experience')
 
+@php
+$hideBreadcrumbs = true;
+@endphp
+
 @section('content')
     <section class="nx-container py-8">
         <div class="max-w-4xl mx-auto">

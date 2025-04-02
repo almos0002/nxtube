@@ -7,6 +7,10 @@
     you may have.')
 @section('meta_keywords', 'contact, support, feedback, query, enquiry')
 
+@php
+$hideBreadcrumbs = true;
+@endphp
+
 @section('content')
     <section class="nx-container py-8">
         <div class="max-w-4xl mx-auto">
