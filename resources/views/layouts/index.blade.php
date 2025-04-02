@@ -813,6 +813,66 @@
     @if ($siteAds->is_active && $siteAds->ads_popup)
         {!! $siteAds->ads_popup !!}
     @endif
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 border-t border-red-600/30 shadow-lg transform translate-y-full transition-all duration-300 ease-in-out z-50">
+        <div class="nx-container py-4 relative overflow-hidden">
+            <!-- Cool decorative elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-red-600/5 rounded-full filter blur-2xl translate-y-1/2 -translate-x-1/4"></div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+                <div class="text-neutral-200 flex items-center space-x-3">
+                    <div class="hidden sm:block text-red-500 text-xl">
+                        <i class="fas fa-cookie-bite"></i>
+                    </div>
+                    <p class="text-sm">
+                        This website uses cookies to ensure you get the best experience. 
+                        <a href="{{ route('privacy') }}" class="text-red-500 hover:text-red-400 underline transition-colors">Learn more</a>
+                    </p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="cookie-decline" class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
+                        <span class="relative z-10">Decline</span>
+                        <span class="absolute inset-0 bg-gradient-to-r from-neutral-700 to-neutral-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    </button>
+                    <button id="cookie-accept" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-colors relative overflow-hidden group">
+                        <span class="relative z-10">Accept</span>
+                        <span class="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookieConsent = document.getElementById('cookie-consent');
+            const acceptButton = document.getElementById('cookie-accept');
+            const declineButton = document.getElementById('cookie-decline');
+            
+            // Check if user has already made a choice
+            if (!localStorage.getItem('cookieConsent')) {
+                // Show the banner with a slight delay
+                setTimeout(() => {
+                    cookieConsent.classList.remove('translate-y-full');
+                }, 1000);
+            }
+            
+            // Handle accept button click
+            acceptButton.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'accepted');
+                cookieConsent.classList.add('translate-y-full');
+            });
+            
+            // Handle decline button click
+            declineButton.addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'declined');
+                cookieConsent.classList.add('translate-y-full');
+            });
+        });
+    </script>
 </body>
 
 </html>
