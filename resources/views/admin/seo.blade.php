@@ -42,33 +42,33 @@
         
         <!-- Tabs Navigation -->
         <div class="mb-6 border-b border-neutral-700">
-            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="seoTabs" role="tablist">
+            <ul class="flex flex-wrap -mb-px font-medium text-center overflow-x-auto" id="seoTabs" role="tablist">
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-neutral-300 hover:border-neutral-300 active-tab" 
+                    <button class="inline-block p-4 border-b-2 border-red-500 rounded-t-lg text-white text-base hover:text-white hover:border-red-400 active-tab transition-colors" 
                             id="general-tab" data-tab="general" type="button" role="tab" aria-controls="general" aria-selected="true">
                         <i class="fa-duotone fa-thin fa-gear mr-2"></i>General
                     </button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-neutral-300 hover:border-neutral-300" 
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg text-neutral-300 text-base hover:text-red-400 hover:border-red-400 transition-colors" 
                             id="verification-tab" data-tab="verification" type="button" role="tab" aria-controls="verification" aria-selected="false">
                         <i class="fa-duotone fa-thin fa-badge-check mr-2"></i>Verification
                     </button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-neutral-300 hover:border-neutral-300" 
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg text-neutral-300 text-base hover:text-red-400 hover:border-red-400 transition-colors" 
                             id="robots-tab" data-tab="robots" type="button" role="tab" aria-controls="robots" aria-selected="false">
                         <i class="fa-duotone fa-thin fa-robot mr-2"></i>Robots.txt
                     </button>
                 </li>
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-neutral-300 hover:border-neutral-300" 
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg text-neutral-300 text-base hover:text-red-400 hover:border-red-400 transition-colors" 
                             id="sitemap-tab" data-tab="sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">
                         <i class="fa-duotone fa-thin fa-sitemap mr-2"></i>Sitemap
                     </button>
                 </li>
                 <li role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-neutral-300 hover:border-neutral-300" 
+                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg text-neutral-300 text-base hover:text-red-400 hover:border-red-400 transition-colors" 
                             id="advanced-tab" data-tab="advanced" type="button" role="tab" aria-controls="advanced" aria-selected="false">
                         <i class="fa-duotone fa-thin fa-code mr-2"></i>Advanced
                     </button>
