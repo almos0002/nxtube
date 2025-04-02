@@ -98,21 +98,21 @@ class IndexController extends Controller
             
         // Get popular actors based on video views and engagement
         $popularActors = Actor::where('actors.visibility', ActiveStatus::ACTIVE)
-            ->withCount(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
-            }])
-            ->with(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
-                      ->select('videos.id', 'videos.title')
-                      ->take(1);
-            }])
             ->select('actors.*')
+            ->selectRaw('(SELECT COUNT(*) FROM actor_video av 
+                JOIN videos v ON av.video_id = v.id AND v.visibility = ?
+                WHERE av.actor_id = actors.id) as videos_count', [VisibilityStatus::PUBLIC])
             ->selectRaw('(SELECT COALESCE(SUM(vs.views_count), 0) 
                 FROM actor_video av 
                 JOIN videos v ON av.video_id = v.id AND v.visibility = ?
                 LEFT JOIN video_stats vs ON v.id = vs.video_id
                 WHERE av.actor_id = actors.id
                 GROUP BY av.actor_id) as total_views', [VisibilityStatus::PUBLIC])
+            ->with(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
+                      ->select('videos.id', 'videos.title')
+                      ->take(1);
+            }])
             ->orderBy('total_views', 'desc')
             ->orderBy('videos_count', 'desc')
             ->take(6)
@@ -120,21 +120,21 @@ class IndexController extends Controller
             
         // Get popular channels based on video count and recent activity
         $popularChannels = Channel::where('channels.visibility', ActiveStatus::ACTIVE)
-            ->withCount(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
-            }])
-            ->with(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
-                      ->select('videos.id', 'videos.title')
-                      ->take(1);
-            }])
             ->select('channels.*')
+            ->selectRaw('(SELECT COUNT(*) FROM channel_video cv 
+                JOIN videos v ON cv.video_id = v.id AND v.visibility = ?
+                WHERE cv.channel_id = channels.id) as videos_count', [VisibilityStatus::PUBLIC])
             ->selectRaw('(SELECT COALESCE(SUM(vs.views_count), 0) 
                 FROM channel_video cv 
                 JOIN videos v ON cv.video_id = v.id AND v.visibility = ?
                 LEFT JOIN video_stats vs ON v.id = vs.video_id
                 WHERE cv.channel_id = channels.id
                 GROUP BY cv.channel_id) as total_views', [VisibilityStatus::PUBLIC])
+            ->with(['videos' => function($query) {
+                $query->where('videos.visibility', VisibilityStatus::PUBLIC)
+                      ->select('videos.id', 'videos.title')
+                      ->take(1);
+            }])
             ->orderBy('total_views', 'desc')
             ->orderBy('videos_count', 'desc')
             ->orderBy('channels.updated_at', 'desc')
