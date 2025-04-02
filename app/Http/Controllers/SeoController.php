@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\SeoSetting;
 use App\Models\Video;
 use App\Models\Category;
@@ -182,6 +181,7 @@ class SeoController extends Controller
             // Ensure the file has proper permissions
             chmod(public_path('sitemap.xml'), 0644);
             
+            // Update the last generated timestamp in cache
             Cache::forget('sitemap_last_generated');
             Cache::put('sitemap_last_generated', now(), 60 * 24 * 7);
             
