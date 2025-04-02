@@ -44,7 +44,7 @@
         <div class="mb-6 border-b border-neutral-700">
             <ul class="flex flex-wrap -mb-px font-medium text-center overflow-x-auto" id="seoTabs" role="tablist">
                 <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-red-500 rounded-t-lg text-white text-base hover:text-white hover:border-red-400 active-tab transition-colors" 
+                    <button class="inline-block p-4 border-b-2 border-red-500 rounded-t-lg text-white text-base hover:text-red-400 hover:border-red-400 active-tab transition-colors" 
                             id="general-tab" data-tab="general" type="button" role="tab" aria-controls="general" aria-selected="true">
                         <i class="fa-duotone fa-thin fa-gear mr-2"></i>General
                     </button>
