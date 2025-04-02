@@ -7,15 +7,16 @@
 @section('content')
 <div class="nx-container py-8">
     <!-- Header -->
-    <div class="mb-10">
-        <div class="flex items-center mb-2">
-            <svg class="w-8 h-8 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <div class="flex items-center space-x-4 mb-8">
+        <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd"></path>
             </svg>
-            <h2 class="text-3xl font-bold text-white">All Categories</h2>
         </div>
-        <p class="text-neutral-400 text-lg ml-11">Browse videos by category</p>
-        <div class="h-px bg-gradient-to-r from-red-500/50 via-neutral-700 to-transparent mt-6"></div>
+        <div>
+            <h1 class="text-2xl font-bold">All Categories</h1>
+            <p class="text-neutral-400">Browse videos by category</p>
+        </div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

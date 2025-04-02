@@ -7,15 +7,16 @@
 @section('content')
 <div class="nx-container py-8">
     <!-- Header -->
-    <div class="mb-10">
-        <div class="flex items-center mb-2">
-            <svg class="w-8 h-8 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <div class="flex items-center space-x-4 mb-8">
+        <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
             </svg>
-            <h2 class="text-3xl font-bold text-white">All Channels</h2>
         </div>
-        <p class="text-neutral-400 text-lg ml-11">Browse videos by channel</p>
-        <div class="h-px bg-gradient-to-r from-red-500/50 via-neutral-700 to-transparent mt-6"></div>
+        <div>
+            <h1 class="text-2xl font-bold">All Channels</h1>
+            <p class="text-neutral-400">Browse videos by channel</p>
+        </div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
