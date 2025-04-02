@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\SeoSetting;
 use Illuminate\Console\Command;
-use App\Http\Controllers\Admin\SeoController;
+use App\Http\Controllers\SeoController;
 
 class GenerateSitemap extends Command
 {

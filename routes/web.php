@@ -11,7 +11,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AdsController;
-use App\Http\Controllers\Admin\SeoController;
+use App\Http\Controllers\SeoController;
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');

@@ -211,6 +211,41 @@
                             <div class="ml-4 text-neutral-400 text-sm">Automatically generate sitemap.xml when content is updated</div>
                         </div>
                         
+                        @if($seo->auto_generate_sitemap)
+                        <div class="bg-neutral-800/50 p-4 rounded-lg border border-neutral-700 mb-6">
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex items-center">
+                                    <i class="fa-duotone fa-thin fa-clock mr-2 text-neutral-400"></i>
+                                    <span class="text-neutral-300 text-sm">Last generated: 
+                                        <span class="text-neutral-100">
+                                            {{ Cache::has('sitemap_last_generated') ? Cache::get('sitemap_last_generated')->format('M d, Y - h:i A') : 'Never' }}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fa-duotone fa-thin fa-calendar-clock mr-2 text-neutral-400"></i>
+                                    <span class="text-neutral-300 text-sm">Next scheduled: 
+                                        <span class="text-neutral-100">
+                                            @php
+                                                $nextTime = null;
+                                                if ($seo->sitemap_frequency == 'hourly') {
+                                                    $nextTime = Cache::has('sitemap_last_generated') ? Cache::get('sitemap_last_generated')->addHour() : null;
+                                                } elseif ($seo->sitemap_frequency == 'daily') {
+                                                    $nextTime = Cache::has('sitemap_last_generated') ? Cache::get('sitemap_last_generated')->addDay() : null;
+                                                } elseif ($seo->sitemap_frequency == 'weekly') {
+                                                    $nextTime = Cache::has('sitemap_last_generated') ? Cache::get('sitemap_last_generated')->addWeek() : null;
+                                                } elseif ($seo->sitemap_frequency == 'monthly') {
+                                                    $nextTime = Cache::has('sitemap_last_generated') ? Cache::get('sitemap_last_generated')->addMonth() : null;
+                                                }
+                                            @endphp
+                                            {{ $nextTime ? $nextTime->format('M d, Y - h:i A') : 'Based on your selected frequency' }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="sitemap_frequency" class="block text-sm font-medium text-neutral-300 mb-2">Default Change Frequency</label>
