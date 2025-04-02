@@ -299,92 +299,109 @@
             </div>
 
             <!-- Recent Videos -->
-            <div class="bg-neutral-800 rounded-xl shadow-sm p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-neutral-100">Recent Videos</h3>
-                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400 transition-colors duration-300">View All<i class="fa-duotone fa-thin fa-arrow-right ml-2"></i></a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @foreach($recentVideos as $video)
-                    <div class="group bg-neutral-700/20 rounded-lg overflow-hidden hover:bg-neutral-700/40 transition-all duration-300">
-                        <div class="relative">
-                            <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
-                                 class="w-full aspect-video object-cover transform group-hover:scale-110 transition-all duration-500">
-                            <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/80 text-white text-xs rounded backdrop-blur-sm">
-                                @php
-                                    $duration = explode(':', $video->duration);
-                                    echo (count($duration) === 3 && $duration[0] !== '00') 
-                                        ? $video->duration 
-                                        : (count($duration) === 3 ? $duration[1] . ':' . $duration[2] : $video->duration);
-                                @endphp
-                            </span>
+            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
+                <div class="px-6 py-5 border-b border-neutral-700/30 bg-red-500/5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400">
+                                <i class="fa-duotone fa-thin fa-film text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-neutral-100">Recent Videos</h3>
                         </div>
-                        <div class="p-4">
-                            <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors duration-300">{{ $video->title }}</h4>
-                            <div class="flex items-center space-x-3 mt-2">
-                                <p class="text-neutral-400 text-sm truncate">{{ $video->channels->pluck('channel_name')->implode(', ') }}</p>
-                                <span class="text-neutral-500 text-xs">•</span>
-                                <div class="flex items-center space-x-1">
-                                    <i class="fa-duotone fa-thin fa-clock text-neutral-400 text-sm"></i>
-                                    <span class="text-neutral-400 text-sm">{{ $video->created_at->diffForHumans() }}</span>
+                        <span class="text-xs px-2 py-1 bg-red-500/10 text-red-400 rounded-lg">{{ $recentVideos->count() }}</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($recentVideos as $video)
+                        <a href="{{ route('edit-video', $video->id) }}" class="group">
+                            <div class="bg-neutral-700/20 rounded-lg overflow-hidden hover:bg-neutral-700/40 transition-all duration-300 h-full">
+                                <div class="relative">
+                                    <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
+                                         class="w-full aspect-video object-cover transform group-hover:scale-105 transition-all duration-300">
+                                    <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/80 text-white text-xs rounded backdrop-blur-sm">
+                                        @php
+                                            $duration = explode(':', $video->duration);
+                                            echo (count($duration) === 3 && $duration[0] !== '00') 
+                                                ? $video->duration 
+                                                : (count($duration) === 3 ? $duration[1] . ':' . $duration[2] : $video->duration);
+                                        @endphp
+                                    </span>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-neutral-100 font-medium line-clamp-1 group-hover:text-red-400 transition-colors duration-300">{{ $video->title }}</h4>
+                                    <div class="flex items-center mt-2 text-xs">
+                                        <span class="text-neutral-400 line-clamp-1">{{ $video->channels->pluck('channel_name')->implode(', ') }}</span>
+                                        <span class="text-neutral-500 mx-2">•</span>
+                                        <div class="flex items-center text-neutral-400">
+                                            <i class="fa-duotone fa-thin fa-eye mr-1"></i>
+                                            {{ number_format($video->videoStats->views_count ?? 0) }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">
-                                <i class="fa-duotone fa-thin fa-edit text-lg"></i>
-                            </a>
-                        </div>
+                        </a>
+                        @endforeach
                     </div>
-                    @endforeach
+                    <div class="pt-4 text-right">
+                        <a href="{{ route('videos') }}" class="inline-flex items-center text-sm text-red-400 hover:text-red-300 transition-colors group">
+                            View all<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Popular Videos -->
-            <div class="bg-neutral-800 rounded-xl shadow-sm p-6 mt-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-neutral-100">Popular Videos</h3>
-                    <a href="{{ route('videos') }}" class="text-sm text-red-500 hover:text-red-400">View All<i class="fa-duotone fa-thin fa-arrow-right ml-2"></i></a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @foreach($popularVideos as $video)
-                    <div class="group bg-neutral-700/30 rounded-lg overflow-hidden hover:bg-neutral-700/50 transition-all duration-300">
-                        <div class="relative">
-                            <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
-                                 class="w-full aspect-video object-cover transform group-hover:scale-105 transition-all duration-300">
-                            <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded">
-                                @php
-                                    $duration = explode(':', $video->duration);
-                                    if (count($duration) === 3) {
-                                        if ($duration[0] !== '00') {
-                                            echo $video->duration;
-                                        } else {
-                                            echo $duration[1] . ':' . $duration[2];
-                                        }
-                                    } else {
-                                        echo $video->duration;
-                                    }
-                                @endphp
-                            </span>
+            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
+                <div class="px-6 py-5 border-b border-neutral-700/30 bg-amber-500/5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+                                <i class="fa-duotone fa-thin fa-fire text-lg"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-neutral-100">Popular Videos</h3>
                         </div>
-                        <div class="p-4">
-                            <h4 class="text-neutral-100 font-medium truncate group-hover:text-red-500 transition-colors">{{ $video->title }}</h4>
-                            <div class="flex items-center space-x-3 mt-2">
-                                <p class="text-neutral-400 text-sm truncate">{{ $video->channels->pluck('channel_name')->implode(', ') }}</p>
-                                <span class="text-neutral-500">•</span>
-                                <div class="flex items-center text-neutral-400 text-sm">
-                                    <i class="fa-duotone fa-thin fa-eye mr-1"></i>
-                                    {{ number_format($video->videoStats->views_count) }}
+                        <span class="text-xs px-2 py-1 bg-amber-500/10 text-amber-400 rounded-lg">{{ $popularVideos->count() }}</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach($popularVideos as $video)
+                        <a href="{{ route('edit-video', $video->id) }}" class="group">
+                            <div class="bg-neutral-700/20 rounded-lg overflow-hidden hover:bg-neutral-700/40 transition-all duration-300 h-full">
+                                <div class="relative">
+                                    <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="{{ $video->title }}" 
+                                         class="w-full aspect-video object-cover transform group-hover:scale-105 transition-all duration-300">
+                                    <div class="absolute top-2 left-2 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs rounded-lg backdrop-blur-sm flex items-center">
+                                        <i class="fa-duotone fa-thin fa-eye mr-1"></i>
+                                        {{ number_format($video->videoStats->views_count ?? 0) }}
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 px-2 py-1 bg-black/80 text-white text-xs rounded backdrop-blur-sm">
+                                        @php
+                                            $duration = explode(':', $video->duration);
+                                            echo (count($duration) === 3 && $duration[0] !== '00') 
+                                                ? $video->duration 
+                                                : (count($duration) === 3 ? $duration[1] . ':' . $duration[2] : $video->duration);
+                                        @endphp
+                                    </span>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-neutral-100 font-medium line-clamp-1 group-hover:text-amber-400 transition-colors duration-300">{{ $video->title }}</h4>
+                                    <div class="flex items-center mt-2 text-xs">
+                                        <span class="text-neutral-400 line-clamp-1">{{ $video->channels->pluck('channel_name')->implode(', ') }}</span>
+                                        <span class="text-neutral-500 mx-2">•</span>
+                                        <span class="text-neutral-400">{{ $video->categories->pluck('name')->first() }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <a href="{{ route('edit-video', $video->id) }}" class="text-neutral-400 hover:text-red-500 transition-colors">
-                                <i class="fa-duotone fa-thin fa-edit text-lg"></i>
-                            </a>
-                        </div>
+                        </a>
+                        @endforeach
                     </div>
-                    @endforeach
+                    <div class="pt-4 text-right">
+                        <a href="{{ route('videos') }}" class="inline-flex items-center text-sm text-amber-400 hover:text-amber-300 transition-colors group">
+                            View all<i class="fa-duotone fa-thin fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
