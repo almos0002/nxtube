@@ -106,14 +106,14 @@ class IndexController extends Controller
                       ->select('videos.id', 'videos.title')
                       ->take(1);
             }])
-            ->leftJoin('actor_video', 'actors.id', '=', 'actor_video.actor_id')
-            ->leftJoin('videos', function($join) {
-                $join->on('actor_video.video_id', '=', 'videos.id')
-                     ->where('videos.visibility', '=', VisibilityStatus::PUBLIC);
-            })
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->groupBy('actors.id')
-            ->orderByRaw('SUM(IFNULL(video_stats.views_count, 0)) DESC')
+            ->select('actors.*')
+            ->selectRaw('(SELECT COALESCE(SUM(vs.views_count), 0) 
+                FROM actor_video av 
+                JOIN videos v ON av.video_id = v.id AND v.visibility = ?
+                LEFT JOIN video_stats vs ON v.id = vs.video_id
+                WHERE av.actor_id = actors.id
+                GROUP BY av.actor_id) as total_views', [VisibilityStatus::PUBLIC])
+            ->orderBy('total_views', 'desc')
             ->orderBy('videos_count', 'desc')
             ->take(6)
             ->get();
@@ -128,14 +128,14 @@ class IndexController extends Controller
                       ->select('videos.id', 'videos.title')
                       ->take(1);
             }])
-            ->leftJoin('channel_video', 'channels.id', '=', 'channel_video.channel_id')
-            ->leftJoin('videos', function($join) {
-                $join->on('channel_video.video_id', '=', 'videos.id')
-                     ->where('videos.visibility', '=', VisibilityStatus::PUBLIC);
-            })
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->groupBy('channels.id')
-            ->orderByRaw('SUM(IFNULL(video_stats.views_count, 0)) DESC')
+            ->select('channels.*')
+            ->selectRaw('(SELECT COALESCE(SUM(vs.views_count), 0) 
+                FROM channel_video cv 
+                JOIN videos v ON cv.video_id = v.id AND v.visibility = ?
+                LEFT JOIN video_stats vs ON v.id = vs.video_id
+                WHERE cv.channel_id = channels.id
+                GROUP BY cv.channel_id) as total_views', [VisibilityStatus::PUBLIC])
+            ->orderBy('total_views', 'desc')
             ->orderBy('videos_count', 'desc')
             ->orderBy('channels.updated_at', 'desc')
             ->take(4)
