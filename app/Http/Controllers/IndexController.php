@@ -488,19 +488,19 @@ class IndexController extends Controller
         $page = request()->page ?? 1;
         $cacheKey = "all_videos_page_{$page}";
         
-        if (Cache::has($cacheKey)) {
-            $videos = Cache::get($cacheKey);
-        } else {
-            // Get all public videos with pagination
-            $videos = Video::select('videos.*', 'video_stats.views_count')
-                ->where('videos.visibility', VisibilityStatus::PUBLIC)
-                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-                ->with(['categories', 'channels'])
-                ->orderBy('videos.created_at', 'desc')
-                ->paginate(12);
-            
-            Cache::put($cacheKey, $videos, 1800);
-        }
+        // Clear the cache for this page to ensure fresh content
+        Cache::forget($cacheKey);
+        
+        // Get all public videos with pagination
+        $videos = Video::select('videos.*', 'video_stats.views_count')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->with(['categories', 'channels'])
+            ->orderBy('videos.created_at', 'desc')
+            ->paginate(12);
+        
+        // Store in cache for future requests (optional)
+        Cache::put($cacheKey, $videos, 1800);
 
         return view('index.videos', compact('videos'))->with('hideBreadcrumbs', true);
     }
