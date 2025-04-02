@@ -238,8 +238,16 @@
                                 <div class="col-span-3 mb-2">
                                     <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-2">
                                         Browse Categories</h3>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-xs text-neutral-500">Showing popular categories</p>
+                                        <a href="{{ route('all-categories') }}" class="text-xs text-red-500 hover:text-red-400">View All</a>
+                                    </div>
                                 </div>
-                                @foreach ($categories as $category)
+                                @php
+                                    // Get only top 9 categories with videos
+                                    $topCategories = $categories->where('videos_count', '>', 0)->sortByDesc('videos_count')->take(9);
+                                @endphp
+                                @foreach ($topCategories as $category)
                                     <a href="{{ route('category', $category->slug) }}"
                                         class="flex items-center space-x-3 p-3 rounded-xl hover:bg-neutral-700/50 transition-colors group/item">
                                         <div
@@ -285,10 +293,10 @@
     <div id="mobile-menu-overlay"
         class="md:hidden fixed inset-0 z-40 bg-neutral-900/50 backdrop-blur-sm mobile-menu-overlay hidden"></div>
     <div id="mobile-menu"
-        class="md:hidden fixed left-0 top-0 bottom-0 w-80 bg-neutral-800/90 backdrop-blur-md z-50 mobile-menu-sidebar">
+        class="md:hidden fixed left-0 top-0 bottom-0 w-80 bg-neutral-800/95 backdrop-blur-md z-50 mobile-menu-sidebar shadow-xl border-r border-neutral-700/50">
         <div class="flex flex-col h-full">
             <!-- Mobile Menu Header -->
-            <div class="p-4 border-b border-neutral-700">
+            <div class="p-4 border-b border-neutral-700 flex items-center justify-between">
                 <a href="{{ url('/') }}" class="inline-flex items-center space-x-3">
                     <img src="{{ asset('storage/' . ($settings->logo ?? 'logo.png')) }}"
                         alt="{{ $settings->site_name ?? 'VideoFlex' }}" class="h-8 w-auto">
@@ -296,58 +304,100 @@
                         <span class="text-xl font-bold">{{ $settings->site_name ?? 'VideoFlex' }}</span>
                     @endif
                 </a>
+                <button id="close-mobile-menu" class="text-neutral-400 hover:text-red-500 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Search -->
+            <div class="p-4 border-b border-neutral-700/50">
+                <form action="{{ route('search') }}" method="GET" class="relative">
+                    <input type="text" name="q" value="{{ request('q') }}"
+                        placeholder="Search videos..."
+                        class="w-full px-4 py-2 rounded-xl bg-neutral-700/50 border border-neutral-700 text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    <button type="submit"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-400 hover:text-red-500 transition-colors">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
 
             <!-- Mobile Menu Items -->
             <div class="flex-1 overflow-y-auto py-4">
-                <div class="px-4 space-y-6">
+                <div class="px-4 space-y-2">
                     <a href="{{ url('/') }}"
-                        class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
-                        <i class="fas fa-home mr-3"></i>Home
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-home mr-3 w-5 text-center"></i>Home
                     </a>
-                    <div class="space-y-4">
+                    <div class="space-y-2">
                         <button id="mobile-categories-button"
-                            class="w-full flex items-center justify-between py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
+                            class="w-full flex items-center justify-between py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
                             <span class="flex items-center">
-                                <i class="fas fa-list-ul mr-3"></i>
+                                <i class="fas fa-list-ul mr-3 w-5 text-center"></i>
                                 <span>Categories</span>
                             </span>
-                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                            <i id="mobile-categories-icon" class="fas fa-chevron-down transition-transform duration-300"></i>
                         </button>
-                        <div id="mobile-categories-content" class="hidden">
-                            <div class="grid grid-cols-2 gap-2 px-4">
-                                @foreach ($categories as $category)
+                        <div id="mobile-categories-content" class="hidden bg-neutral-700/20 rounded-xl p-3 mt-1">
+                            @php
+                                // Get only top 8 categories with videos for mobile
+                                $topMobileCategories = $categories->where('videos_count', '>', 0)->sortByDesc('videos_count')->take(8);
+                            @endphp
+                            <div class="grid grid-cols-2 gap-2">
+                                @foreach ($topMobileCategories as $category)
                                     <a href="{{ route('category', $category->slug) }}"
-                                        class="flex items-center space-x-3 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
+                                        class="flex items-center space-x-2 p-2 rounded-xl hover:bg-neutral-700/50 transition-colors">
                                         <div class="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center">
                                             <span class="text-red-500 text-sm">#</span>
                                         </div>
-                                        <span class="text-sm">{{ $category->name }}</span>
+                                        <span class="text-sm truncate">{{ $category->name }}</span>
                                     </a>
                                 @endforeach
+                            </div>
+                            <div class="mt-2 pt-2 border-t border-neutral-700/50 text-center">
+                                <a href="{{ route('all-categories') }}" class="text-xs text-red-500 hover:text-red-400">View All Categories</a>
                             </div>
                         </div>
                     </div>
                     <a href="{{ route('all-actors') }}"
-                        class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
-                        <i class="fas fa-user-tie mr-3"></i>Actors
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-user-tie mr-3 w-5 text-center"></i>Actors
                     </a>
                     <a href="{{ route('all-channels') }}"
-                        class="block py-2.5 px-4 rounded-lg text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all">
-                        <i class="fas fa-tv mr-3"></i>Channels
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-tv mr-3 w-5 text-center"></i>Channels
+                    </a>
+                    <div class="border-t border-neutral-700/30 my-4"></div>
+                    <a href="{{ route('about') }}"
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-info-circle mr-3 w-5 text-center"></i>About
+                    </a>
+                    <a href="{{ route('contact') }}"
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-envelope mr-3 w-5 text-center"></i>Contact
+                    </a>
+                    <a href="{{ route('privacy') }}"
+                        class="block py-3 px-4 rounded-xl text-base font-medium text-neutral-100 hover:text-red-500 hover:bg-neutral-700/50 transition-all flex items-center">
+                        <i class="fas fa-shield-alt mr-3 w-5 text-center"></i>Privacy
                     </a>
                 </div>
             </div>
 
             <!-- Mobile Menu Footer -->
-            <div class="p-4 border-t border-neutral-700">
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="text-neutral-400 hover:text-red-500">
-                        <i class="fas fa-cog text-xl"></i>
-                    </a>
-                    <a href="#" class="text-neutral-400 hover:text-red-500">
-                        <i class="fas fa-question-circle text-xl"></i>
-                    </a>
+            <div class="p-4 border-t border-neutral-700 bg-neutral-800/80">
+                <div class="flex items-center justify-between">
+                    <div class="text-xs text-neutral-500"> 2025 {{ $settings->site_name ?? 'VideoFlex' }}</div>
+                    <div class="flex items-center space-x-4">
+                        <a href="#" class="text-neutral-400 hover:text-red-500">
+                            <i class="fab fa-facebook text-lg"></i>
+                        </a>
+                        <a href="#" class="text-neutral-400 hover:text-red-500">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                        <a href="#" class="text-neutral-400 hover:text-red-500">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -785,25 +835,50 @@
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-            const menuIcon = document.querySelector('#mobile-menu-button i');
-
-            mobileMenu.classList.toggle('active');
-            mobileMenuOverlay.classList.toggle('hidden');
-            menuIcon.classList.toggle('fa-times');
+            
+            if (mobileMenu.classList.contains('active')) {
+                // Close menu
+                mobileMenu.classList.remove('active');
+                mobileMenuOverlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            } else {
+                // Open menu
+                mobileMenu.classList.add('active');
+                mobileMenuOverlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
-        function toggleMobileCategories() {
-            const button = document.getElementById('mobile-categories-button');
-            const content = document.getElementById('mobile-categories-content');
-            const icon = button.querySelector('i');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            }
+            
+            if (closeMobileMenuButton) {
+                closeMobileMenuButton.addEventListener('click', toggleMobileMenu);
+            }
+            
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+            }
 
-            content.classList.toggle('hidden');
-            icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-        }
-
-        document.getElementById('mobile-menu-button').addEventListener('click', toggleMobileMenu);
-        document.getElementById('mobile-menu-overlay').addEventListener('click', toggleMobileMenu);
-        document.getElementById('mobile-categories-button').addEventListener('click', toggleMobileCategories);
+            // Mobile categories accordion
+            const mobileCategoriesButton = document.getElementById('mobile-categories-button');
+            const mobileCategoriesContent = document.getElementById('mobile-categories-content');
+            const mobileCategoriesIcon = document.getElementById('mobile-categories-icon');
+            
+            if (mobileCategoriesButton && mobileCategoriesContent) {
+                mobileCategoriesButton.addEventListener('click', function() {
+                    mobileCategoriesContent.classList.toggle('hidden');
+                    mobileCategoriesIcon.classList.toggle('rotate-180');
+                });
+            }
+        });
     </script>
 
     @if ($siteAds->is_active && $siteAds->ads_video)
