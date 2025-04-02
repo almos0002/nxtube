@@ -185,8 +185,8 @@
         <!-- Left Column -->
         <div class="lg:col-span-1 space-y-6">
             <!-- Ads Status -->
-            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl shadow-sm overflow-hidden border border-neutral-700/30">
-                <div class="px-6 py-5 border-b border-neutral-700/30 bg-red-500/5">
+            <div class="bg-neutral-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-neutral-700/20 bg-red-500/5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400">
@@ -243,8 +243,8 @@
             </div>
             
             <!-- SEO Configuration -->
-            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl shadow-sm overflow-hidden border border-neutral-700/30">
-                <div class="px-6 py-5 border-b border-neutral-700/30 bg-teal-500/5">
+            <div class="bg-neutral-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="px-6 py-5 border-b border-neutral-700/20 bg-teal-500/5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-teal-500/10 text-teal-400">
@@ -354,8 +354,8 @@
             <!-- Top Performers Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Top Categories -->
-                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
-                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-purple-500/5">
+                <div class="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                    <div class="px-6 py-5 border-b border-neutral-700/20 bg-purple-500/5">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
@@ -388,8 +388,8 @@
                 </div>
 
                 <!-- Top Actors -->
-                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
-                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-yellow-500/5">
+                <div class="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                    <div class="px-6 py-5 border-b border-neutral-700/20 bg-yellow-500/5">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-yellow-500/10 text-yellow-400">
@@ -422,8 +422,8 @@
                 </div>
 
                 <!-- Top Channels -->
-                <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
-                    <div class="px-6 py-5 border-b border-neutral-700/30 bg-blue-500/5">
+                <div class="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                    <div class="px-6 py-5 border-b border-neutral-700/20 bg-blue-500/5">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
@@ -457,8 +457,8 @@
             </div>
 
             <!-- Recent Videos -->
-            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
-                <div class="px-6 py-5 border-b border-neutral-700/30 bg-red-500/5">
+            <div class="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                <div class="px-6 py-5 border-b border-neutral-700/20 bg-red-500/5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400">
@@ -510,8 +510,8 @@
             </div>
 
             <!-- Popular Videos -->
-            <div class="bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-700/30">
-                <div class="px-6 py-5 border-b border-neutral-700/30 bg-amber-500/5">
+            <div class="bg-neutral-800 rounded-xl overflow-hidden shadow-lg">
+                <div class="px-6 py-5 border-b border-neutral-700/20 bg-amber-500/5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
