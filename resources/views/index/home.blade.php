@@ -25,25 +25,25 @@
         .scrollable-grid {
             display: grid;
             grid-auto-flow: column;
-            grid-auto-columns: minmax(calc(25% - 1.125rem), 1fr);
+            grid-auto-columns: 300px; /* Fixed width for consistent sizing */
             gap: 1.5rem;
         }
 
         @media (max-width: 1023px) {
             .scrollable-grid {
-                grid-auto-columns: minmax(calc(33.333% - 1rem), 1fr);
+                grid-auto-columns: 280px; /* Fixed width for consistent sizing */
             }
         }
 
         @media (max-width: 767px) {
             .scrollable-grid {
-                grid-auto-columns: minmax(calc(50% - 0.75rem), 1fr);
+                grid-auto-columns: 240px; /* Fixed width for consistent sizing */
             }
         }
 
         @media (max-width: 639px) {
             .scrollable-grid {
-                grid-auto-columns: minmax(calc(100% - 0.5rem), 1fr);
+                grid-auto-columns: 220px; /* Fixed width for consistent sizing */
             }
         }
 
