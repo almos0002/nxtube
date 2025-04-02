@@ -13,6 +13,7 @@ use App\Services\ActorViewService;
 use Illuminate\Http\Request;
 use App\Enums\VisibilityStatus;
 use App\Enums\ActiveStatus;
+use Illuminate\Support\Facades\Cache;
 
 class IndexController extends Controller
 {
@@ -20,49 +21,80 @@ class IndexController extends Controller
     protected $categories;
     protected $videoViewService;
     protected $actorViewService;
+    protected $cacheExpiration = 3600; // 1 hour
 
     public function __construct(VideoViewService $videoViewService, ActorViewService $actorViewService)
     {
-        $this->settings = Setting::firstOrCreate(
-            ['id' => 1],
-            [
-                'site_name' => 'NxTube',
-                'site_description' => 'Your Video Platform',
-                'logo' => 'logo.png',
-                'favicon' => 'favicon.ico'
-            ]
-        );
-        $this->categories = Category::where('status', ActiveStatus::ACTIVE)
-            ->withCount('videos')
-            ->get();
+        // Get settings from cache or database
+        if (Cache::has('site_settings')) {
+            $this->settings = Cache::get('site_settings');
+        } else {
+            $this->settings = Setting::firstOrCreate(
+                ['id' => 1],
+                [
+                    'site_name' => 'NxTube',
+                    'site_description' => 'Your Video Platform',
+                    'logo' => 'logo.png',
+                    'favicon' => 'favicon.ico'
+                ]
+            );
+            Cache::put('site_settings', $this->settings, $this->cacheExpiration);
+        }
+        
+        // Get active categories from cache or database
+        if (Cache::has('active_categories')) {
+            $this->categories = Cache::get('active_categories');
+        } else {
+            $this->categories = Category::where('status', ActiveStatus::ACTIVE)
+                ->withCount('videos')
+                ->get();
+            Cache::put('active_categories', $this->categories, $this->cacheExpiration);
+        }
+        
         $this->videoViewService = $videoViewService;
         $this->actorViewService = $actorViewService;
+        
         view()->share([
             'settings' => $this->settings,
             'categories' => $this->categories
         ]);
     }
 
+    /**
+     * Get public videos with their view stats
+     *
+     * @param int $limit Number of videos to retrieve
+     * @param string $orderBy Field to order by
+     * @param string $direction Sort direction
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getPublicVideosWithStats($limit = 8, $orderBy = 'video_stats.views_count', $direction = 'desc')
+    {
+        return Video::select('videos.*', 'video_stats.views_count')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+            ->orderBy($orderBy, $direction)
+            ->take($limit)
+            ->with('videoStats')
+            ->get();
+    }
+
     public function home()
     {
+        $cacheKey = 'home_page_data';
+        
+        // Check if home page data is cached
+        if (Cache::has($cacheKey)) {
+            $data = Cache::get($cacheKey);
+            return view('index.home', $data);
+        }
+        
+        // If not cached, generate the data
         // Get trending videos by views from video_stats
-        $trendingVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('videos.visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->orderBy('video_stats.views_count', 'desc')
-            ->orderBy('videos.created_at', 'desc')
-            ->take(8)
-            ->with('videoStats')
-            ->get();
-
+        $trendingVideos = $this->getPublicVideosWithStats(8, 'video_stats.views_count', 'desc');
+        
         // Get recent videos with their stats
-        $recentVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('videos.visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->latest('videos.created_at')
-            ->take(8)
-            ->with('videoStats')
-            ->get();
+        $recentVideos = $this->getPublicVideosWithStats(8, 'videos.created_at', 'desc');
             
         // Get popular actors based on video views and engagement
         $popularActors = Actor::where('actors.visibility', ActiveStatus::ACTIVE)
@@ -132,13 +164,18 @@ class IndexController extends Controller
                 ->get();
         }
 
-        return view('index.home', compact(
+        $data = compact(
             'trendingVideos', 
             'recentVideos', 
             'popularActors', 
             'popularChannels', 
             'popularCategories'
-        ));
+        );
+        
+        // Store in cache for 10 minutes
+        Cache::put($cacheKey, $data, 600);
+
+        return view('index.home', $data);
     }
 
     public function about()
@@ -180,33 +217,43 @@ class IndexController extends Controller
             $this->videoViewService->recordView($video, $ipAddress);
         }
 
-        // Get related videos based on categories and tags
-        $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('videos.visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->whereHas('categories', function($query) use ($video) {
-                $query->whereIn('categories.id', $video->categories->pluck('id'))
-                      ->where('status', ActiveStatus::ACTIVE);
-            })
-            ->orWhereHas('tags', function($query) use ($video) {
-                $query->whereIn('tags.id', $video->tags->pluck('id'));
-            })
-            ->where('videos.id', '!=', $video->id)
-            ->with(['videoStats'])
-            ->orderBy('video_stats.views_count', 'desc')
-            ->take(6)
-            ->get();
+        // Cache key based on video ID
+        $cacheKey = "video_page_{$video->id}";
+        
+        // Get related and recommended videos from cache or generate
+        if (Cache::has($cacheKey)) {
+            list($relatedVideos, $recommendedVideos) = Cache::get($cacheKey);
+        } else {
+            // Get related videos based on categories and tags
+            $relatedVideos = Video::select('videos.*', 'video_stats.views_count')
+                ->where('videos.visibility', VisibilityStatus::PUBLIC)
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->whereHas('categories', function($query) use ($video) {
+                    $query->whereIn('categories.id', $video->categories->pluck('id'))
+                          ->where('status', ActiveStatus::ACTIVE);
+                })
+                ->orWhereHas('tags', function($query) use ($video) {
+                    $query->whereIn('tags.id', $video->tags->pluck('id'));
+                })
+                ->where('videos.id', '!=', $video->id)
+                ->with(['videoStats'])
+                ->orderBy('video_stats.views_count', 'desc')
+                ->take(6)
+                ->get();
 
-        // Get recommended videos (most viewed videos in last 3 days)
-        $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('videos.visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->where('videos.id', '!=', $video->id)
-            ->where('videos.created_at', '>=', now()->subDays(3))
-            ->with(['videoStats'])
-            ->orderBy('video_stats.views_count', 'desc')
-            ->take(10)
-            ->get();
+            // Get recommended videos (most viewed videos in last 3 days)
+            $recommendedVideos = Video::select('videos.*', 'video_stats.views_count')
+                ->where('videos.visibility', VisibilityStatus::PUBLIC)
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->where('videos.id', '!=', $video->id)
+                ->where('videos.created_at', '>=', now()->subDays(3))
+                ->with(['videoStats'])
+                ->orderBy('video_stats.views_count', 'desc')
+                ->take(10)
+                ->get();
+                
+            Cache::put($cacheKey, [$relatedVideos, $recommendedVideos], 1800);
+        }
 
         return view('index.video', compact('video', 'relatedVideos', 'recommendedVideos'));
     }
@@ -230,10 +277,16 @@ class IndexController extends Controller
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
 
-        // Get total views for the channel
-        $totalViews = $channel->videos()
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->sum('video_stats.views_count');
+        // Get total views for the channel (cached for 1 hour)
+        $cacheKey = "channel_views_{$channel->id}";
+        if (Cache::has($cacheKey)) {
+            $totalViews = Cache::get($cacheKey);
+        } else {
+            $totalViews = $channel->videos()
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->sum('video_stats.views_count');
+            Cache::put($cacheKey, $totalViews, $this->cacheExpiration);
+        }
 
         return view('index.channel', compact('channel', 'videos', 'totalViews'));
     }
@@ -321,36 +374,63 @@ class IndexController extends Controller
 
     public function allCategories()
     {
-        $categories = Category::where('categories.status', ActiveStatus::ACTIVE)
-            ->withCount(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
-            }])
-            ->orderBy('name')
-            ->paginate(24);
+        $page = request()->page ?? 1;
+        $cacheKey = "all_categories_page_{$page}";
+        
+        if (Cache::has($cacheKey)) {
+            $categories = Cache::get($cacheKey);
+        } else {
+            $categories = Category::where('categories.status', ActiveStatus::ACTIVE)
+                ->withCount(['videos' => function($query) {
+                    $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+                }])
+                ->orderBy('name')
+                ->paginate(24);
+            
+            Cache::put($cacheKey, $categories, 1800);
+        }
             
         return view('index.categories', compact('categories'));
     }
 
     public function allActors()
     {
-        $actors = Actor::where('visibility', ActiveStatus::ACTIVE)
-            ->withCount(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
-            }])
-            ->orderBy('stagename')
-            ->paginate(24);
+        $page = request()->page ?? 1;
+        $cacheKey = "all_actors_page_{$page}";
+        
+        if (Cache::has($cacheKey)) {
+            $actors = Cache::get($cacheKey);
+        } else {
+            $actors = Actor::where('visibility', ActiveStatus::ACTIVE)
+                ->withCount(['videos' => function($query) {
+                    $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+                }])
+                ->orderBy('stagename')
+                ->paginate(24);
+            
+            Cache::put($cacheKey, $actors, 1800);
+        }
             
         return view('index.actors', compact('actors'));
     }
 
     public function allChannels()
     {
-        $channels = Channel::where('visibility', ActiveStatus::ACTIVE)
-            ->withCount(['videos' => function($query) {
-                $query->where('videos.visibility', VisibilityStatus::PUBLIC);
-            }])
-            ->orderBy('channel_name')
-            ->paginate(24);
+        $page = request()->page ?? 1;
+        $cacheKey = "all_channels_page_{$page}";
+        
+        if (Cache::has($cacheKey)) {
+            $channels = Cache::get($cacheKey);
+        } else {
+            $channels = Channel::where('visibility', ActiveStatus::ACTIVE)
+                ->withCount(['videos' => function($query) {
+                    $query->where('videos.visibility', VisibilityStatus::PUBLIC);
+                }])
+                ->orderBy('channel_name')
+                ->paginate(24);
+            
+            Cache::put($cacheKey, $channels, 1800);
+        }
             
         return view('index.channels', compact('channels'));
     }
@@ -358,9 +438,17 @@ class IndexController extends Controller
     public function channelByHandle($handle)
     {
         // Find the channel by handle
-        $channel = Channel::where('handle', $handle)
-            ->where('visibility', ActiveStatus::ACTIVE)
-            ->firstOrFail();
+        $cacheKey = "channel_handle_{$handle}";
+        
+        if (Cache::has($cacheKey)) {
+            $channel = Cache::get($cacheKey);
+        } else {
+            $channel = Channel::where('handle', $handle)
+                ->where('visibility', ActiveStatus::ACTIVE)
+                ->firstOrFail();
+            
+            Cache::put($cacheKey, $channel, $this->cacheExpiration);
+        }
 
         // Only allow access to active channels
         if ($channel->visibility !== ActiveStatus::ACTIVE) {
@@ -379,23 +467,40 @@ class IndexController extends Controller
             ->orderBy('video_stats.views_count', 'desc')
             ->paginate(12);
 
-        // Get total views for the channel
-        $totalViews = $channel->videos()
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->sum('video_stats.views_count');
+        // Get total views for the channel (cached for 1 hour)
+        $viewsCacheKey = "channel_views_{$channel->id}";
+        
+        if (Cache::has($viewsCacheKey)) {
+            $totalViews = Cache::get($viewsCacheKey);
+        } else {
+            $totalViews = $channel->videos()
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->sum('video_stats.views_count');
+            
+            Cache::put($viewsCacheKey, $totalViews, $this->cacheExpiration);
+        }
 
         return view('index.channel', compact('channel', 'videos', 'totalViews'));
     }
 
     public function allVideos(Request $request)
     {
-        // Get all public videos with pagination
-        $videos = Video::select('videos.*', 'video_stats.views_count')
-            ->where('videos.visibility', VisibilityStatus::PUBLIC)
-            ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->with(['categories', 'channels'])
-            ->orderBy('videos.created_at', 'desc')
-            ->paginate(12);
+        $page = request()->page ?? 1;
+        $cacheKey = "all_videos_page_{$page}";
+        
+        if (Cache::has($cacheKey)) {
+            $videos = Cache::get($cacheKey);
+        } else {
+            // Get all public videos with pagination
+            $videos = Video::select('videos.*', 'video_stats.views_count')
+                ->where('videos.visibility', VisibilityStatus::PUBLIC)
+                ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
+                ->with(['categories', 'channels'])
+                ->orderBy('videos.created_at', 'desc')
+                ->paginate(12);
+            
+            Cache::put($cacheKey, $videos, 1800);
+        }
 
         return view('index.videos', compact('videos'))->with('hideBreadcrumbs', true);
     }
