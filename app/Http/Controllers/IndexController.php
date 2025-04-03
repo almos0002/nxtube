@@ -37,6 +37,51 @@ class IndexController extends Controller
         }
         return $duration;
     }
+    
+    /**
+     * Get optimized thumbnail URL for different display contexts
+     * 
+     * @param string|null $path The thumbnail path
+     * @param string $size The size of thumbnail ('small', 'medium', 'large')
+     * @param string $default The default thumbnail to use if none exists
+     * @return string The URL to the thumbnail
+     */
+    public static function thumbnailUrl($path, $size = 'medium', $default = 'thumbnails/default.jpg')
+    {
+        if (empty($path)) {
+            return asset('storage/' . $default);
+        }
+        
+        // Check if we have an optimized version of the thumbnail
+        $pathInfo = pathinfo($path);
+        $extension = isset($pathInfo['extension']) ? $pathInfo['extension'] : '';
+        $basePath = isset($pathInfo['dirname']) && $pathInfo['dirname'] != '.' ? $pathInfo['dirname'] . '/' : '';
+        $filename = isset($pathInfo['filename']) ? $pathInfo['filename'] : '';
+        
+        // Construct the optimized path based on size
+        $optimizedPath = '';
+        switch ($size) {
+            case 'small':
+                $optimizedPath = $basePath . $filename . '-small.' . $extension;
+                break;
+            case 'medium':
+                $optimizedPath = $basePath . $filename . '-medium.' . $extension;
+                break;
+            case 'large':
+                $optimizedPath = $basePath . $filename . '-large.' . $extension;
+                break;
+            default:
+                $optimizedPath = $path;
+        }
+        
+        // Check if the optimized file exists, if not fall back to original
+        if (\Storage::disk('public')->exists($optimizedPath)) {
+            return asset('storage/' . $optimizedPath);
+        }
+        
+        // Fall back to original file
+        return asset('storage/' . $path);
+    }
 
     public function __construct(VideoViewService $videoViewService, ActorViewService $actorViewService)
     {

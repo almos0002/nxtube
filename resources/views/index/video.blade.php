@@ -231,8 +231,8 @@
                                 <div class="video-card group">
                                     <a href="{{ route('video', $relatedVideo->slug) }}" class="block">
                                         <div class="thumbnail-wrapper relative aspect-video mb-3">
-                                            <img src="{{ asset('storage/' . ($relatedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                                alt="{{ $relatedVideo->title }}" class="thumbnail w-full h-full object-cover">
+                                            <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($relatedVideo->thumbnail, 'small') }}"
+                                                alt="{{ $relatedVideo->title }}" class="thumbnail w-full h-full object-cover" loading="lazy">
                                             <span
                                                 class="duration absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-xs rounded-md font-medium">{{ \App\Http\Controllers\IndexController::formatDuration($relatedVideo->duration) }}</span>
                                             <div
@@ -284,8 +284,8 @@
                             <div class="video-card group p-2">
                                 <a href="{{ route('video', $recommendedVideo->slug) }}" class="flex items-start">
                                     <div class="thumbnail-wrapper relative w-40 aspect-video rounded-lg overflow-hidden">
-                                        <img src="{{ asset('storage/' . ($recommendedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                            alt="{{ $recommendedVideo->title }}" class="thumbnail w-full h-full object-cover">
+                                        <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($recommendedVideo->thumbnail, 'small') }}"
+                                            alt="{{ $recommendedVideo->title }}" class="thumbnail w-full h-full object-cover" loading="lazy">
                                         <span
                                             class="duration absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/90 text-xs font-medium rounded">{{ \App\Http\Controllers\IndexController::formatDuration($recommendedVideo->duration) }}</span>
                                         <div

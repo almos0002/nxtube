@@ -25,7 +25,7 @@
             <div class="relative">
                 @if($actor->profile_image)
                 <div class="aspect-square overflow-hidden">
-                    <img src="{{ asset('storage/' . $actor->profile_image) }}" alt="{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($actor->profile_image, 'medium') }}" alt="{{ $actor->stagename ?? $actor->firstname . ' ' . $actor->lastname }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                 </div>
                 @else
                 <div class="aspect-square bg-neutral-700 flex items-center justify-center">

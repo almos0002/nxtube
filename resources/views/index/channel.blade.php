@@ -82,8 +82,8 @@
                 <div class="video-card group">
                     <a href="{{ route('video', $video->slug) }}" class="block">
                         <div class="thumbnail-wrapper relative aspect-video mb-2 md:mb-3 rounded-lg overflow-hidden">
-                            <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
+                            <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($video->thumbnail, 'medium') }}"
+                                alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover" loading="lazy">
                             <span
                                 class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ \App\Http\Controllers\IndexController::formatDuration($video->duration) }}</span>
                             <div

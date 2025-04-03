@@ -25,7 +25,7 @@
             <div class="relative">
                 @if($channel->banner_image)
                 <div class="h-32 overflow-hidden">
-                    <img src="{{ asset('storage/' . $channel->banner_image) }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
+                    <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($channel->banner_image, 'medium') }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 @else
                 <div class="h-32 bg-blue-500/20 flex items-center justify-center">
@@ -38,7 +38,7 @@
                 <div class="absolute -bottom-8 left-4">
                     @if($channel->profile_image)
                     <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-neutral-800">
-                        <img src="{{ asset('storage/' . $channel->profile_image) }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover">
+                        <img src="{{ \App\Http\Controllers\IndexController::thumbnailUrl($channel->profile_image, 'small') }}" alt="{{ $channel->channel_name }}" class="w-full h-full object-cover" loading="lazy">
                     </div>
                     @else
                     <div class="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center border-2 border-neutral-800">
