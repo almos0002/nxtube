@@ -211,11 +211,13 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-between items-center mt-8">
-            <p class="text-neutral-400 text-sm">
+        <div class="mt-8">
+            <p class="text-neutral-400 text-sm mb-2">
                 Showing {{ $videos->firstItem() }}-{{ $videos->lastItem() }} of {{ $videos->total() }} videos
             </p>
-            {{ $videos->links() }}
+            <div class="pagination-container">
+                {{ $videos->links() }}
+            </div>
         </div>
     </div>
 

@@ -93,6 +93,32 @@
             transform: scale(1.02);
         }
 
+        /* Pagination styles */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;     /* Firefox */
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari, Opera */
+        }
+        
+        /* Responsive pagination container */
+        .pagination-container {
+            overflow-x: auto;
+            padding-bottom: 5px;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .pagination-container::-webkit-scrollbar {
+            display: none;
+        }
+
         /* Added styles for scrollable sidebar */
         #sidebar {
             display: flex;

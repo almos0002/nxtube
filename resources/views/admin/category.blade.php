@@ -186,11 +186,13 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-between items-center mt-8">
-            <p class="text-neutral-400 text-sm">
+        <div class="mt-6">
+            <p class="text-neutral-400 text-sm mb-2">
                 Showing {{ $categories->firstItem() ?? 0 }}-{{ $categories->lastItem() ?? 0 }} of {{ $categories->total() }} categories
             </p>
-            {{ $categories->links() }}
+            <div class="pagination-container">
+                {{ $categories->links() }}
+            </div>
         </div>
     </div>
 </div>

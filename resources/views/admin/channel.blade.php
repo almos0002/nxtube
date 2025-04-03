@@ -207,7 +207,9 @@
 
         <!-- Pagination -->
         <div class="mt-8">
-            {{ $channels->links() }}
+            <div class="pagination-container">
+                {{ $channels->links() }}
+            </div>
         </div>
     </div>
 </div>

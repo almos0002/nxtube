@@ -228,7 +228,9 @@
             <p class="text-neutral-400 text-sm">
                 Showing {{ $actors->firstItem() ?? 0 }}-{{ $actors->lastItem() ?? 0 }} of {{ $actors->total() }} actors
             </p>
-            {{ $actors->links() }}
+            <div class="pagination-container mt-6">
+                {{ $actors->links() }}
+            </div>
         </div>
     </div>
 
