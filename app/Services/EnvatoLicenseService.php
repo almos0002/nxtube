@@ -12,7 +12,7 @@ class EnvatoLicenseService
     
     public function __construct()
     {
-        $this->personalToken = 'riCzniQFlbKqYeyaPeoL9Ohg7oUn6oZl';
+        $this->personalToken = 'PepUPP4se9nISbTUkG9MzBqVnnAvMGaG';
     }
     
     public function verifyPurchaseCode($code)
