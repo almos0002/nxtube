@@ -10,11 +10,12 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 10px;
-            scroll-behavior: smooth;
+            /* Removed smooth scrolling from CSS to avoid double-smoothing */
             scrollbar-width: none;
             /* Firefox */
             -ms-overflow-style: none;
             /* IE and Edge */
+            will-change: transform; /* Hardware acceleration hint */
         }
 
         .scrollable-section::-webkit-scrollbar {
@@ -137,7 +138,8 @@
                         <div class="video-card group">
                             <a href="{{ route('video', $video->slug) }}" class="block">
                                 <div class="thumbnail-wrapper relative aspect-video mb-3">
-                                    <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
+                                    <img data-src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
+                                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3C/svg%3E"
                                         alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
                                     <span
                                         class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
@@ -477,11 +479,45 @@
         function scrollSection(sectionId, scrollAmount) {
             const scrollContainer = document.getElementById(sectionId);
             if (scrollContainer) {
-                scrollContainer.scrollBy({
-                    left: scrollAmount,
-                    behavior: 'smooth'
+                // Use requestAnimationFrame for smoother performance
+                requestAnimationFrame(() => {
+                    scrollContainer.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
                 });
             }
         }
+        
+        // Add lazy loading for images to improve scroll performance
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optimize image loading
+            const lazyImages = document.querySelectorAll('.thumbnail');
+            
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute('data-src');
+                            if (src) {
+                                img.src = src;
+                                img.removeAttribute('data-src');
+                            }
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+                
+                lazyImages.forEach(img => {
+                    // Store original src in data-src and use a placeholder
+                    if (img.src && !img.getAttribute('data-src')) {
+                        img.setAttribute('data-src', img.src);
+                        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+                        imageObserver.observe(img);
+                    }
+                });
+            }
+        });
     </script>
 @endsection
