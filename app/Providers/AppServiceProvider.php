@@ -6,6 +6,7 @@ use App\Helpers\AdsHelper;
 use App\Helpers\SeoHelper;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Use custom pagination view
+        Paginator::defaultView('pagination.tailwind');
+        
         // Share ads data with all views
         View::composer('*', function ($view) {
             $ads = AdsHelper::getAllAds();
