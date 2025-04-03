@@ -10,27 +10,29 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Define the schedule for sitemap generation based on SEO settings
-Schedule::command('sitemap:generate')
-    ->when(function () {
-        // Only schedule if auto-generate is enabled
-        $seo = SeoSetting::first();
-        return $seo && $seo->auto_generate_sitemap;
-    })
-    ->cron(function () {
-        // Get the frequency from SEO settings
-        $seo = SeoSetting::first();
-        $frequency = $seo ? $seo->sitemap_frequency : 'daily';
-        
-        switch ($frequency) {
-            case 'hourly':
-                return '0 * * * *'; // Run at the start of every hour
-            case 'daily':
-                return '0 0 * * *'; // Run at midnight every day
-            case 'weekly':
-                return '0 0 * * 0'; // Run at midnight on Sunday
-            case 'monthly':
-                return '0 0 1 * *'; // Run at midnight on the first day of the month
-            default:
-                return '0 0 * * *'; // Default to daily
-        }
-    });
+Schedule::call(function () {
+    // Only run if auto-generate is enabled
+    $seo = SeoSetting::first();
+    
+    if (!$seo || !$seo->auto_generate_sitemap) {
+        return;
+    }
+    
+    // Check if we should run based on frequency
+    $frequency = $seo->sitemap_frequency ?? 'daily';
+    $now = now();
+    
+    $shouldRun = match ($frequency) {
+        'hourly' => true, // Always run on hourly schedule
+        'daily' => $now->hour === 0 && $now->minute === 0, // Run at midnight
+        'weekly' => $now->dayOfWeek === 0 && $now->hour === 0 && $now->minute === 0, // Run on Sunday at midnight
+        'monthly' => $now->day === 1 && $now->hour === 0 && $now->minute === 0, // Run on the 1st of the month at midnight
+        default => $now->hour === 0 && $now->minute === 0, // Default to daily at midnight
+    };
+    
+    if ($shouldRun) {
+        Artisan::call('sitemap:generate');
+    }
+})
+->hourly() // Run every hour but internal logic will determine if action is needed
+->description('Generate sitemap based on configured frequency');
