@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\LicenseController;
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
@@ -23,10 +24,14 @@ Route::get('/search', [IndexController::class, 'search'])->name('search');
 // Auth routes must come before wildcard routes
 Route::prefix('admin')->group(function () {
     Auth::routes();
+    
+    // License verification routes
+    Route::get('/license', [LicenseController::class, 'showVerificationForm'])->name('license.verify');
+    Route::post('/license', [LicenseController::class, 'verifyLicense'])->name('license.verify.post');
 });
 
 // Admin routes
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verify.license'])->prefix('admin')->group(function () {
 
     // Admin Dashboard & Pages
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
