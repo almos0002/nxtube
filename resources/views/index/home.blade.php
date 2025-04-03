@@ -10,12 +10,11 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 10px;
-            /* Removed smooth scrolling from CSS to avoid double-smoothing */
+            scroll-behavior: smooth;
             scrollbar-width: none;
             /* Firefox */
             -ms-overflow-style: none;
             /* IE and Edge */
-            will-change: transform; /* Hardware acceleration hint */
         }
 
         .scrollable-section::-webkit-scrollbar {
@@ -26,25 +25,29 @@
         .scrollable-grid {
             display: grid;
             grid-auto-flow: column;
-            grid-auto-columns: 300px; /* Fixed width for consistent sizing */
+            grid-auto-columns: 300px;
+            /* Fixed width for consistent sizing */
             gap: 1.5rem;
         }
 
         @media (max-width: 1023px) {
             .scrollable-grid {
-                grid-auto-columns: 280px; /* Fixed width for consistent sizing */
+                grid-auto-columns: 280px;
+                /* Fixed width for consistent sizing */
             }
         }
 
         @media (max-width: 767px) {
             .scrollable-grid {
-                grid-auto-columns: 240px; /* Fixed width for consistent sizing */
+                grid-auto-columns: 240px;
+                /* Fixed width for consistent sizing */
             }
         }
 
         @media (max-width: 639px) {
             .scrollable-grid {
-                grid-auto-columns: 220px; /* Fixed width for consistent sizing */
+                grid-auto-columns: 220px;
+                /* Fixed width for consistent sizing */
             }
         }
 
@@ -138,8 +141,7 @@
                         <div class="video-card group">
                             <a href="{{ route('video', $video->slug) }}" class="block">
                                 <div class="thumbnail-wrapper relative aspect-video mb-3">
-                                    <img data-src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
-                                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3C/svg%3E"
+                                    <img src="{{ asset('storage/' . ($video->thumbnail ?? 'thumbnails/default.jpg')) }}"
                                         alt="{{ $video->title }}" class="thumbnail w-full h-full object-cover">
                                     <span
                                         class="duration absolute bottom-2 right-2 px-2 py-1 bg-black/90 text-xs rounded-md font-medium">{{ $video->duration }}</span>
@@ -163,7 +165,8 @@
                         </div>
                     @empty
                         <div class="col-span-full text-center py-12">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
+                            <div
+                                class="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center">
                                 <i class="fas fa-video text-2xl text-neutral-600"></i>
                             </div>
                             <h3 class="text-lg font-medium mb-2">No Trending Videos</h3>
@@ -479,45 +482,11 @@
         function scrollSection(sectionId, scrollAmount) {
             const scrollContainer = document.getElementById(sectionId);
             if (scrollContainer) {
-                // Use requestAnimationFrame for smoother performance
-                requestAnimationFrame(() => {
-                    scrollContainer.scrollBy({
-                        left: scrollAmount,
-                        behavior: 'smooth'
-                    });
+                scrollContainer.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
                 });
             }
         }
-        
-        // Add lazy loading for images to improve scroll performance
-        document.addEventListener('DOMContentLoaded', function() {
-            // Optimize image loading
-            const lazyImages = document.querySelectorAll('.thumbnail');
-            
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            const src = img.getAttribute('data-src');
-                            if (src) {
-                                img.src = src;
-                                img.removeAttribute('data-src');
-                            }
-                            imageObserver.unobserve(img);
-                        }
-                    });
-                });
-                
-                lazyImages.forEach(img => {
-                    // Store original src in data-src and use a placeholder
-                    if (img.src && !img.getAttribute('data-src')) {
-                        img.setAttribute('data-src', img.src);
-                        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
-                        imageObserver.observe(img);
-                    }
-                });
-            }
-        });
     </script>
 @endsection
