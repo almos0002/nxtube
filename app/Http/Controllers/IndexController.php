@@ -413,11 +413,13 @@ class IndexController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
+        $type = $request->input('type', 'all');
         
         if (empty($query)) {
             return redirect()->route('home');
         }
 
+        // Get videos matching the search query
         $videos = Video::select('videos.*', 'video_stats.views_count')
             ->where('videos.visibility', VisibilityStatus::PUBLIC)
             ->where(function($q) use ($query) {
@@ -425,10 +427,91 @@ class IndexController extends Controller
                   ->orWhere('videos.description', 'like', "%{$query}%");
             })
             ->leftJoin('video_stats', 'videos.id', '=', 'video_stats.video_id')
-            ->orderBy('video_stats.views_count', 'desc')
-            ->paginate(12);
+            ->orderBy('video_stats.views_count', 'desc');
+            
+        // Get channels matching the search query
+        $channels = Channel::where('visibility', ActiveStatus::ACTIVE)
+            ->where(function($q) use ($query) {
+                $q->where('channel_name', 'like', "%{$query}%")
+                  ->orWhere('description', 'like', "%{$query}%")
+                  ->orWhere('handle', 'like', "%{$query}%");
+            })
+            ->withCount(['videos' => function($q) {
+                $q->where('visibility', VisibilityStatus::PUBLIC);
+            }]);
+            
+        // Get actors matching the search query
+        $actors = Actor::where('visibility', ActiveStatus::ACTIVE)
+            ->where(function($q) use ($query) {
+                $q->where('firstname', 'like', "%{$query}%")
+                  ->orWhere('lastname', 'like', "%{$query}%")
+                  ->orWhere('stagename', 'like', "%{$query}%")
+                  ->orWhere('biography', 'like', "%{$query}%");
+            })
+            ->withCount(['videos' => function($q) {
+                $q->where('visibility', VisibilityStatus::PUBLIC);
+            }]);
+        
+        // Get total counts for each content type
+        $videosCount = Video::select('videos.id')
+            ->where('videos.visibility', VisibilityStatus::PUBLIC)
+            ->where(function($q) use ($query) {
+                $q->where('videos.title', 'like', "%{$query}%")
+                  ->orWhere('videos.description', 'like', "%{$query}%");
+            })
+            ->count();
+            
+        $channelsCount = Channel::where('visibility', ActiveStatus::ACTIVE)
+            ->where(function($q) use ($query) {
+                $q->where('channel_name', 'like', "%{$query}%")
+                  ->orWhere('description', 'like', "%{$query}%")
+                  ->orWhere('handle', 'like', "%{$query}%");
+            })
+            ->count();
+            
+        $actorsCount = Actor::where('visibility', ActiveStatus::ACTIVE)
+            ->where(function($q) use ($query) {
+                $q->where('firstname', 'like', "%{$query}%")
+                  ->orWhere('lastname', 'like', "%{$query}%")
+                  ->orWhere('stagename', 'like', "%{$query}%")
+                  ->orWhere('biography', 'like', "%{$query}%");
+            })
+            ->count();
+        
+        // Filter by type if specified
+        if ($type === 'videos') {
+            // For videos tab, paginate the videos
+            $videos = $videos->paginate(16);
+            $channels = collect([]);
+            $actors = collect([]);
+        } elseif ($type === 'channels') {
+            // For channels tab, paginate the channels
+            $videos = collect([]);
+            $channels = $channels->paginate(16);
+            $actors = collect([]);
+        } elseif ($type === 'actors') {
+            // For actors tab, paginate the actors
+            $videos = collect([]);
+            $channels = collect([]);
+            $actors = $actors->paginate(16);
+        } else {
+            // For 'all' type, get a mix of results
+            $videos = $videos->take(8)->get();
+            $channels = $channels->take(4)->get();
+            $actors = $actors->take(4)->get();
+        }
+        
+        // Count total results
+        $totalResults = $videosCount + $channelsCount + $actorsCount;
+        
+        // Pass the total counts to the view
+        $contentCounts = [
+            'videos' => $videosCount,
+            'channels' => $channelsCount,
+            'actors' => $actorsCount
+        ];
 
-        return view('index.search', compact('videos', 'query'));
+        return view('index.search', compact('videos', 'channels', 'actors', 'query', 'type', 'totalResults', 'contentCounts'));
     }
 
     public function allCategories()
