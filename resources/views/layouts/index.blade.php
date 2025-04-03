@@ -221,7 +221,7 @@
             scrollbar-width: none;     /* Firefox */
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
+            /* Removed smooth scrolling from CSS - will handle with JS */
         }
         
         .scrollbar-hide::-webkit-scrollbar {

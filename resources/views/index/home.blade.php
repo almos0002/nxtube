@@ -10,11 +10,12 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 10px;
-            scroll-behavior: smooth;
+            /* Removed smooth scrolling from CSS - will handle with JS */
             scrollbar-width: none;
             /* Firefox */
             -ms-overflow-style: none;
             /* IE and Edge */
+            will-change: transform; /* Hardware acceleration hint */
         }
 
         .scrollable-section::-webkit-scrollbar {
@@ -478,15 +479,43 @@
 
     <!-- JavaScript for scroll buttons -->
     <script>
-        // Function to scroll sections horizontally
+        // Function to scroll sections horizontally with improved performance
         function scrollSection(sectionId, scrollAmount) {
             const scrollContainer = document.getElementById(sectionId);
             if (scrollContainer) {
-                scrollContainer.scrollBy({
-                    left: scrollAmount,
-                    behavior: 'smooth'
-                });
+                // Calculate target position
+                const targetPosition = scrollContainer.scrollLeft + scrollAmount;
+                
+                // Use requestAnimationFrame for smoother scrolling
+                const startTime = performance.now();
+                const startPosition = scrollContainer.scrollLeft;
+                const duration = 300; // ms - shorter duration for more responsive feel
+                
+                function step(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Ease out cubic function for smoother deceleration
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    
+                    scrollContainer.scrollLeft = startPosition + (targetPosition - startPosition) * easeProgress;
+                    
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                }
+                
+                window.requestAnimationFrame(step);
             }
         }
+        
+        // Add passive event listeners to all scrollable sections for better performance
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollableSections = document.querySelectorAll('.scrollable-section');
+            scrollableSections.forEach(section => {
+                section.addEventListener('touchstart', function() {}, {passive: true});
+                section.addEventListener('touchmove', function() {}, {passive: true});
+                section.addEventListener('wheel', function() {}, {passive: true});
+            });
+        });
     </script>
 @endsection
