@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-center">
-        <div class="flex flex-col items-center space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
+        <div class="inline-flex items-center">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-neutral-400 bg-neutral-800/50 border border-neutral-700 rounded-lg cursor-not-allowed">
@@ -19,8 +19,8 @@
             @endif
 
             {{-- Pagination Elements --}}
-            <div class="overflow-x-auto flex items-center space-x-1 px-2 py-1 rounded-lg bg-neutral-800/50 border border-neutral-700 scrollbar-hide">
-                <div class="flex items-center space-x-1">
+            <div class="mx-2 overflow-x-auto scrollbar-hide">
+                <div class="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-neutral-800/50 border border-neutral-700">
                     {{-- Array Of Links --}}
                     @foreach ($elements as $element)
                         {{-- "Three Dots" Separator --}}
