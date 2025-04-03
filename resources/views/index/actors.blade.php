@@ -51,7 +51,7 @@
         @endforeach
     </div>
     
-    <div class="mt-8 flex justify-center">
+    <div class="mt-8 pagination-container">
         {{ $actors->links() }}
     </div>
 </div>

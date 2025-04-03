@@ -48,7 +48,7 @@
 
             <!-- Pagination -->
             @if ($videos->hasPages())
-                <div class="mt-8">
+                <div class="mt-8 pagination-container">
                     {{ $videos->links() }}
                 </div>
             @endif

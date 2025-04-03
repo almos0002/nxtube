@@ -68,7 +68,7 @@ $hideBreadcrumbs = true;
 
         <!-- Pagination -->
         @if ($videos->hasPages())
-            <div class="mt-8">
+            <div class="mt-8 pagination-container">
                 {{ $videos->appends(['q' => $query])->links() }}
             </div>
         @endif

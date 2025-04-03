@@ -125,7 +125,7 @@
 
         <!-- Pagination -->
         @if ($videos->hasPages())
-            <div class="mt-6 md:mt-8 px-4 md:px-0">
+            <div class="mt-6 md:mt-8 px-4 md:px-0 pagination-container">
                 {{ $videos->links() }}
             </div>
         @endif

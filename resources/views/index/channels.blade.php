@@ -66,7 +66,7 @@
         @endforeach
     </div>
     
-    <div class="mt-8 flex justify-center">
+    <div class="mt-8 pagination-container">
         {{ $channels->links() }}
     </div>
 </div>
