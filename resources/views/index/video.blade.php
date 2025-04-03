@@ -234,7 +234,7 @@
                                             <img src="{{ asset('storage/' . ($relatedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
                                                 alt="{{ $relatedVideo->title }}" class="thumbnail w-full h-full object-cover">
                                             <span
-                                                class="duration absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-xs rounded-md font-medium">{{ $relatedVideo->duration }}</span>
+                                                class="duration absolute bottom-2 right-2 px-2 py-0.5 bg-black/90 text-xs rounded-md font-medium">{{ \App\Http\Controllers\IndexController::formatDuration($relatedVideo->duration) }}</span>
                                             <div
                                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <div
@@ -287,7 +287,7 @@
                                         <img src="{{ asset('storage/' . ($recommendedVideo->thumbnail ?? 'thumbnails/default.jpg')) }}"
                                             alt="{{ $recommendedVideo->title }}" class="thumbnail w-full h-full object-cover">
                                         <span
-                                            class="duration absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/90 text-xs font-medium rounded">{{ $recommendedVideo->duration }}</span>
+                                            class="duration absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/90 text-xs font-medium rounded">{{ \App\Http\Controllers\IndexController::formatDuration($recommendedVideo->duration) }}</span>
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                             <div

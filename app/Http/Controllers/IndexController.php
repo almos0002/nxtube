@@ -22,6 +22,21 @@ class IndexController extends Controller
     protected $videoViewService;
     protected $actorViewService;
     protected $cacheExpiration = 3600; // 1 hour
+    
+    /**
+     * Format video duration to hide hours if they are 00
+     *
+     * @param string $duration Duration in HH:MM:SS format
+     * @return string Formatted duration
+     */
+    public static function formatDuration($duration)
+    {
+        $parts = explode(':', $duration);
+        if (count($parts) === 3 && $parts[0] === '00') {
+            return $parts[1] . ':' . $parts[2];
+        }
+        return $duration;
+    }
 
     public function __construct(VideoViewService $videoViewService, ActorViewService $actorViewService)
     {
